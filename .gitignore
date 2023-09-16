@@ -6,8 +6,6 @@
 *.lo
 *.o
 *.obj
-.idea
-
 
 # Precompiled Headers
 *.gch
@@ -32,3 +30,22 @@
 *.exe
 *.out
 *.app
+
+# Directories
+/*build*/
+/dependencies/*/
+
+# idea
+.vscode/
+.idea/
+.cache/
+*.txt.user*
+
+# LSP infrastructure for C++
+compile_commands.json
+.clangd/
+
+# MAC OS
+.DS_Store
+**/.DS_Store
+coverage.xml
