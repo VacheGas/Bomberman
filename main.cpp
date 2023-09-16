@@ -2,7 +2,8 @@
 // Created by Vache Gasparyan on 16.09.23.
 //
 
-#include "main.h"
-int main() {
+#include <core/game.hpp>
 
+int main() {
+    someFunc();
 }
