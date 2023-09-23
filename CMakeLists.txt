@@ -11,7 +11,7 @@ find_package(SDL2_IMAGE REQUIRED)
 
 set(SOURCES main.cpp)
 
-add_subdirectory(googletest)
+add_subdirectory(dependencies/googletest)
 add_subdirectory(core)
 
 add_executable(${PROJECT_NAME} ${SOURCES})
