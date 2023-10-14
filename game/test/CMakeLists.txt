@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.24)
-project(tests)
+project(game_tests)
 
 include_directories(
   ${GTEST_DIR}/include
@@ -13,7 +13,7 @@ set(
 
 add_executable(tests ${TEST_FILES})
 
-target_link_libraries(tests core gtest_main)
+target_link_libraries(tests game gtest_main)
 
 set_target_properties(tests PROPERTIES
   CXX_STANDARD 17

@@ -1,4 +1,4 @@
-#include <core/game.hpp>
+#include <game/game.hpp>
 #include <gtest/gtest.h>
 
 TEST(Bomberman, Game) {
