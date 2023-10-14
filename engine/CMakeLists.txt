@@ -1,7 +1,6 @@
 add_library(
   engine_headers 
   INTERFACE
-  include/engine/color.hpp
   include/engine/exception.hpp
   include/engine/engine.hpp
   include/engine/texture_manager.hpp
@@ -16,7 +15,6 @@ target_include_directories(
 add_library(
   engine
   STATIC
-  src/color.cpp
   src/engine.cpp
   src/exception.cpp
   src/texture_manager.cpp
@@ -41,5 +39,16 @@ target_include_directories(
   ${SDL3_image_SOURCE_DIR}/include/SDL3_image
 )
 
-target_link_libraries(engine PRIVATE SDL3::SDL3)
-target_link_libraries(engine PRIVATE SDL3_image::SDL3_image)
+target_link_libraries(
+  engine_headers
+  INTERFACE
+  core_headers
+)
+
+target_link_libraries(
+  engine 
+  PRIVATE 
+  core
+  SDL3::SDL3
+  SDL3_image::SDL3_image
+)

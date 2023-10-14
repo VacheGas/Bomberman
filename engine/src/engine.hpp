@@ -1,8 +1,8 @@
 #pragma once
 
+#include <core/color.hpp>
 #include <SDL.h>
 #include <string>
-#include "color.hpp"
 
 namespace sdl {
 
