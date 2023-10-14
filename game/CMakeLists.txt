@@ -30,4 +30,5 @@ target_link_libraries(
   INTERFACE
 )
 
+target_link_libraries(game_headers INTERFACE engine_headers)
 target_link_libraries(game PRIVATE engine gtest gtest_main)

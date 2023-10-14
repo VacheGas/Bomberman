@@ -5,5 +5,7 @@
 #include <game/game.hpp>
 
 int main() {
-    // someFunc();
+    auto &engine = sdl::Engine::getInstance();
+    engine.init("Sample", 800, 640, 0);
+    engine.pollEvents();
 }

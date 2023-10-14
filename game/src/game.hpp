@@ -1,3 +1,3 @@
 #pragma once
 
-int someFunc();
+#include <engine/engine.hpp>
