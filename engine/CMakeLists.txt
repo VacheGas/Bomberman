@@ -37,9 +37,9 @@ target_include_directories(
   engine_headers INTERFACE 
   ${SDL3_SOURCE_DIR}/include 
   ${SDL3_SOURCE_DIR}/include/SDL3 
-  # ${SDL3_image_SOURCE_DIR}/include 
-  # ${SDL3_image_SOURCE_DIR}/include/SDL3_image
+  ${SDL3_image_SOURCE_DIR}/include 
+  ${SDL3_image_SOURCE_DIR}/include/SDL3_image
 )
 
 target_link_libraries(engine PRIVATE SDL3::SDL3)
-# target_link_libraries(graphics PRIVATE SDL3_image::SDL3_image)
+target_link_libraries(engine PRIVATE SDL3_image::SDL3_image)
