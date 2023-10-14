@@ -6,6 +6,11 @@ set(CMAKE_CXX_STANDARD 17)
 
 set(SOURCES main.cpp)
 
+if(APPLE)
+    enable_language(OBJC)
+endif()
+
+add_subdirectory(core)
 add_subdirectory(engine)
 add_subdirectory(game)
 
