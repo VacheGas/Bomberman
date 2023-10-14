@@ -1,7 +1,9 @@
 add_library(
   game_headers 
   INTERFACE
+  include/game/game_object.hpp
   include/game/game.hpp
+  include/game/sprite.hpp
 )
   
 target_include_directories(
@@ -14,6 +16,7 @@ add_library(
   game
   STATIC
   src/game.cpp
+  src/sprite.cpp
 )
       
 add_subdirectory(test)
