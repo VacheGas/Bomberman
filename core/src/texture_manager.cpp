@@ -1,6 +1,7 @@
 #include "texture_manager.hpp"
-
 #include <SDL_image.h>
+
+namespace sdl {
 
 bool TextureManager::load(const std::string& fileName, 
                           const std::string& id,
@@ -35,3 +36,5 @@ void TextureManager::draw(const std::string& id,
 void TextureManager::clearTexture(const std::string& id) {
     _textures.erase(id);
 }
+
+} // namesapce sdl

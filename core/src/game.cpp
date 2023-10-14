@@ -1,12 +1,11 @@
-#include "engine.hpp"
+#include "game.hpp"
 #include "exception.hpp"
 
 namespace sdl {
 
 bool Engine::_initialized{};
 
-void Engine::init(const std::string& title, size_t width, size_t height,
-                  int flags) {
+void Engine::init(const std::string& title, size_t width, size_t height, int flags) {
 
     if (_initialized) {
         throw SDLException("The engine is already initialized");
@@ -62,8 +61,7 @@ void Engine::pollEvents() {
 }
 
 void Engine::setDrawColor(Color color) {
-    SDL_SetRenderDrawColor(_renderer, color.r(), color.g(), color.b(),
-                           color.a());
+    SDL_SetRenderDrawColor(_renderer, color.r, color.g, color.b, color.a);
 }
 
 void Engine::present() {

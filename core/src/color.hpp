@@ -2,19 +2,20 @@
 
 namespace sdl {
 
-class Color {
-public:
-  Color(unsigned char r, unsigned char g, unsigned char b, unsigned char a);
-  unsigned char r() const;
-  unsigned char g() const;
-  unsigned char b() const;
-  unsigned char a() const;
+struct Color {
+    Color(unsigned char r, 
+          unsigned char g, 
+          unsigned char b, 
+          unsigned char a)
+        : r{r}
+        , g{g}
+        , b{b}
+        , a{a} {}
 
-private:
-  unsigned char _r;
-  unsigned char _g;
-  unsigned char _b;
-  unsigned char _a;
+    unsigned char r;
+    unsigned char g;
+    unsigned char b;
+    unsigned char a;
 };
 
-} // namespace sdl
+}  // namespace sdl

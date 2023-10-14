@@ -1,6 +1,6 @@
 #pragma once
 
-#include <core/color.hpp>
+#include "color.hpp"
 #include <SDL.h>
 #include <string>
 
@@ -9,10 +9,9 @@ namespace sdl {
 class Engine {
 public:
     void init(const std::string& title, size_t width, size_t height, int flags);
-    void pollEvents();
-
     static Engine& getInstance();
-
+    
+    void pollEvents();
     void clear();
     void present();
 
