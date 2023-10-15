@@ -9,18 +9,28 @@ namespace sdl {
 class Game {
 public:
     void init(const std::string& title, size_t width, size_t height, int flags);
-    static Game& getInstance();
-    
     void pollEvents();
-    void clear();
-    void present();
+    void registerObject(const std::string& assetPath, 
+                        const std::string& textureID,
+                        SDL_FRect initialRect);
+
+    void registerAnimatableObject(const std::string& assetPath,
+                                  const std::string& textureID,
+                                  SDL_FRect initialRect,
+                                  SDL_Point initialVelocity,
+                                  SDL_Point initialAcceleration,
+                                  size_t spriteRowCount, size_t spriteColCount,
+                                  size_t animationSpeed);
 
     size_t width() const;
     size_t height() const;
     void setDrawColor(SDL_Color color);
+    static Game& getInstance();
 
 private:
+    void present();
     void update();
+    void clear();
     void draw(SDL_Renderer* renderer);
 
 private:
@@ -30,15 +40,15 @@ private:
     Game& operator=(const Game&) = delete;
 
 private:
-    void initSDL(const std::string& title, size_t width, size_t height, int flags);
-    void initObjects();
-
+    void initSDL();
     void cleanSDL();
     void cleanObjects();
 
 private:
+    std::string _title;
     SDL_Window* _window;
     SDL_Renderer* _renderer;
+    int _SDLFlags;
     size_t _width;
     size_t _height;
     TextureManager _textureManager{};

@@ -8,13 +8,16 @@ namespace sdl {
 bool Game::_initialized{};
 
 void Game::init(const std::string& title, size_t width, size_t height, int flags) {
+    _title = title;
+    _width = width;
+    _height = height;
+    _SDLFlags = flags;
 
     if (_initialized) 
         throw SDLException("The engine is already initialized");
     _initialized = true;
 
-    initSDL(title, width, height, flags);
-    initObjects();
+    initSDL();
 }
 
 Game::~Game() {
@@ -40,7 +43,29 @@ void Game::pollEvents() {
     }
 }
 
-void Game::setDrawColor(SDL_Color color) {
+void Game::registerObject(const std::string& assetPath,
+                          const std::string& textureID, 
+                          SDL_FRect initialRect) {
+    _textureManager.load(assetPath, textureID, _renderer);
+    _objects.push_back(new GameObject(_textureManager, initialRect, textureID));
+}
+
+void Game::registerAnimatableObject(
+        const std::string& assetPath, 
+        const std::string& textureID,
+        SDL_FRect initialRect, 
+        SDL_Point initialVelocity,
+        SDL_Point initialAcceleration, 
+        size_t spriteRowCount, 
+        size_t spriteColCount,
+        size_t animationSpeed) {
+    _textureManager.load(assetPath, textureID, _renderer);
+    _objects.push_back(new AnimatableGameObject(
+        _textureManager, initialRect, textureID, initialVelocity,
+        initialAcceleration, spriteRowCount, spriteColCount, animationSpeed));
+}
+
+    void Game::setDrawColor(SDL_Color color) {
     SDL_SetRenderDrawColor(_renderer, color.r, color.g, color.b, color.a);
 }
 
@@ -76,15 +101,13 @@ void Game::draw(SDL_Renderer* renderer) {
     present();
 }
 
-void Game::initSDL(const std::string& title, size_t width, size_t height, int flags) {
+void Game::initSDL() {
     if (SDL_InitSubSystem(SDL_INIT_EVERYTHING) < 0) {
         throw SDLException("SDL initialization error: " +
                            std::string(SDL_GetError()));
     }
 
-    _width = width;
-    _height = height;
-    _window = SDL_CreateWindow(title.c_str(), _width, _height, flags);
+    _window = SDL_CreateWindow(_title.c_str(), _width, _height, _SDLFlags);
 
     if (!_window) {
         SDL_Quit();
@@ -98,14 +121,6 @@ void Game::initSDL(const std::string& title, size_t width, size_t height, int fl
         throw SDLException("Renderer creation error : " +
                            std::string(SDL_GetError()));
     }
-}
-
-void Game::initObjects() {
-    _textureManager.load("../assets/animation/animate-alpha.png", "animal", _renderer);
-
-    _objects.push_back(new AnimatableGameObject(
-        _textureManager, SDL_FRect{0, 0, 128, 82}, "animal", SDL_Point{0, 0},
-        SDL_Point{0, 0}, 1, 6, 0));
 }
 
 void Game::cleanSDL() {
