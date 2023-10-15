@@ -5,7 +5,7 @@
 #include <core/game.hpp>
 
 int main() {
-    auto &engine = sdl::Engine::getInstance();
-    engine.init("Sample", 800, 640, 0);
-    engine.pollEvents();
+    auto &game = sdl::Game::getInstance();
+    game.init("Sample", 800, 640, 0);
+    game.pollEvents();
 }

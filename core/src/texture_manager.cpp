@@ -1,6 +1,8 @@
 #include "texture_manager.hpp"
 #include <SDL_image.h>
 
+#include <iostream> // tbr
+
 namespace sdl {
 
 bool TextureManager::load(const std::string& fileName, 

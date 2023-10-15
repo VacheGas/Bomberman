@@ -50,7 +50,8 @@ SDL_Point& AnimatableGameObject::acceleration() {
 }
 
 void AnimatableGameObject::draw(SDL_Renderer* renderer) {
-
+    _textureManager.draw(_textureID, renderer, _dstRect, _currentRow,
+                         _currentCol, SDL_FLIP_NONE);
 }
 
 void AnimatableGameObject::update() {
@@ -60,8 +61,9 @@ void AnimatableGameObject::update() {
     _dstRect.x += _velocity.x;
     _dstRect.y += _velocity.y;
 
-    auto prevFrameNumber = _currentRow * _spriteRowCount + _currentCol;
-    auto nextFrameNumber = prevFrameNumber + 1;
+    // auto prevFrameNumber = _currentRow * _spriteRowCount + _currentCol;
+    // auto nextFrameNumber = prevFrameNumber + 1;
+    auto nextFrameNumber = int(SDL_GetTicks() / 100);
     _currentCol = nextFrameNumber % _spriteColCount;
     _currentRow = nextFrameNumber / _spriteColCount % _spriteRowCount;
 }

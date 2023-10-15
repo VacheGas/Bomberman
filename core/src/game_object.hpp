@@ -10,6 +10,7 @@ public:
     GameObject(TextureManager& textureManager,
                SDL_FRect initialRect, 
                const std::string& texureID);
+    virtual ~GameObject() = default;
     SDL_FRect& dstRect();
     const std::string& textureID() const;
 
@@ -17,9 +18,6 @@ public:
     virtual void draw(SDL_Renderer* renderer);
     virtual void update();
     virtual void clean();
-
-protected:
-    virtual ~GameObject() = default;
 
 protected:
     TextureManager& _textureManager;
