@@ -10,12 +10,10 @@ class Game {
 public:
     void init(const std::string& title, size_t width, size_t height, int flags);
     void pollEvents();
-    void registerObject(const std::string& assetPath, 
-                        const std::string& textureID,
+    void registerObject(const std::string& assetPath,
                         SDL_FRect initialRect);
 
     void registerAnimatableObject(const std::string& assetPath,
-                                  const std::string& textureID,
                                   SDL_FRect initialRect,
                                   SDL_Point initialVelocity,
                                   SDL_Point initialAcceleration,

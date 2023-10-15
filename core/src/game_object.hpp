@@ -9,10 +9,10 @@ class GameObject {
 public:
     GameObject(TextureManager& textureManager,
                SDL_FRect initialRect, 
-               const std::string& texureID);
+               const std::string& assetPath);
     virtual ~GameObject() = default;
     SDL_FRect& dstRect();
-    const std::string& textureID() const;
+    const std::string& assetPath() const;
 
 public:
     virtual void draw(SDL_Renderer* renderer);
@@ -22,7 +22,7 @@ public:
 protected:
     TextureManager& _textureManager;
     SDL_FRect _dstRect{};
-    std::string _textureID{};
+    std::string _assetPath{};
 };
 
 class AnimatableGameObject : public GameObject {

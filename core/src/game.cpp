@@ -44,24 +44,22 @@ void Game::pollEvents() {
 }
 
 void Game::registerObject(const std::string& assetPath,
-                          const std::string& textureID, 
                           SDL_FRect initialRect) {
-    _textureManager.load(assetPath, textureID, _renderer);
-    _objects.push_back(new GameObject(_textureManager, initialRect, textureID));
+    _textureManager.load(assetPath, _renderer);
+    _objects.push_back(new GameObject(_textureManager, initialRect, assetPath));
 }
 
 void Game::registerAnimatableObject(
         const std::string& assetPath, 
-        const std::string& textureID,
         SDL_FRect initialRect, 
         SDL_Point initialVelocity,
         SDL_Point initialAcceleration, 
         size_t spriteRowCount, 
         size_t spriteColCount,
         size_t animationSpeed) {
-    _textureManager.load(assetPath, textureID, _renderer);
+    _textureManager.load(assetPath, _renderer);
     _objects.push_back(new AnimatableGameObject(
-        _textureManager, initialRect, textureID, initialVelocity,
+        _textureManager, initialRect, assetPath, initialVelocity,
         initialAcceleration, spriteRowCount, spriteColCount, animationSpeed));
 }
 

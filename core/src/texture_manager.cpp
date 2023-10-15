@@ -5,24 +5,23 @@
 
 namespace sdl {
 
-bool TextureManager::load(const std::string& fileName, 
-                          const std::string& id,
-                          SDL_Renderer* pRenderer) {
-    SDL_Surface* pTempSurface = IMG_Load(fileName.c_str());
-    if (pTempSurface == 0) {
+bool TextureManager::load(const std::string& assetPath,
+                          SDL_Renderer* renderer) {
+    SDL_Surface* tempSurface = IMG_Load(assetPath.c_str());
+    if (tempSurface == 0) {
         return false;
     }
-    SDL_Texture* pTexture = SDL_CreateTextureFromSurface(pRenderer, pTempSurface);
-    SDL_DestroySurface(pTempSurface);
-    if (pTexture != 0) {
-        _textures[id] = pTexture;
+    SDL_Texture* texture = SDL_CreateTextureFromSurface(renderer, tempSurface);
+    SDL_DestroySurface(tempSurface);
+    if (texture != 0) {
+        _textures[assetPath] = texture;
         return true;
     }
     return false;
 }
 
 void TextureManager::draw(const std::string& id, 
-                          SDL_Renderer* pRenderer, 
+                          SDL_Renderer* renderer, 
                           SDL_FRect dstRect,
                           size_t currentRow, 
                           size_t currentCol,
@@ -32,7 +31,7 @@ void TextureManager::draw(const std::string& id,
     srcRect.y = dstRect.h * currentRow;
     srcRect.w = dstRect.w;
     srcRect.h = dstRect.h;
-    SDL_RenderTextureRotated(pRenderer, _textures[id], &srcRect, &dstRect, 0, 0, flip);
+    SDL_RenderTextureRotated(renderer, _textures[id], &srcRect, &dstRect, 0, 0, flip);
 }
 
 void TextureManager::clearTexture(const std::string& id) {

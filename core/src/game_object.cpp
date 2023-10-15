@@ -4,21 +4,21 @@ namespace sdl {
 
 GameObject::GameObject(TextureManager& textureManager, 
                        SDL_FRect initialRect,
-                       const std::string& texureID)
+                       const std::string& assetPath)
     : _textureManager{textureManager},
       _dstRect{initialRect},
-      _textureID{texureID} {}
+      _assetPath{assetPath} {}
 
 SDL_FRect& GameObject::dstRect() {
     return _dstRect;
 }
 
-const std::string& GameObject::textureID() const {
-    return _textureID;
+const std::string& GameObject::assetPath() const {
+    return _assetPath;
 }
 
 void GameObject::draw(SDL_Renderer* renderer) {
-    _textureManager.draw(_textureID, renderer, _dstRect);
+    _textureManager.draw(_assetPath, renderer, _dstRect);
 }
 
 void GameObject::update() {}
@@ -28,13 +28,13 @@ void GameObject::clean() {}
 AnimatableGameObject::AnimatableGameObject(
         TextureManager& textureManager, 
         SDL_FRect initialRect,
-        const std::string& texureID, 
+        const std::string& assetPath, 
         SDL_Point initialVelocity,
         SDL_Point initialAcceleration, 
         size_t spriteRowCount, 
         size_t spriteColCount,
         size_t animationSpeed)
-    : GameObject {textureManager, initialRect, texureID}
+    : GameObject {textureManager, initialRect, assetPath}
     , _velocity{initialVelocity}
     , _acceleration{initialAcceleration}
     , _spriteRowCount{spriteRowCount}
@@ -50,7 +50,7 @@ SDL_Point& AnimatableGameObject::acceleration() {
 }
 
 void AnimatableGameObject::draw(SDL_Renderer* renderer) {
-    _textureManager.draw(_textureID, renderer, _dstRect, _currentRow,
+    _textureManager.draw(_assetPath, renderer, _dstRect, _currentRow,
                          _currentCol, SDL_FLIP_NONE);
 }
 
