@@ -8,7 +8,8 @@ namespace sdl {
 class GameObject {
 public:
     GameObject(TextureManager& textureManager,
-               SDL_FRect initialRect, 
+               SDL_FRect initialSrcRect,
+               SDL_FRect dstRect, 
                const std::string& assetPath);
     virtual ~GameObject() = default;
     SDL_FRect& dstRect();
@@ -21,6 +22,7 @@ public:
 
 protected:
     TextureManager& _textureManager;
+    SDL_FRect _initialSrcRect{};
     SDL_FRect _dstRect{};
     std::string _assetPath{};
 };
@@ -28,7 +30,8 @@ protected:
 class AnimatableGameObject : public GameObject {
 public:
     AnimatableGameObject(TextureManager& textureManager,
-                         SDL_FRect initialRect, 
+                         SDL_FRect initialSrcRect,
+                         SDL_FRect dstRect, 
                          const std::string& texureID,
                          SDL_Point initialVelocity, 
                          SDL_Point initialAcceleration,

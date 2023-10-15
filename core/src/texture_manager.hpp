@@ -16,6 +16,7 @@ public:
 
     void draw(const std::string& assetPath, 
               SDL_Renderer* renderer, 
+              SDL_FRect initialSrcRect,
               SDL_FRect dstRect,
               size_t currentRow = 0, 
               size_t currentCol = 0,

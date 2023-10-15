@@ -44,14 +44,16 @@ void Game::pollEvents() {
 }
 
 void Game::registerObject(const std::string& assetPath,
-                          SDL_FRect initialRect) {
+                          SDL_FRect initialSrcRect,
+                          SDL_FRect dstRect) {
     _textureManager.load(assetPath, _renderer);
-    _objects.push_back(new GameObject(_textureManager, initialRect, assetPath));
+    _objects.push_back(new GameObject(_textureManager, initialSrcRect, dstRect, assetPath));
 }
 
 void Game::registerAnimatableObject(
         const std::string& assetPath, 
-        SDL_FRect initialRect, 
+        SDL_FRect initialSrcRect,
+        SDL_FRect dstRect, 
         SDL_Point initialVelocity,
         SDL_Point initialAcceleration, 
         size_t spriteRowCount, 
@@ -59,11 +61,11 @@ void Game::registerAnimatableObject(
         size_t animationSpeed) {
     _textureManager.load(assetPath, _renderer);
     _objects.push_back(new AnimatableGameObject(
-        _textureManager, initialRect, assetPath, initialVelocity,
+        _textureManager, initialSrcRect, dstRect, assetPath, initialVelocity,
         initialAcceleration, spriteRowCount, spriteColCount, animationSpeed));
 }
 
-    void Game::setDrawColor(SDL_Color color) {
+void Game::setDrawColor(SDL_Color color) {
     SDL_SetRenderDrawColor(_renderer, color.r, color.g, color.b, color.a);
 }
 
@@ -92,7 +94,7 @@ void Game::update() {
 
 void Game::draw(SDL_Renderer* renderer) {
     SDL_RenderClear(_renderer);
-    SDL_SetRenderDrawColor(_renderer, 0, 100, 100, 255);
+    SDL_SetRenderDrawColor(_renderer, 0, 100, 0, 255);
     for (auto object : _objects) {
         object->draw(renderer);
     }

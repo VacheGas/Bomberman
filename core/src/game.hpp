@@ -11,10 +11,12 @@ public:
     void init(const std::string& title, size_t width, size_t height, int flags);
     void pollEvents();
     void registerObject(const std::string& assetPath,
-                        SDL_FRect initialRect);
+                        SDL_FRect initialSrcRect,
+                        SDL_FRect dstRect);
 
     void registerAnimatableObject(const std::string& assetPath,
-                                  SDL_FRect initialRect,
+                                  SDL_FRect initialSrcRect,
+                                  SDL_FRect dstRect,
                                   SDL_Point initialVelocity,
                                   SDL_Point initialAcceleration,
                                   size_t spriteRowCount, size_t spriteColCount,

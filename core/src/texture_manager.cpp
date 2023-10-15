@@ -22,20 +22,21 @@ bool TextureManager::load(const std::string& assetPath,
 
 void TextureManager::draw(const std::string& id, 
                           SDL_Renderer* renderer, 
+                          SDL_FRect initialSrcRect,
                           SDL_FRect dstRect,
                           size_t currentRow, 
                           size_t currentCol,
                           SDL_RendererFlip flip) {
-    SDL_FRect srcRect;
-    srcRect.x = dstRect.w * currentCol;
-    srcRect.y = dstRect.h * currentRow;
-    srcRect.w = dstRect.w;
-    srcRect.h = dstRect.h;
-    SDL_RenderTextureRotated(renderer, _textures[id], &srcRect, &dstRect, 0, 0, flip);
+    SDL_FRect filalSrcRect;
+    filalSrcRect.x = dstRect.w * currentCol;
+    filalSrcRect.y = dstRect.h * currentRow;
+    filalSrcRect.w = initialSrcRect.w;
+    filalSrcRect.h = initialSrcRect.h;
+    SDL_RenderTextureRotated(renderer, _textures[id], &filalSrcRect, &dstRect, 0, 0, flip);
 }
 
-void TextureManager::clearTexture(const std::string& id) {
-    _textures.erase(id);
+void TextureManager::clearTexture(const std::string& assetPath) {
+    _textures.erase(assetPath);
 }
 
 } // namesapce sdl
