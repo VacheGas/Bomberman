@@ -1,8 +1,6 @@
 #include "texture_manager.hpp"
 #include <SDL_image.h>
 
-#include <iostream> // tbr
-
 namespace sdl {
 
 bool TextureManager::load(const std::string& assetPath,
@@ -28,8 +26,8 @@ void TextureManager::draw(const std::string& id,
                           size_t currentCol,
                           SDL_RendererFlip flip) {
     SDL_FRect filalSrcRect;
-    filalSrcRect.x = dstRect.w * currentCol;
-    filalSrcRect.y = dstRect.h * currentRow;
+    filalSrcRect.x = initialSrcRect.w * currentCol;
+    filalSrcRect.y = initialSrcRect.h * currentRow;
     filalSrcRect.w = initialSrcRect.w;
     filalSrcRect.h = initialSrcRect.h;
     SDL_RenderTextureRotated(renderer, _textures[id], &filalSrcRect, &dstRect, 0, 0, flip);

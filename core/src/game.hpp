@@ -1,22 +1,20 @@
 #pragma once
 
-#include "game_object.hpp"
 #include <SDL.h>
 #include <string>
+#include "game_object.hpp"
 
 namespace sdl {
 
 class Game {
-public:
+   public:
     void init(const std::string& title, size_t width, size_t height, int flags);
-    void pollEvents();
-    void registerObject(const std::string& assetPath,
-                        SDL_FRect initialSrcRect,
+    void run();
+    void registerObject(const std::string& assetPath, SDL_FRect initialSrcRect,
                         SDL_FRect dstRect);
 
     void registerAnimatableObject(const std::string& assetPath,
-                                  SDL_FRect initialSrcRect,
-                                  SDL_FRect dstRect,
+                                  SDL_FRect initialSrcRect, SDL_FRect dstRect,
                                   SDL_Point initialVelocity,
                                   SDL_Point initialAcceleration,
                                   size_t spriteRowCount, size_t spriteColCount,
@@ -27,24 +25,24 @@ public:
     void setDrawColor(SDL_Color color);
     static Game& getInstance();
 
-private:
+   private:
     void present();
     void update();
     void clear();
     void draw(SDL_Renderer* renderer);
 
-private:
+   private:
     Game() = default;
     ~Game();
     Game(const Game&) = delete;
     Game& operator=(const Game&) = delete;
 
-private:
+   private:
     void initSDL();
     void cleanSDL();
     void cleanObjects();
 
-private:
+   private:
     std::string _title;
     SDL_Window* _window;
     SDL_Renderer* _renderer;
@@ -55,7 +53,7 @@ private:
     std::vector<GameObject*> _objects{};
     bool _running{};
 
-private:
+   private:
     static bool _initialized;
 };
 
