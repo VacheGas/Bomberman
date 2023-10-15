@@ -1,11 +1,9 @@
 add_library(
   core_headers 
   INTERFACE
-  include/core/color.hpp
   include/core/exception.hpp
   include/core/game.hpp
   include/core/game_object.hpp
-  include/core/sprite.hpp
   include/core/texture_manager.hpp
 )
   
@@ -20,6 +18,7 @@ add_library(
   STATIC
   src/exception.cpp
   src/game.cpp
+  src/game_object.cpp
   src/texture_manager.cpp
 )
 

@@ -1,6 +1,5 @@
 #pragma once
 
-#include "color.hpp"
 #include <SDL.h>
 #include <string>
 
@@ -17,7 +16,7 @@ public:
 
     size_t width() const;
     size_t height() const;
-    void setDrawColor(Color color);
+    void setDrawColor(SDL_Color color);
 
 private:
     Engine() = default;

@@ -60,7 +60,7 @@ void Engine::pollEvents() {
     }
 }
 
-void Engine::setDrawColor(Color color) {
+void Engine::setDrawColor(SDL_Color color) {
     SDL_SetRenderDrawColor(_renderer, color.r, color.g, color.b, color.a);
 }
 
