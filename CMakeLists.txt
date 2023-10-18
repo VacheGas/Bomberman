@@ -4,6 +4,8 @@ project(Bomberman)
 
 set(CMAKE_CXX_STANDARD 17)
 
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -g")
+
 set(SOURCES main.cpp)
 
 if(APPLE)
@@ -22,5 +24,3 @@ add_executable(${PROJECT_NAME} ${SOURCES})
 include_directories(${CMAKE_SOURCE_DIR}/core)
 
 target_link_libraries(${PROJECT_NAME} PRIVATE core)
-
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -g")
