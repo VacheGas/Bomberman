@@ -43,18 +43,20 @@ SDL_Point& AnimatableSprite::acceleration() {
 void AnimatableSprite::update() {
     _velocity.x += _acceleration.x;
     _velocity.y += _acceleration.y;
+
     _dstRect.x += _velocity.x;
     _dstRect.y += _velocity.y;
 
-    auto frameNumber = int(SDL_GetTicks() / 100);
-    auto _currentCol = frameNumber % _colCount;
-    auto _currentRow = frameNumber / _colCount % _rowCount;
+    // TODO: implement a mechanism to start animation from the very beginning
+    auto frameNumber = int(SDL_GetTicks() / 50);
+    _currentCol = frameNumber % _colCount;
+    _currentRow = frameNumber / _colCount % _rowCount;
 }
 
 void AnimatableSprite::render(SDL_Renderer* renderer) {
     auto currentSrcRect = _srcRect;
     currentSrcRect.x = _srcRect.x + _srcRect.w * _currentCol;
-    currentSrcRect.y = _srcRect.y + _srcRect.h + _currentRow;
+    currentSrcRect.y = _srcRect.y + _srcRect.h * _currentRow;
     SDL_RenderTexture(renderer, _texture, &currentSrcRect, &_dstRect);
 }
 
