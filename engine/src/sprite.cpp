@@ -1,4 +1,4 @@
-#include "sprite.hpp"
+#include <engine/sprite.hpp>
 
 namespace sdl {
 
