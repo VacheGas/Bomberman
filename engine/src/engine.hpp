@@ -2,11 +2,11 @@
 
 #include <SDL.h>
 #include <string>
-#include "game_object.hpp"
+#include "sprite.hpp"
 
 namespace sdl {
 
-class Game {
+class Engine {
    public:
     void init(const std::string& title, size_t width, size_t height, int flags);
     void run();
@@ -20,10 +20,12 @@ class Game {
                                   size_t spriteRowCount, size_t spriteColCount,
                                   size_t animationSpeed);
 
+    bool load(const std::string& assetPath);
+
     size_t width() const;
     size_t height() const;
     void setDrawColor(SDL_Color color);
-    static Game& getInstance();
+    static Engine& getInstance();
 
    private:
     void present();
@@ -32,15 +34,16 @@ class Game {
     void draw(SDL_Renderer* renderer);
 
    private:
-    Game() = default;
-    ~Game();
-    Game(const Game&) = delete;
-    Game& operator=(const Game&) = delete;
+    Engine() = default;
+    ~Engine();
+    Engine(const Engine&) = delete;
+    Engine& operator=(const Engine&) = delete;
 
    private:
     void initSDL();
     void cleanSDL();
     void cleanObjects();
+    void cleanTextures();
 
    private:
     std::string _title;
@@ -49,8 +52,8 @@ class Game {
     int _SDLFlags;
     size_t _width;
     size_t _height;
-    TextureManager _textureManager{};
-    std::vector<GameObject*> _objects{};
+    std::unordered_map<std::string, SDL_Texture*> _textures;
+    std::vector<Sprite*> _objects{};
     bool _running{};
 
    private:

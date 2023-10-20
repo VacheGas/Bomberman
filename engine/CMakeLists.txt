@@ -1,35 +1,31 @@
 add_library(
-  core_headers 
+  engine_headers 
   INTERFACE
-  include/core/exception.hpp
-  include/core/game.hpp
-  include/core/game_object.hpp
-  include/core/texture_manager.hpp
+  include/engine/engine.hpp
+  include/engine/sprite.hpp
 )
   
 target_include_directories(
-  core_headers 
+  engine_headers 
   INTERFACE
   include/
 )
     
 add_library(
-  core
+  engine
   STATIC
-  src/exception.cpp
-  src/game.cpp
-  src/game_object.cpp
-  src/texture_manager.cpp
+  src/engine.cpp
+  src/sprite.cpp
 )
 
 target_link_libraries(
-  core
+  engine
   PUBLIC
-  core_headers
+  engine_headers
 )
 
 target_link_libraries(
-  core_headers
+  engine_headers
   INTERFACE
 )
 
@@ -37,7 +33,7 @@ add_subdirectory(test)
 enable_testing()
 
 target_include_directories(
-  core_headers INTERFACE 
+  engine_headers INTERFACE 
   ${SDL3_SOURCE_DIR}/include 
   ${SDL3_SOURCE_DIR}/include/SDL3 
   ${SDL3_image_SOURCE_DIR}/include 
@@ -45,13 +41,7 @@ target_include_directories(
 )
 
 target_link_libraries(
-  core_headers
-  INTERFACE
-  core_headers
-)
-
-target_link_libraries(
-  core 
+  engine 
   PRIVATE 
   SDL3::SDL3
   SDL3_image::SDL3_image

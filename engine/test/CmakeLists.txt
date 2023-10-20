@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.24)
-project(core_tests)
+project(engine_tests)
 
 include_directories(
   ${GTEST_DIR}/include
@@ -8,12 +8,12 @@ include_directories(
 
 set(
   TEST_FILES
-  core_test.cpp
+  engine_test.cpp
 )
 
 add_executable(${PROJECT_NAME} ${TEST_FILES})
 
-target_link_libraries(${PROJECT_NAME} core gtest_main)
+target_link_libraries(${PROJECT_NAME} engine gtest_main)
 
 set_target_properties(${PROJECT_NAME} PROPERTIES
   CXX_STANDARD 17

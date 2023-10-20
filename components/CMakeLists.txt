@@ -30,5 +30,5 @@ target_link_libraries(
   INTERFACE
 )
 
-target_link_libraries(components_headers INTERFACE core_headers)
-target_link_libraries(components PRIVATE core gtest gtest_main)
+target_link_libraries(components_headers INTERFACE engine_headers)
+target_link_libraries(components PRIVATE engine gtest gtest_main)
