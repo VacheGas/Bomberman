@@ -18,35 +18,17 @@ void Sprite::render(SDL_Renderer* renderer) {
 AnimatableSprite::AnimatableSprite(SDL_Texture* texture, 
                                    SDL_FRect srcRect,
                                    SDL_FRect dstRect, 
-                                   SDL_Point velocity,
-                                   SDL_Point acceleration,
                                    size_t animationSpeed, 
                                    size_t rowCount,
                                    size_t colCount)
     : Sprite{texture, srcRect, dstRect}
-    , _velocity{velocity}
-    , _acceleration{acceleration}
     , _animationSpeed{animationSpeed}
     , _rowCount{rowCount}
     , _colCount{colCount}
     , _currentRow{}
     , _currentCol{} {}
 
-SDL_Point& AnimatableSprite::velocity() {
-    return _velocity;
-}
-
-SDL_Point& AnimatableSprite::acceleration() {
-    return _acceleration;
-}
-
 void AnimatableSprite::update() {
-    _velocity.x += _acceleration.x;
-    _velocity.y += _acceleration.y;
-
-    _dstRect.x += _velocity.x;
-    _dstRect.y += _velocity.y;
-
     // TODO: implement a mechanism to start animation from the very beginning
     auto frameNumber = int(SDL_GetTicks() / 50);
     _currentCol = frameNumber % _colCount;

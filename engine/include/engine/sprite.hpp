@@ -23,22 +23,15 @@ public:
     AnimatableSprite(SDL_Texture* texture, 
                      SDL_FRect srcRect, 
                      SDL_FRect dstRect,
-                     SDL_Point velocity,
-                     SDL_Point acceleration,
                      size_t animationSpeed,
                      size_t rowCount,
                      size_t colCount);
-    
-    SDL_Point& velocity();
-    SDL_Point& acceleration();
 
 public:
     virtual void update();
     virtual void render(SDL_Renderer* renderer);
 
 protected:
-    SDL_Point _velocity{};
-    SDL_Point _acceleration{};
     size_t _animationSpeed{};
     size_t _rowCount{};
     size_t _colCount{};
