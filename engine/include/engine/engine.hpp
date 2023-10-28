@@ -16,13 +16,12 @@ public:
     ~Engine();
 
     void run();
-    void registerSprite(const std::string& assetPath, SDL_FRect initialSrcRect,
-                        SDL_FRect dstRect);
+    void registerSprite(const std::string& assetPath, Vec4 srcRect, Vec4 dstRect);
 
     void registerAnimatableSprite(const std::string& assetPath,
-                                  SDL_FRect initialSrcRect, SDL_FRect dstRect,
+                                  Vec4 srcRect, Vec4 dstRect,
                                   size_t spriteRowCount, size_t spriteColCount,
-                                  size_t animationSpeed);
+                                  size_t animationSpeed = 1);
 
     bool load(const std::string& assetPath);
 

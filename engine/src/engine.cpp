@@ -49,21 +49,25 @@ void Engine::run() {
 }
 
 void Engine::registerSprite(const std::string& assetPath,
-                            SDL_FRect initialSrcRect, SDL_FRect dstRect) {
+                            Vec4 srcRect, Vec4 dstRect) {
     load(assetPath);
+    auto sdlSrcRect = SDL_FRect{srcRect[0], srcRect[1], srcRect[2], srcRect[3]};
+    auto sdlDstRect = SDL_FRect{dstRect[0], dstRect[1], dstRect[2], dstRect[3]};
     _sprites.push_back(
-        new Sprite(_textures[assetPath], initialSrcRect, dstRect));
+        new Sprite(_textures[assetPath], sdlSrcRect, sdlDstRect));
 }
 
 void Engine::registerAnimatableSprite(const std::string& assetPath,
-                                      SDL_FRect initialSrcRect,
-                                      SDL_FRect dstRect, size_t spriteRowCount,
+                                      Vec4 srcRect,
+                                      Vec4 dstRect, size_t spriteRowCount,
                                       size_t spriteColCount,
                                       size_t animationSpeed) {
     load(assetPath);
-    _sprites.push_back(
-        new AnimatableSprite(_textures[assetPath], initialSrcRect, dstRect,
-                             animationSpeed, spriteRowCount, spriteColCount));
+    auto sdlSrcRect = SDL_FRect{srcRect[0], srcRect[1], srcRect[2], srcRect[3]};
+    auto sdlDstRect = SDL_FRect{dstRect[0], dstRect[1], dstRect[2], dstRect[3]};
+    _sprites.push_back(new AnimatableSprite(_textures[assetPath], sdlSrcRect,
+                                            sdlDstRect, spriteRowCount,
+                                            spriteColCount, animationSpeed));
 }
 
 void Engine::setDrawColor(SDL_Color color) {

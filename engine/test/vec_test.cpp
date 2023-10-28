@@ -1,4 +1,5 @@
 #include <gtest/gtest.h>
+
 #include <engine/vec.hpp>
 
 TEST(Engine, VecAddition) {

@@ -1,7 +1,7 @@
 #pragma once
 
 #include <array>
-#include <iostream> // tbr
+#include <string>
 
 template<size_t SIZE, typename TYPE = float>
 class Vec {
