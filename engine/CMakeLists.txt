@@ -3,6 +3,7 @@ add_library(
   INTERFACE
   include/engine/engine.hpp
   include/engine/sprite.hpp
+  include/engine/vec.hpp
 )
   
 target_include_directories(
