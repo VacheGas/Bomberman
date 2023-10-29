@@ -12,12 +12,12 @@ if(APPLE)
     enable_language(OBJC)
 endif()
 
-add_subdirectory(components)
-add_subdirectory(engine)
-
 add_subdirectory(dependencies/googletest)
 add_subdirectory(dependencies/SDL)
 add_subdirectory(dependencies/SDL_image)
+
+add_subdirectory(components)
+add_subdirectory(engine)
 
 add_executable(${PROJECT_NAME} ${SOURCES})
 

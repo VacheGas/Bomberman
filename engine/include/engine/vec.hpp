@@ -2,6 +2,7 @@
 
 #include <array>
 #include <string>
+#include <cmath>
 
 template<size_t SIZE, typename TYPE = float>
 class Vec {

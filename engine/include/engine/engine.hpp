@@ -3,8 +3,11 @@
 #include <engine/sprite.hpp>
 #include <engine/vec.hpp>
 
-#include <SDL.h>
+#include <SDL3/SDL.h>
 #include <string>
+
+#include <unordered_map>
+#include <vector>
 
 namespace sdl {
 
