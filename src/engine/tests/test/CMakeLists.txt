@@ -1,0 +1,3 @@
+add_library(bomberman_engine_testing INTERFACE gtest_main.hpp)
+target_include_directories(bomberman_engine_testing INTERFACE ${CMAKE_CURRENT_SOURCE_DIR})
+target_link_libraries(bomberman_engine_testing INTERFACE gtest gtest_main gmock engine)

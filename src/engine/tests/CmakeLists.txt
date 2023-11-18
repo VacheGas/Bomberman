@@ -1,0 +1,23 @@
+cmake_minimum_required(VERSION 3.24)
+add_subdirectory(test)
+add_subdirectory(visual)
+enable_testing()
+
+include_directories(
+  ${GTEST_DIR}/include
+  ${CMAKE_SOURCE_DIR}/src
+)
+
+add_executable(vec_test  vec_test.cpp)
+
+target_link_libraries(vec_test bomberman_engine_testing)
+
+add_test(vec vec_test COMMAND $<TARGET_FILE:vec_test>)
+
+set_target_properties(player_test PROPERTIES
+        CXX_STANDARD 17
+        CXX_STANDARD_REQUIRED YES
+        CXX_EXTENSIONS NO
+)
+
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -g")

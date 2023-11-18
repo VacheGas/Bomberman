@@ -1,6 +1,8 @@
-#include <gtest/gtest.h>
+#include "gtest_main.hpp"
 
-#include <engine/engine.hpp>
+#include "engine/include/engine/engine.hpp"
+
+ADD_GTEST_MAIN;
 
 TEST(Engine, Animation) {
     // TODO: Add future of 'UI' testing with stored textures per frame
