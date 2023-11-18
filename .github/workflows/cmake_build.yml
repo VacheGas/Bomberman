@@ -4,6 +4,8 @@ name: CMake Build and Test
 on:
   pull_request:
     branches: [ "main" ]
+env:
+  BOMBERMAN_DIR: ${{ github.workspace }}
 
 jobs:
   build:
