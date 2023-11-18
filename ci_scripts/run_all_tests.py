@@ -13,17 +13,5 @@ for dir in test_dirs:
         test_result = 1
 os.chdir(BOMBERMAN_DIR)
 
-subprocess.run([
-    'gcovr',
-    '--xml-pretty',
-    '--exclude-unreachable-branches',
-    '--print-summary',
-    '-o',
-    'coverage.xml',
-    '--root',
-    BOMBERMAN_DIR,
-    '--filter',
-    os.path.join(BOMBERMAN_DIR, 'src')
-])
 
 exit(test_result)
