@@ -53,7 +53,8 @@ private:
     SDL_Renderer* _renderer;
     std::unordered_map<std::string, SDL_Texture*> _textures;
     std::vector<Sprite*> _sprites{};
-    bool _running{};
+// TODO: use this variable or remove it
+//    bool _running{};
 
 private:
     static bool _initialized;
