@@ -8,7 +8,7 @@ include_directories(
 
 add_executable(player_test player_test.cpp)
 
-target_link_libraries(player_test bomberman_testing_utils)
+target_link_libraries(player_test bomberman_testing_utils components)
 
 add_test(player player_test COMMAND $<TARGET_FILE:player_test>)
 

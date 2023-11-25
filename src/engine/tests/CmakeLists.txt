@@ -8,7 +8,7 @@ include_directories(
 
 add_executable(vec_test  vec_test.cpp)
 
-target_link_libraries(vec_test bomberman_testing_utils)
+target_link_libraries(vec_test bomberman_testing_utils engine)
 
 add_test(vec vec_test COMMAND $<TARGET_FILE:vec_test>)
 
