@@ -1,4 +1,4 @@
-#include "gtest_main.hpp"
+#include "test_utils/gtest_main.hpp"
 
 #include "engine/include/engine/engine.hpp"
 

@@ -1,6 +1,4 @@
 cmake_minimum_required(VERSION 3.24)
-add_subdirectory(test)
-add_subdirectory(visual)
 enable_testing()
 
 include_directories(
@@ -10,7 +8,7 @@ include_directories(
 
 add_executable(vec_test  vec_test.cpp)
 
-target_link_libraries(vec_test bomberman_engine_testing)
+target_link_libraries(vec_test bomberman_testing_utils)
 
 add_test(vec vec_test COMMAND $<TARGET_FILE:vec_test>)
 

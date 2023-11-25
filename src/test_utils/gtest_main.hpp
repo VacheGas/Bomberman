@@ -12,5 +12,5 @@
         ::testing::InitGoogleTest(&argc, argv); \
         return RUN_ALL_TESTS();                 \
     }
-
+ADD_GTEST_MAIN;
 #endif //BOMBERMAN_GTEST_MAIN_HPP
