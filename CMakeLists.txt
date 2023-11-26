@@ -16,11 +16,8 @@ add_subdirectory(dependencies/googletest)
 add_subdirectory(dependencies/SDL)
 add_subdirectory(dependencies/SDL_image)
 
-add_subdirectory(components)
-add_subdirectory(engine)
+add_subdirectory(src)
 
 add_executable(${PROJECT_NAME} ${SOURCES})
-
-include_directories(${CMAKE_SOURCE_DIR}/engine)
 
 target_link_libraries(${PROJECT_NAME} PRIVATE engine)

@@ -30,7 +30,7 @@ target_link_libraries(
   INTERFACE
 )
 
-add_subdirectory(test)
+add_subdirectory(tests)
 enable_testing()
 
 target_include_directories(

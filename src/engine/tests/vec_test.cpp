@@ -1,4 +1,4 @@
-#include <gtest/gtest.h>
+#include "test_utils/gtest_main.hpp"
 
 #include <engine/vec.hpp>
 

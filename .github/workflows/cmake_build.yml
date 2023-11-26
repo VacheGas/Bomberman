@@ -4,6 +4,8 @@ name: CMake Build and Test
 on:
   pull_request:
     branches: [ "main" ]
+env:
+  BOMBERMAN_DIR: ${{ github.workspace }}
 
 jobs:
   build:
@@ -28,6 +30,8 @@ jobs:
 
     steps:
     - uses: actions/checkout@v3
+      with:
+        submodules : true
 
     - name: Set reusable strings
       # Turn repeated input strings (such as the build output directory) into step outputs. These step outputs can be used throughout the workflow file.
@@ -35,10 +39,8 @@ jobs:
       shell: bash
       run: |
         echo "build-output-dir=${{ github.workspace }}/build" >> "$GITHUB_OUTPUT"
+        echo "test-python-script-dir=${{ github.workspace }}/ci_scripts" >> "$GITHUB_OUTPUT"
 
-    - name: Retrieve submodules
-      shell: bash
-      run: git submodule update --init --recursive
     - name: Configure CMake
       # Configure CMake in a 'build' subdirectory. `CMAKE_BUILD_TYPE` is only required if you are using a single-configuration generator such as make.
       # See https://cmake.org/cmake/help/latest/variable/CMAKE_BUILD_TYPE.html?highlight=cmake_build_type
@@ -50,3 +52,5 @@ jobs:
 
     - name: Build
       run: cmake --build ${{ steps.strings.outputs.build-output-dir }} --config ${{ matrix.build_type }}
+    - name: Tests
+      run: python3 ${{ steps.strings.outputs.test-python-script-dir }}/run_all_tests.py

@@ -16,7 +16,7 @@ add_library(
   src/player.cpp
 )
       
-add_subdirectory(test)
+add_subdirectory(tests)
 enable_testing()
 
 target_link_libraries(
