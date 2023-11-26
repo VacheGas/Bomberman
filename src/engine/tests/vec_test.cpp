@@ -1,8 +1,6 @@
-#include "gtest_main.hpp"
+#include "test_utils/gtest_main.hpp"
 
 #include <engine/vec.hpp>
-
-ADD_GTEST_MAIN;
 
 TEST(Engine, VecAddition) {
     Vec2 vec1({1.1, 2.2});
