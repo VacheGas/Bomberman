@@ -1,5 +1,7 @@
 #include <engine/engine.hpp>
 
+#include <memory>
+
 #include <SDL3_image/SDL_image.h>
 
 namespace sdl {
@@ -21,18 +23,11 @@ Engine::~Engine() {
     cleanSDL();
 }
 
-bool Engine::load(const std::string& assetPath) {
+std::unique_ptr<Texture, SdlTextureDeleter> Engine::load(const std::string& assetPath) {
     SDL_Surface* tempSurface = IMG_Load(assetPath.c_str());
-    if (tempSurface == 0) {
-        return false;
-    }
-    SDL_Texture* texture = SDL_CreateTextureFromSurface(_renderer, tempSurface);
+    std::unique_ptr<Texture, SdlTextureDeleter> texture(SDL_CreateTextureFromSurface(_renderer, tempSurface));
     SDL_DestroySurface(tempSurface);
-    if (texture != 0) {
-        _textures[assetPath] = texture;
-        return true;
-    }
-    return false;
+    return texture;
 }
 
 void Engine::run() {
@@ -50,11 +45,10 @@ void Engine::run() {
 
 void Engine::registerSprite(const std::string& assetPath,
                             Vec4 srcRect, Vec4 dstRect) {
-    load(assetPath);
     auto sdlSrcRect = SDL_FRect{srcRect[0], srcRect[1], srcRect[2], srcRect[3]};
     auto sdlDstRect = SDL_FRect{dstRect[0], dstRect[1], dstRect[2], dstRect[3]};
     _sprites.push_back(
-        new Sprite(_textures[assetPath], sdlSrcRect, sdlDstRect));
+        new Sprite(std::move(load(assetPath)), sdlSrcRect, sdlDstRect));
 }
 
 void Engine::registerAnimatableSprite(const std::string& assetPath,
@@ -62,10 +56,9 @@ void Engine::registerAnimatableSprite(const std::string& assetPath,
                                       Vec4 dstRect, size_t spriteRowCount,
                                       size_t spriteColCount,
                                       size_t animationSpeed) {
-    load(assetPath);
     auto sdlSrcRect = SDL_FRect{srcRect[0], srcRect[1], srcRect[2], srcRect[3]};
     auto sdlDstRect = SDL_FRect{dstRect[0], dstRect[1], dstRect[2], dstRect[3]};
-    _sprites.push_back(new AnimatableSprite(_textures[assetPath], sdlSrcRect,
+    _sprites.push_back(new AnimatableSprite(std::move(load(assetPath)), sdlSrcRect,
                                             sdlDstRect, spriteRowCount,
                                             spriteColCount, animationSpeed));
 }
@@ -139,13 +132,6 @@ void Engine::cleanSDL() {
 void Engine::cleanSprites() {
     for (auto sprite : _sprites) {
         delete sprite;
-    }
-}
-
-void Engine::cleanTextures() {
-    for (auto texture : _textures) {
-        SDL_DestroyTexture(_textures[texture.first]);
-        _textures.erase(texture.first);
     }
 }
 
