@@ -17,7 +17,6 @@ Engine::Engine(const std::string& title, size_t width, size_t height, int flags)
 }
 
 Engine::~Engine() {
-    cleanSprites();
     cleanSDL();
 }
 
@@ -53,7 +52,7 @@ void Engine::registerSprite(const std::string& assetPath,
     load(assetPath);
     auto sdlSrcRect = SDL_FRect{srcRect[0], srcRect[1], srcRect[2], srcRect[3]};
     auto sdlDstRect = SDL_FRect{dstRect[0], dstRect[1], dstRect[2], dstRect[3]};
-    _sprites[assetPath] = new Sprite(_textures[assetPath], sdlSrcRect, sdlDstRect);
+    _sprites[assetPath] = std::make_unique<Sprite>(std::move(Sprite(_textures[assetPath], sdlSrcRect, sdlDstRect)));
 }
 
 void Engine::registerAnimatableSprite(const std::string& assetPath,
@@ -64,9 +63,9 @@ void Engine::registerAnimatableSprite(const std::string& assetPath,
     load(assetPath);
     auto sdlSrcRect = SDL_FRect{srcRect[0], srcRect[1], srcRect[2], srcRect[3]};
     auto sdlDstRect = SDL_FRect{dstRect[0], dstRect[1], dstRect[2], dstRect[3]};
-    _sprites[assetPath] = new AnimatableSprite(_textures[assetPath], sdlSrcRect,
-                                            sdlDstRect, spriteRowCount,
-                                            spriteColCount, animationSpeed);
+    _sprites[assetPath] = std::make_unique<Sprite>(std::move(AnimatableSprite(_textures[assetPath], sdlSrcRect,
+                                                                    sdlDstRect, spriteRowCount,
+                                                                    spriteColCount, animationSpeed)));
 }
 
 void Engine::setDrawColor(SDL_Color color) {
@@ -91,7 +90,7 @@ size_t Engine::height() const {
 }
 
 void Engine::update() {
-    for (auto sprite : _sprites) {
+    for (auto &&sprite : _sprites) {
         sprite.second->update();
     }
 }
@@ -99,7 +98,7 @@ void Engine::update() {
 void Engine::draw(SDL_Renderer* renderer) {
     SDL_RenderClear(_renderer);
     SDL_SetRenderDrawColor(_renderer, 0, 100, 0, 255);
-    for (auto sprite : _sprites) {
+    for (auto &&sprite : _sprites) {
         sprite.second->render(renderer);
     }
     present();
@@ -133,12 +132,6 @@ void Engine::cleanSDL() {
     if (_window)
         SDL_DestroyWindow(_window);
     SDL_Quit();
-}
-
-void Engine::cleanSprites() {
-    for (const auto& sprite : _sprites) {
-        delete sprite.second;
-    }
 }
 
 void Engine::cleanTextures() {
