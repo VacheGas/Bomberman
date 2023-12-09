@@ -4,6 +4,7 @@ add_library(
   include/engine/engine.hpp
   include/engine/sprite.hpp
   include/engine/vec.hpp
+  include/engine/input_handler.hpp
 )
   
 target_include_directories(
@@ -11,12 +12,13 @@ target_include_directories(
   INTERFACE
   include/
 )
-    
+
 add_library(
   engine
   STATIC
   src/engine.cpp
   src/sprite.cpp
+  src/input_handler.cpp
 )
 
 target_link_libraries(
