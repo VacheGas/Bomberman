@@ -97,6 +97,34 @@ void Engine::update() {
     }
 }
 
+void Engine::handleInput() {
+    _inputHandler.update();
+
+    // Check if a specific key is pressed
+    if (_inputHandler.isKeyPressed(SDL_SCANCODE_A)) {
+        // Render a rectangle at position (100, 100) with width 50 and height 50
+        SDL_FRect rect = {100, 100, 50, 50};
+        SDL_SetRenderDrawColor(_renderer, 255, 0, 0, 255); // Set color to red
+        SDL_RenderFillRect(_renderer, &rect);
+    }
+
+    // Check if another key is pressed
+    if (_inputHandler.isKeyPressed(SDL_SCANCODE_B)) {
+        // Render a circle at position (200, 200) with radius 25
+        int radius = 25;
+        int centerX = 200;
+        int centerY = 200;
+        SDL_SetRenderDrawColor(_renderer, 0, 0, 255, 255); // Set color to blue
+        for (int x = -radius; x <= radius; x++) {
+            for (int y = -radius; y <= radius; y++) {
+                if (x * x + y * y <= radius * radius) {
+                    SDL_RenderPoint(_renderer, centerX + x, centerY + y);
+                }
+            }
+        }
+    }
+}
+
 void Engine::draw(SDL_Renderer* renderer) {
     SDL_RenderClear(_renderer);
     SDL_SetRenderDrawColor(_renderer, 0, 100, 0, 255);

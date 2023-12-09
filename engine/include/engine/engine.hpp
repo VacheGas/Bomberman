@@ -2,6 +2,7 @@
 
 #include <engine/sprite.hpp>
 #include <engine/vec.hpp>
+#include <engine/input_handler.hpp>
 
 #include <SDL3/SDL.h>
 #include <string>
@@ -37,6 +38,7 @@ private:
     void update();
     void clear();
     void draw(SDL_Renderer* renderer);
+    void handleInput();
 
 private:
     void initSDL();
@@ -53,6 +55,7 @@ private:
     SDL_Renderer* _renderer;
     std::unordered_map<std::string, SDL_Texture*> _textures;
     std::vector<Sprite*> _sprites{};
+    InputHandler _inputHandler;
     bool _running{};
 
 private:

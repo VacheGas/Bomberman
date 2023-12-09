@@ -20,8 +20,8 @@ protected:
 
 class AnimatableSprite : public Sprite {
 public:
-    AnimatableSprite(SDL_Texture* texture, 
-                     SDL_FRect srcRect, 
+    AnimatableSprite(SDL_Texture* texture,
+                     SDL_FRect srcRect,
                      SDL_FRect dstRect,
                      size_t rowCount,
                      size_t colCount,
