@@ -1,6 +1,7 @@
 function(bomberman_add_test)
-    cmake_parse_arguments(TGT "" "NAME" "SRCS;DEPS" ${ARGN})
+    cmake_parse_arguments(TGT "" "NAME" "SRCS;DEPS;DEFINES" ${ARGN})
     add_executable(${TGT_NAME} ${TGT_SRCS})
     target_link_libraries(${TGT_NAME} PRIVATE ${TGT_DEPS})
+    target_compile_definitions(${TGT_NAME} PRIVATE ${TGT_DEFINES})
     add_test(NAME ${TGT_NAME} COMMAND $<TARGET_FILE:${TGT_NAME}>)
 endfunction()

@@ -63,7 +63,7 @@ void Engine::registerAnimatableSprite(const std::string& assetPath,
     load(assetPath);
     auto sdlSrcRect = SDL_FRect{srcRect[0], srcRect[1], srcRect[2], srcRect[3]};
     auto sdlDstRect = SDL_FRect{dstRect[0], dstRect[1], dstRect[2], dstRect[3]};
-    _sprites[assetPath] = std::make_unique<Sprite>(std::move(AnimatableSprite(_textures[assetPath], sdlSrcRect,
+    _sprites[assetPath] = std::make_unique<AnimatableSprite>(std::move(AnimatableSprite(_textures[assetPath], sdlSrcRect,
                                                                     sdlDstRect, spriteRowCount,
                                                                     spriteColCount, animationSpeed)));
 }
