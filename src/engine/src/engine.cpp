@@ -90,16 +90,16 @@ size_t Engine::height() const {
 }
 
 void Engine::update() {
-    for (auto &&sprite : _sprites) {
-        sprite.second->update();
+    for (auto it = _sprites.begin(); it != _sprites.end(); ++it) {
+        it->second->update();
     }
 }
 
 void Engine::draw(SDL_Renderer* renderer) {
     SDL_RenderClear(_renderer);
     SDL_SetRenderDrawColor(_renderer, 0, 100, 0, 255);
-    for (auto &&sprite : _sprites) {
-        sprite.second->render(renderer);
+    for (auto it = _sprites.begin(); it != _sprites.end(); ++it) {
+        it->second->render(renderer);
     }
     present();
 }
