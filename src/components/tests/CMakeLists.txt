@@ -6,16 +6,8 @@ include_directories(
   ${CMAKE_SOURCE_DIR}/src
 )
 
-add_executable(player_test player_test.cpp)
-
-target_link_libraries(player_test bomberman_testing_utils components)
-
-add_test(player player_test COMMAND $<TARGET_FILE:player_test>)
-
-set_target_properties(player_test PROPERTIES
-  CXX_STANDARD 17
-  CXX_STANDARD_REQUIRED YES
-  CXX_EXTENSIONS NO
+bomberman_add_test(
+        NAME bomberman_player_test
+        SRCS player_test.cpp
+        DEPS bomberman_testing_utils components
 )
-
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -g")

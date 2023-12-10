@@ -6,16 +6,18 @@ include_directories(
   ${CMAKE_SOURCE_DIR}/src
 )
 
-add_executable(vec_test  vec_test.cpp)
-
-target_link_libraries(vec_test bomberman_testing_utils engine)
-
-add_test(vec vec_test COMMAND $<TARGET_FILE:vec_test>)
-
-set_target_properties(player_test PROPERTIES
-        CXX_STANDARD 17
-        CXX_STANDARD_REQUIRED YES
-        CXX_EXTENSIONS NO
+bomberman_add_test(
+        NAME bomberman_vec_test
+        SRCS vec_test.cpp
+        DEPS bomberman_testing_utils engine
 )
 
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -g")
+
+#[[
+bomberman_add_test(
+    NAME bomberman_engine_test
+    SRCS engine_test.cpp
+    DEPS bomberman_testing_utils engine
+    DEFINES RESOURCES_PATH="${RESOURCES_PATH}"
+)
+]]
