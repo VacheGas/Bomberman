@@ -1,5 +1,4 @@
 cmake_minimum_required(VERSION 3.24)
-add_subdirectory(test)
 enable_testing()
 
 include_directories(
@@ -10,5 +9,5 @@ include_directories(
 bomberman_add_test(
         NAME bomberman_player_test
         SRCS player_test.cpp
-        DEPS bomberman_components_testing
+        DEPS bomberman_testing_utils components
 )

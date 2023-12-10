@@ -6,6 +6,7 @@
 #include <SDL3/SDL.h>
 #include <string>
 
+#include <memory>
 #include <unordered_map>
 #include <vector>
 
@@ -41,7 +42,6 @@ private:
 private:
     void initSDL();
     void cleanSDL();
-    void cleanSprites();
     void cleanTextures();
 
 private:
@@ -52,9 +52,8 @@ private:
     SDL_Window* _window;
     SDL_Renderer* _renderer;
     std::unordered_map<std::string, SDL_Texture*> _textures;
-    std::vector<Sprite*> _sprites{};
-// TODO: use this variable or remove it
-//    bool _running{};
+    std::unordered_map<std::string, std::unique_ptr<Sprite>> _sprites{};
+    bool _running{};
 
 private:
     static bool _initialized;

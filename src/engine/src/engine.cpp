@@ -17,18 +17,17 @@ Engine::Engine(const std::string& title, size_t width, size_t height, int flags)
 }
 
 Engine::~Engine() {
-    cleanSprites();
     cleanSDL();
 }
 
 bool Engine::load(const std::string& assetPath) {
     SDL_Surface* tempSurface = IMG_Load(assetPath.c_str());
-    if (tempSurface == 0) {
+    if (tempSurface == nullptr) {
         return false;
     }
     SDL_Texture* texture = SDL_CreateTextureFromSurface(_renderer, tempSurface);
     SDL_DestroySurface(tempSurface);
-    if (texture != 0) {
+    if (texture != nullptr) {
         _textures[assetPath] = texture;
         return true;
     }
@@ -38,7 +37,7 @@ bool Engine::load(const std::string& assetPath) {
 void Engine::run() {
     SDL_Event e;
     bool quit = false;
-    while (quit == false) {
+    while (!quit) {
         while (SDL_PollEvent(&e)) {
             if (e.type == SDL_EVENT_QUIT)
                 quit = true;
@@ -53,8 +52,7 @@ void Engine::registerSprite(const std::string& assetPath,
     load(assetPath);
     auto sdlSrcRect = SDL_FRect{srcRect[0], srcRect[1], srcRect[2], srcRect[3]};
     auto sdlDstRect = SDL_FRect{dstRect[0], dstRect[1], dstRect[2], dstRect[3]};
-    _sprites.push_back(
-        new Sprite(_textures[assetPath], sdlSrcRect, sdlDstRect));
+    _sprites[assetPath] = std::make_unique<Sprite>(std::move(Sprite(_textures[assetPath], sdlSrcRect, sdlDstRect)));
 }
 
 void Engine::registerAnimatableSprite(const std::string& assetPath,
@@ -65,9 +63,9 @@ void Engine::registerAnimatableSprite(const std::string& assetPath,
     load(assetPath);
     auto sdlSrcRect = SDL_FRect{srcRect[0], srcRect[1], srcRect[2], srcRect[3]};
     auto sdlDstRect = SDL_FRect{dstRect[0], dstRect[1], dstRect[2], dstRect[3]};
-    _sprites.push_back(new AnimatableSprite(_textures[assetPath], sdlSrcRect,
-                                            sdlDstRect, spriteRowCount,
-                                            spriteColCount, animationSpeed));
+    _sprites[assetPath] = std::make_unique<AnimatableSprite>(std::move(AnimatableSprite(_textures[assetPath], sdlSrcRect,
+                                                                    sdlDstRect, spriteRowCount,
+                                                                    spriteColCount, animationSpeed)));
 }
 
 void Engine::setDrawColor(SDL_Color color) {
@@ -92,16 +90,16 @@ size_t Engine::height() const {
 }
 
 void Engine::update() {
-    for (auto sprite : _sprites) {
-        sprite->update();
+    for (auto it = _sprites.begin(); it != _sprites.end(); ++it) {
+        it->second->update();
     }
 }
 
 void Engine::draw(SDL_Renderer* renderer) {
     SDL_RenderClear(_renderer);
     SDL_SetRenderDrawColor(_renderer, 0, 100, 0, 255);
-    for (auto sprite : _sprites) {
-        sprite->render(renderer);
+    for (auto it = _sprites.begin(); it != _sprites.end(); ++it) {
+        it->second->render(renderer);
     }
     present();
 }
@@ -136,14 +134,8 @@ void Engine::cleanSDL() {
     SDL_Quit();
 }
 
-void Engine::cleanSprites() {
-    for (auto sprite : _sprites) {
-        delete sprite;
-    }
-}
-
 void Engine::cleanTextures() {
-    for (auto texture : _textures) {
+    for (const auto& texture : _textures) {
         SDL_DestroyTexture(_textures[texture.first]);
         _textures.erase(texture.first);
     }

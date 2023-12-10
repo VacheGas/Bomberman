@@ -1,6 +1,4 @@
 cmake_minimum_required(VERSION 3.24)
-add_subdirectory(test)
-add_subdirectory(visual)
 enable_testing()
 
 include_directories(
@@ -11,5 +9,15 @@ include_directories(
 bomberman_add_test(
         NAME bomberman_vec_test
         SRCS vec_test.cpp
-        DEPS bomberman_engine_testing
+        DEPS bomberman_testing_utils engine
 )
+
+
+#[[
+bomberman_add_test(
+    NAME bomberman_engine_test
+    SRCS engine_test.cpp
+    DEPS bomberman_testing_utils engine
+    DEFINES RESOURCES_PATH="${RESOURCES_PATH}"
+)
+]]

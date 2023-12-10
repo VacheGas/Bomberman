@@ -9,6 +9,8 @@ set(CMAKE_EXE_LINKER_FLAGS  "${CMAKE_EXE_LINKER_FLAGS} -g -fsanitize=undefined,a
 
 set(SOURCES main.cpp)
 
+SET(RESOURCES_PATH "${CMAKE_CURRENT_SOURCE_DIR}/assets")
+
 if(APPLE)
     enable_language(OBJC)
 endif()
