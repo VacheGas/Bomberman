@@ -10,14 +10,12 @@
 namespace sdl {
 
     struct SdlTextureDeleter {
-        void operator()(SDL_Texture *texture) const;
+        void operator()(SDL_Texture *texture) {
+            if (texture) {
+                SDL_DestroyTexture(texture);
+            }
+        };
     };
-
-    void SdlTextureDeleter::operator()(SDL_Texture *texture) const {
-        if (texture) {
-            SDL_DestroyTexture(texture);
-        }
-    }
 
 }
 
