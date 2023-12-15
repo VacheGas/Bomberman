@@ -1,4 +1,5 @@
 #pragma once
+
 #include "sdlTextureDeleter.hpp"
 
 #include <memory>

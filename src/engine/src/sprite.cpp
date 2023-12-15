@@ -35,6 +35,7 @@ void AnimatableSprite::update() {
     _currentRow = frameNumber / _colCount % _rowCount;
 }
 
+// TODO : remove coordinates
 void AnimatableSprite::render(SDL_Renderer* renderer) {
     auto currentSrcRect = _srcRect;
     currentSrcRect.x = _srcRect.x + _srcRect.w * _currentCol;

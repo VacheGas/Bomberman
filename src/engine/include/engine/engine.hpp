@@ -2,11 +2,11 @@
 
 #include <engine/sprite.hpp>
 #include <engine/vec.hpp>
-#include "sdlTextureDeleter.hpp"
 
 #include <SDL3/SDL.h>
 #include <string>
 
+#include <memory>
 #include <unordered_map>
 #include <vector>
 
@@ -44,7 +44,6 @@ private:
 private:
     void initSDL();
     void cleanSDL();
-    void cleanSprites();
     void cleanTextures();
 
 private:
@@ -54,7 +53,7 @@ private:
     int _flags;
     SDL_Window* _window;
     SDL_Renderer* _renderer;
-    std::vector<Sprite*> _sprites{};
+    std::unordered_map<std::string, std::unique_ptr<Sprite>> _sprites{};
     bool _running{};
 
 private:
