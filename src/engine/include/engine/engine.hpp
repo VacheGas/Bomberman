@@ -53,7 +53,6 @@ private:
     SDL_Renderer* _renderer;
     std::unordered_map<std::string, SDL_Texture*> _textures;
     std::unordered_map<std::string, std::unique_ptr<Sprite>> _sprites{};
-    bool _running{};
 
 private:
     static bool _initialized;
