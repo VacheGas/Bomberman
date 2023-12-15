@@ -46,7 +46,7 @@ void Engine::registerSprite(const std::string& assetPath,
                             Vec4 srcRect, Vec4 dstRect) {
     auto sdlSrcRect = SDL_FRect{srcRect[0], srcRect[1], srcRect[2], srcRect[3]};
     auto sdlDstRect = SDL_FRect{dstRect[0], dstRect[1], dstRect[2], dstRect[3]};
-    _sprites[assetPath] = std::make_unique<Sprite>(std::move(load(assetPath)), sdlSrcRect, sdlDstRect);
+    _sprites[assetPath] = std::make_unique<Sprite>(load(assetPath), sdlSrcRect, sdlDstRect);
 }
 
 void Engine::registerAnimatableSprite(const std::string& assetPath,
@@ -56,7 +56,7 @@ void Engine::registerAnimatableSprite(const std::string& assetPath,
                                       size_t animationSpeed) {
     auto sdlSrcRect = SDL_FRect{srcRect[0], srcRect[1], srcRect[2], srcRect[3]};
     auto sdlDstRect = SDL_FRect{dstRect[0], dstRect[1], dstRect[2], dstRect[3]};
-    _sprites[assetPath] = std::make_unique<AnimatableSprite>(std::move(load(assetPath)), sdlSrcRect,
+    _sprites[assetPath] = std::make_unique<AnimatableSprite>(load(assetPath), sdlSrcRect,
                                             sdlDstRect, spriteRowCount,
                                             spriteColCount, animationSpeed);
 }
