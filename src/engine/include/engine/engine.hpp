@@ -12,6 +12,8 @@
 
 namespace sdl {
 
+using Texture = SDL_Texture;
+
 class Engine {
 public:
     Engine(const std::string& title, size_t width, size_t height, int flags);
@@ -27,13 +29,13 @@ public:
                                   size_t spriteRowCount, size_t spriteColCount,
                                   size_t animationSpeed = 1);
 
-    bool load(const std::string& assetPath);
 
-    size_t width() const;
-    size_t height() const;
+    std::size_t width() const;
+    std::size_t height() const;
     void setDrawColor(SDL_Color color);
 
 private:
+    std::unique_ptr<Texture, SdlTextureDeleter> load(const std::string& assetPath);
     void present();
     void update();
     void clear();
@@ -51,7 +53,6 @@ private:
     int _flags;
     SDL_Window* _window;
     SDL_Renderer* _renderer;
-    std::unordered_map<std::string, SDL_Texture*> _textures;
     std::unordered_map<std::string, std::unique_ptr<Sprite>> _sprites{};
 
 private:

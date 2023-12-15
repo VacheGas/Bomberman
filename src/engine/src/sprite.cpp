@@ -2,26 +2,26 @@
 
 namespace sdl {
 
-Sprite::Sprite(SDL_Texture* texture, 
+Sprite::Sprite(std::unique_ptr<SDL_Texture, SdlTextureDeleter> texture,
                SDL_FRect srcRect, 
                SDL_FRect dstRect)
-    : _texture{texture}
+    : _texture{std::move(texture)}
     , _srcRect{srcRect}
     , _dstRect{dstRect} {}
 
 void Sprite::update() {}
 
 void Sprite::render(SDL_Renderer* renderer) {
-    SDL_RenderTexture(renderer, _texture, &_srcRect, &_dstRect);
+    SDL_RenderTexture(renderer, _texture.get(), &_srcRect, &_dstRect);
 }
 
-AnimatableSprite::AnimatableSprite(SDL_Texture* texture, 
+AnimatableSprite::AnimatableSprite(std::unique_ptr<SDL_Texture, SdlTextureDeleter> texture,
                                    SDL_FRect srcRect,
                                    SDL_FRect dstRect, 
                                    size_t rowCount,
                                    size_t colCount,
                                    size_t animationSpeed)
-    : Sprite{texture, srcRect, dstRect}
+    : Sprite{std::move(texture), srcRect, dstRect}
     , _rowCount{rowCount}
     , _colCount{colCount}
     , _animationSpeed{animationSpeed}
@@ -37,10 +37,10 @@ void AnimatableSprite::update() {
 
 // TODO : remove coordinates
 void AnimatableSprite::render(SDL_Renderer* renderer) {
-    SDL_FRect currentSrcRect = _srcRect;
-    currentSrcRect.x = _srcRect.x + _srcRect.w * static_cast<float>(_currentCol);
-    currentSrcRect.y = _srcRect.y + _srcRect.h * static_cast<float>(_currentRow);
-    SDL_RenderTexture(renderer, _texture, &currentSrcRect, &_dstRect);
+    auto currentSrcRect = _srcRect;
+    currentSrcRect.x = _srcRect.x + _srcRect.w * _currentCol;
+    currentSrcRect.y = _srcRect.y + _srcRect.h * _currentRow;
+    SDL_RenderTexture(renderer, _texture.get(), &currentSrcRect, &_dstRect);
 }
 
 } // namespace sdl

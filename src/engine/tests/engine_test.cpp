@@ -1,6 +1,6 @@
 #include "test_utils/gtest_main.hpp"
 
-#include "engine/include/engine/engine.hpp"
+#include <engine/engine.hpp>
 
 
 TEST(Engine, Animation) {

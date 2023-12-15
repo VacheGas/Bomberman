@@ -1,9 +1,10 @@
 add_library(
-  engine_headers 
-  INTERFACE
-  include/engine/engine.hpp
-  include/engine/sprite.hpp
-  include/engine/vec.hpp
+        engine_headers
+        INTERFACE
+        include/engine/engine.hpp
+        include/engine/sprite.hpp
+        include/engine/vec.hpp
+        include/engine/sdlTextureDeleter.hpp
 )
   
 target_include_directories(
