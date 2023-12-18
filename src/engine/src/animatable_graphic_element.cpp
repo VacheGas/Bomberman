@@ -4,7 +4,7 @@
 
 #include "animatable_graphic_element.hpp"
 
-void sdl::AnimatableGraphicObject::draw(SDL_Renderer* renderer) {
+void sdl::AnimatableGraphicElement::draw(SDL_Renderer* renderer) {
     auto currentSrcRect = _srcRect;
     currentSrcRect.x =
         _srcRect.x + _srcRect.w * static_cast<float>(_currentCol);
@@ -13,13 +13,13 @@ void sdl::AnimatableGraphicObject::draw(SDL_Renderer* renderer) {
     _texture->draw(renderer, currentSrcRect, _dstRect);
 }
 
-void sdl::AnimatableGraphicObject::update() {
+void sdl::AnimatableGraphicElement::update() {
     auto frameNumber = _animationSpeed * static_cast<size_t>(SDL_GetTicks() / 50 - startTime);
     _currentCol = frameNumber % _colCount;
     _currentRow = frameNumber / _colCount % _rowCount;
 }
 
-sdl::AnimatableGraphicObject::AnimatableGraphicObject(
+sdl::AnimatableGraphicElement::AnimatableGraphicElement(
     const std::shared_ptr<Sprite>& texture, SDL_FRect& srcRect,
     SDL_FRect& dstRect, size_t rowCount, size_t colCount, size_t animationSpeed)
     : GraphicElement(texture, srcRect, dstRect),
