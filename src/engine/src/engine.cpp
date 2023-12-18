@@ -1,7 +1,8 @@
-#include <engine/engine.hpp>
+#include <animatable_graphic_element.hpp>
+#include <engine.hpp>
+#include <sprite_factory.hpp>
 
 #include <memory>
-
 #include <SDL3_image/SDL_image.h>
 
 namespace sdl {
@@ -42,23 +43,28 @@ void Engine::run() {
     }
 }
 
-void Engine::registerSprite(const std::string& assetPath,
-                            Vec4 srcRect, Vec4 dstRect) {
+void Engine::registerGraphicElement(const std::size_t id,
+                                    const std::string& assetPath, Vec4 srcRect, Vec4 dstRect) {
     auto sdlSrcRect = SDL_FRect{srcRect[0], srcRect[1], srcRect[2], srcRect[3]};
     auto sdlDstRect = SDL_FRect{dstRect[0], dstRect[1], dstRect[2], dstRect[3]};
-    _sprites[assetPath] = std::make_unique<Sprite>(load(assetPath), sdlSrcRect, sdlDstRect);
+    SpriteFactory::addNewSprite(assetPath, id, _renderer);
+    GraphicElement(SpriteFactory::getSprite(id), sdlSrcRect, sdlDstRect);
+    _graphicElement[id] = std::make_unique<GraphicElement>(
+        SpriteFactory::getSprite(id), sdlSrcRect, sdlDstRect);
 }
-
-void Engine::registerAnimatableSprite(const std::string& assetPath,
-                                      Vec4 srcRect,
+// update element and render and
+void Engine::registerAnimatableGraphicElement(const std::size_t id,
+                                              const std::string& assetPath,
+                                              Vec4 srcRect,
                                       Vec4 dstRect, size_t spriteRowCount,
                                       size_t spriteColCount,
                                       size_t animationSpeed) {
     auto sdlSrcRect = SDL_FRect{srcRect[0], srcRect[1], srcRect[2], srcRect[3]};
     auto sdlDstRect = SDL_FRect{dstRect[0], dstRect[1], dstRect[2], dstRect[3]};
-    _sprites[assetPath] = std::make_unique<AnimatableSprite>(load(assetPath), sdlSrcRect,
-                                            sdlDstRect, spriteRowCount,
-                                            spriteColCount, animationSpeed);
+    SpriteFactory::addNewSprite(assetPath, id, _renderer);
+    _graphicElement[id] = std::make_unique<AnimatableGraphicElement>(
+        SpriteFactory::getSprite(id), sdlSrcRect, sdlDstRect, spriteRowCount,
+        spriteColCount, animationSpeed);
 }
 
 void Engine::setDrawColor(SDL_Color color) {
@@ -83,7 +89,7 @@ size_t Engine::height() const {
 }
 
 void Engine::update() {
-    for (auto it = _sprites.begin(); it != _sprites.end(); ++it) {
+    for (auto it = _graphicElement.begin(); it != _graphicElement.end(); ++it) {
         it->second->update();
     }
 }
@@ -91,8 +97,8 @@ void Engine::update() {
 void Engine::draw(SDL_Renderer* renderer) {
     SDL_RenderClear(_renderer);
     SDL_SetRenderDrawColor(_renderer, 0, 100, 0, 255);
-    for (auto it = _sprites.begin(); it != _sprites.end(); ++it) {
-        it->second->render(renderer);
+    for (auto it = _graphicElement.begin(); it != _graphicElement.end(); ++it) {
+        it->second->draw(renderer);
     }
     present();
 }

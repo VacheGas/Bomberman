@@ -1,11 +1,14 @@
 add_library(
-        engine_headers
-        INTERFACE
-        include/engine/engine.hpp
-        include/engine/sprite.hpp
-        include/engine/vec.hpp
-        include/engine/sdlTextureDeleter.hpp
-)
+		engine_headers
+		INTERFACE
+		include/animatable_graphic_element.hpp
+		include/engine.hpp
+		include/graphic_element.hpp
+		include/sdlTextureDeleter.hpp
+		include/sprite.hpp
+		include/sprite_factory.hpp
+		include/vec.hpp
+		)
   
 target_include_directories(
   engine_headers 
@@ -18,6 +21,9 @@ add_library(
   STATIC
   src/engine.cpp
   src/sprite.cpp
+  src/graphic_element.cpp
+  src/animatable_graphic_element.cpp
+  src/sprite_factory.cpp
 )
 
 target_link_libraries(

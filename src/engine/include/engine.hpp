@@ -1,10 +1,11 @@
 #pragma once
 
-#include <engine/sprite.hpp>
-#include <engine/vec.hpp>
+#include <graphic_element.hpp>
+#include <sprite.hpp>
+#include <vec.hpp>
 
-#include <SDL3/SDL.h>
 #include <string>
+#include "SDL3/SDL.h"
 
 #include <memory>
 #include <unordered_map>
@@ -22,13 +23,16 @@ public:
     ~Engine();
 
     void run();
-    void registerSprite(const std::string& assetPath, Vec4 srcRect, Vec4 dstRect);
 
-    void registerAnimatableSprite(const std::string& assetPath,
-                                  Vec4 srcRect, Vec4 dstRect,
+    void registerGraphicElement(const std::size_t id,
+                                const std::string& assetPath, Vec4 srcRect,
+                                Vec4 dstRect);
+
+    void registerAnimatableGraphicElement(const std::size_t id,
+                                          const std::string& assetPath,
+                                          Vec4 srcRect, Vec4 dstRect,
                                   size_t spriteRowCount, size_t spriteColCount,
                                   size_t animationSpeed = 1);
-
 
     std::size_t width() const;
     std::size_t height() const;
@@ -44,7 +48,6 @@ private:
 private:
     void initSDL();
     void cleanSDL();
-    void cleanTextures();
 
 private:
     std::string _title;
@@ -53,9 +56,10 @@ private:
     int _flags;
     SDL_Window* _window;
     SDL_Renderer* _renderer;
-    std::unordered_map<std::string, std::unique_ptr<Sprite>> _sprites{};
+    std::unordered_map<std::size_t, std::unique_ptr<GraphicElement>>
+        _graphicElement{};
 
-private:
+   private:
     static bool _initialized;
 };
 
