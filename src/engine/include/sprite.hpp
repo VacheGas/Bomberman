@@ -10,13 +10,17 @@
 namespace sdl {
 
 class Sprite {
-public:
+   public:
     explicit Sprite(std::unique_ptr<SDL_Texture, SdlTextureDeleter> texture);
     virtual ~Sprite() = default;
 
    public:
     void draw(SDL_Renderer* renderer, const SDL_FRect& srcRect,
               const SDL_FRect& dstRect);
+
+   public:
+    int width();
+    int height();
 
    protected:
     std::unique_ptr<SDL_Texture, SdlTextureDeleter> _texture{};

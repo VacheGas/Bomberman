@@ -12,6 +12,12 @@ bomberman_add_test(
         DEPS bomberman_testing_utils engine
 )
 
+bomberman_add_test(
+		NAME bomberman_sprite_test
+		SRCS sprite_test.cpp
+		DEPS bomberman_testing_utils engine
+		DEFINES RESOURCES_PATH="${RESOURCES_PATH}"
+)
 
 #[[
 bomberman_add_test(
