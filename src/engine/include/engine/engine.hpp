@@ -2,6 +2,7 @@
 
 #include <engine/sprite.hpp>
 #include <engine/vec.hpp>
+#include <engine/renderer.hpp>
 
 #include <SDL3/SDL.h>
 #include <string>
@@ -47,12 +48,7 @@ private:
     void cleanTextures();
 
 private:
-    std::string _title;
-    size_t _width;
-    size_t _height;
-    int _flags;
-    SDL_Window* _window;
-    SDL_Renderer* _renderer;
+    std::unique_ptr<Renderer> _renderer;
     std::unordered_map<std::string, std::unique_ptr<Sprite>> _sprites{};
 
 private:
