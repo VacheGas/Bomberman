@@ -1,4 +1,4 @@
-#include "sprite.hpp"
+#include "engine/sprite.hpp"
 
 namespace sdl {
 
@@ -10,18 +10,11 @@ void Sprite::draw(SDL_Renderer* renderer, const SDL_FRect& srcRect,
     SDL_RenderTexture(renderer, _texture.get(), &srcRect, &dstRect);
 }
 
-int Sprite::width() {
-    int width;
-    SDL_QueryTexture(_texture.get(), nullptr, nullptr,
-                     &width, nullptr);
-    return width;
+std::size_t Sprite::getRowCount() const {
+    return 1;
 }
-
-int Sprite::height() {
-    int height;
-    SDL_QueryTexture(_texture.get(), nullptr, nullptr,
-                     nullptr, &height);
-    return height;
+std::size_t Sprite::getColCount() const {
+    return 1;
 }
 
 } // namespace sdl

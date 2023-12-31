@@ -1,15 +1,16 @@
-#include <animatable_graphic_element.hpp>
-#include <engine.hpp>
-#include <sprite_factory.hpp>
+#include "engine/engine.hpp"
+#include "engine/animatable_graphic_element.hpp"
+#include "engine/generate_id.hpp"
+#include "engine/sprite_factory.hpp"
 
-#include <memory>
 #include <SDL3_image/SDL_image.h>
+#include <memory>
 
 namespace sdl {
 
 bool Engine::_initialized = false;
 
-Engine::Engine(const std::string& title, size_t width, size_t height, int flags)
+Engine::Engine(std::string_view title, size_t width, size_t height, int flags)
     : _title{title}, _width{width}, _height{height}, _flags{flags} {
 
     auto errorMessage = "There can be only one instance of the engine";
@@ -43,28 +44,28 @@ void Engine::run() {
     }
 }
 
-void Engine::registerGraphicElement(const std::size_t id,
-                                    const std::string& assetPath, Vec4 srcRect, Vec4 dstRect) {
+std::size_t Engine::registerGraphicElement(
+                                    std::string_view assetPath, Vec4 srcRect) {
     auto sdlSrcRect = SDL_FRect{srcRect[0], srcRect[1], srcRect[2], srcRect[3]};
-    auto sdlDstRect = SDL_FRect{dstRect[0], dstRect[1], dstRect[2], dstRect[3]};
-    SpriteFactory::addNewSprite(assetPath, id, _renderer);
-    GraphicElement(SpriteFactory::getSprite(id), sdlSrcRect, sdlDstRect);
-    _graphicElement[id] = std::make_unique<GraphicElement>(
-        SpriteFactory::getSprite(id), sdlSrcRect, sdlDstRect);
+    auto sdlDstRect = SDL_FRect{srcRect[0], srcRect[1], srcRect[2], srcRect[3]};
+     _factory->addNewSprite(assetPath, _renderer);
+    const std::size_t elementId = sdl::generateGraphicElementID();
+    _graphicElements[elementId] = std::make_unique<GraphicElement>(
+        _factory->getSprite(assetPath), sdlSrcRect, sdlDstRect);
+    return elementId;
 }
-// update element and render and
-void Engine::registerAnimatableGraphicElement(const std::size_t id,
-                                              const std::string& assetPath,
-                                              Vec4 srcRect,
-                                      Vec4 dstRect, size_t spriteRowCount,
-                                      size_t spriteColCount,
-                                      size_t animationSpeed) {
+
+std::size_t Engine::registerAnimatableGraphicElement(std::string_view assetPath,
+                                                     Vec4 srcRect, size_t spriteRowCount,
+                                      size_t spriteColCount) {
     auto sdlSrcRect = SDL_FRect{srcRect[0], srcRect[1], srcRect[2], srcRect[3]};
-    auto sdlDstRect = SDL_FRect{dstRect[0], dstRect[1], dstRect[2], dstRect[3]};
-    SpriteFactory::addNewSprite(assetPath, id, _renderer);
-    _graphicElement[id] = std::make_unique<AnimatableGraphicElement>(
-        SpriteFactory::getSprite(id), sdlSrcRect, sdlDstRect, spriteRowCount,
-        spriteColCount, animationSpeed);
+    auto sdlDstRect = SDL_FRect{srcRect[0], srcRect[1], srcRect[2], srcRect[3]};
+    _factory->addNewAnimationSprite(assetPath, _renderer,spriteRowCount, spriteColCount);
+    const std::size_t elementId = sdl::generateGraphicElementID();
+    _graphicElements[elementId] = std::make_unique<AnimatableGraphicElement>(
+        _factory->getSprite(assetPath), sdlSrcRect, sdlDstRect
+        , 1);
+    return elementId;
 }
 
 void Engine::setDrawColor(SDL_Color color) {
@@ -89,7 +90,7 @@ size_t Engine::height() const {
 }
 
 void Engine::update() {
-    for (auto it = _graphicElement.begin(); it != _graphicElement.end(); ++it) {
+    for (auto it = _graphicElements.begin(); it != _graphicElements.end(); ++it) {
         it->second->update();
     }
 }
@@ -97,7 +98,7 @@ void Engine::update() {
 void Engine::draw(SDL_Renderer* renderer) {
     SDL_RenderClear(_renderer);
     SDL_SetRenderDrawColor(_renderer, 0, 100, 0, 255);
-    for (auto it = _graphicElement.begin(); it != _graphicElement.end(); ++it) {
+    for (auto it = _graphicElements.begin(); it != _graphicElements.end(); ++it) {
         it->second->draw(renderer);
     }
     present();
@@ -109,7 +110,7 @@ void Engine::initSDL() {
                                  std::string(SDL_GetError()));
     }
 
-    _window = SDL_CreateWindow(_title.c_str(), _width, _height, _flags);
+    _window = SDL_CreateWindow(_title.data(), _width, _height, _flags);
 
     if (!_window) {
         SDL_Quit();

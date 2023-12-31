@@ -2,21 +2,35 @@
 // Created by Vache Gasparyan on 17.12.23.
 //
 
-#include <sprite_factory.hpp>
+#include "engine/sprite_factory.hpp"
+#include "engine/animation_sprite.hpp"
 
 #include <SDL3_image/SDL_image.h>
-
-void sdl::SpriteFactory::addNewSprite(const std::string& path, std::size_t id,
-                                      SDL_Renderer* renderer) {
-    SDL_Surface* tempSurface = IMG_Load(path.c_str());
-    std::unique_ptr<SDL_Texture, SdlTextureDeleter> texture(
+namespace {
+std::unique_ptr<SDL_Texture, sdl::SdlTextureDeleter>  loadSprite(
+    std::string_view path, SDL_Renderer* renderer) {
+    SDL_Surface* tempSurface = IMG_Load(path.data());
+    std::unique_ptr<SDL_Texture, sdl::SdlTextureDeleter> texture(
         SDL_CreateTextureFromSurface(renderer, tempSurface));
     SDL_DestroySurface(tempSurface);
-    if (_sprites[id] == nullptr) {
-        _sprites[id] = std::make_shared<Sprite>(std::move(texture));
-    }
+    return texture;
+}
 }
 
-std::shared_ptr<sdl::Sprite> sdl::SpriteFactory::getSprite(std::size_t id) {
+void sdl::SpriteFactory::addNewSprite(std::string_view path,
+                                      SDL_Renderer* renderer) {
+    if (_sprites.contains(path)) return;
+    std::unique_ptr<SDL_Texture, sdl::SdlTextureDeleter> texture = loadSprite(path, renderer);
+    _sprites[path] = std::make_shared<Sprite>(std::move(texture));
+}
+
+std::shared_ptr<sdl::Sprite> sdl::SpriteFactory::getSprite(std::string_view id) {
     return _sprites[id];
 }
+void sdl::SpriteFactory::addNewAnimationSprite(std::string_view path,
+                                               SDL_Renderer* renderer, std::size_t rowCount, std::size_t colCount) {
+    if (_sprites.contains(path)) return;
+    std::unique_ptr<SDL_Texture, sdl::SdlTextureDeleter> texture = loadSprite(path, renderer);
+    _sprites[path] = std::make_shared<sdl::AnimationSprite>(std::move(texture),rowCount,colCount);
+}
+

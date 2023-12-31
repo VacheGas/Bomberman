@@ -5,7 +5,7 @@
 #ifndef BOMBERMAN_GRAPHIC_ELEMENT_HPP
 #define BOMBERMAN_GRAPHIC_ELEMENT_HPP
 
-#include <sprite.hpp>
+#include "sprite.hpp"
 
 #include <memory>
 #include "SDL3/SDL.h"

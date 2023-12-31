@@ -1,8 +1,8 @@
 #pragma once
 
-#include <graphic_element.hpp>
-#include <sprite.hpp>
-#include <vec.hpp>
+#include "graphic_element.hpp"
+#include "sprite.hpp"
+#include "vec.hpp"
 
 #include <string>
 #include "SDL3/SDL.h"
@@ -17,22 +17,18 @@ using Texture = SDL_Texture;
 
 class Engine {
 public:
-    Engine(const std::string& title, size_t width, size_t height, int flags);
+    Engine(std::string_view, size_t width, size_t height, int flags);
     Engine(const Engine&) = delete;
     Engine& operator=(const Engine&) = delete;
     ~Engine();
 
     void run();
 
-    void registerGraphicElement(const std::size_t id,
-                                const std::string& assetPath, Vec4 srcRect,
-                                Vec4 dstRect);
+    std::size_t registerGraphicElement(
+        std::string_view assetPath, Vec4 srcRect);
 
-    void registerAnimatableGraphicElement(const std::size_t id,
-                                          const std::string& assetPath,
-                                          Vec4 srcRect, Vec4 dstRect,
-                                  size_t spriteRowCount, size_t spriteColCount,
-                                  size_t animationSpeed = 1);
+    std::size_t registerAnimatableGraphicElement(
+        std::string_view assetPath, Vec4 srcRect, size_t spriteRowCount, size_t spriteColCount);
 
     std::size_t width() const;
     std::size_t height() const;
@@ -50,14 +46,15 @@ private:
     void cleanSDL();
 
 private:
-    std::string _title;
+    std::string_view _title;
     size_t _width;
     size_t _height;
     int _flags;
     SDL_Window* _window;
     SDL_Renderer* _renderer;
     std::unordered_map<std::size_t, std::unique_ptr<GraphicElement>>
-        _graphicElement{};
+        _graphicElements{};
+    std::unique_ptr<SpriteFactory> _factory{};
 
    private:
     static bool _initialized;

@@ -1,7 +1,7 @@
 #pragma once
 
-#include <sdlTextureDeleter.hpp>
-#include <sprite_factory.hpp>
+#include "engine/sdlTextureDeleter.hpp"
+#include "sprite_factory.hpp"
 
 #include <memory>
 
@@ -15,12 +15,12 @@ class Sprite {
     virtual ~Sprite() = default;
 
    public:
-    void draw(SDL_Renderer* renderer, const SDL_FRect& srcRect,
+    virtual void draw(SDL_Renderer* renderer, const SDL_FRect& srcRect,
               const SDL_FRect& dstRect);
 
    public:
-    int width();
-    int height();
+    virtual std::size_t getRowCount() const;
+    virtual std::size_t getColCount() const;
 
    protected:
     std::unique_ptr<SDL_Texture, SdlTextureDeleter> _texture{};

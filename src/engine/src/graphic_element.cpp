@@ -2,7 +2,7 @@
 // Created by Vache Gasparyan on 16.12.23.
 //
 
-#include "graphic_element.hpp"
+#include "engine/graphic_element.hpp"
 
 namespace sdl {
 GraphicElement::GraphicElement(const std::shared_ptr<sdl::Sprite>& texture,
@@ -16,6 +16,4 @@ void GraphicElement::draw(SDL_Renderer* renderer) {
 
 void GraphicElement::update() {}
 
-std::unordered_map<std::size_t, std::shared_ptr<Sprite>>
-    SpriteFactory::_sprites;
 }  // namespace sdl

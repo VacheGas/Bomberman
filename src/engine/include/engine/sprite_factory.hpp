@@ -1,0 +1,36 @@
+//
+// Created by Vache Gasparyan on 17.12.23.
+//
+
+#ifndef BOMBERMAN_SPRITE_FACTORY_HPP
+#define BOMBERMAN_SPRITE_FACTORY_HPP
+
+#include <string>
+#include <unordered_map>
+#include <unordered_set>
+
+#include "engine/sdlTextureDeleter.hpp"
+#include "engine/sprite.hpp"
+
+namespace sdl {
+class Engine;
+class Sprite;
+
+class SpriteFactory {
+   public:
+    SpriteFactory() = default;
+
+   private:
+    void addNewSprite(std::string_view path,
+                             SDL_Renderer* renderer);
+    void addNewAnimationSprite(std::string_view path,
+                      SDL_Renderer* renderer, std::size_t rowCount, std::size_t colCount);
+    std::shared_ptr<sdl::Sprite> getSprite(std::string_view id);
+   private:
+    std::unordered_map<std::string_view, std::shared_ptr<Sprite>> _sprites;
+    friend class Engine;
+};
+
+}  // namespace sdl
+
+#endif  //BOMBERMAN_SPRITE_FACTORY_HPP
