@@ -25,7 +25,7 @@ class GraphicElement {
     virtual void update();
 
    protected:
-    std::shared_ptr<Sprite> _texture;
+    std::shared_ptr<Sprite> _sprite;
     SDL_FRect _srcRect{};
     SDL_FRect _dstRect{};
 };

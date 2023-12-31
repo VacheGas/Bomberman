@@ -17,9 +17,6 @@ class AnimationSprite : public Sprite {
     std::size_t getRowCount() const override;
     std::size_t getColCount() const override;
 
-   public:
-
-
    private:
     std::size_t _rowCount{};
     std::size_t _colCount{};

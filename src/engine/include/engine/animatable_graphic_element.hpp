@@ -12,7 +12,7 @@ namespace sdl {
 class AnimatableGraphicElement : public GraphicElement {
    public:
     AnimatableGraphicElement() = default;
-    AnimatableGraphicElement(const std::shared_ptr<Sprite>& texture,
+    AnimatableGraphicElement(const std::shared_ptr<Sprite>& sprite,
                             SDL_FRect& srcRect, SDL_FRect& dstRect,
                             size_t animationSpeed);
 

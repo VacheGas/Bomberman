@@ -5,13 +5,13 @@
 #include "engine/graphic_element.hpp"
 
 namespace sdl {
-GraphicElement::GraphicElement(const std::shared_ptr<sdl::Sprite>& texture,
+GraphicElement::GraphicElement(const std::shared_ptr<sdl::Sprite>& sprite,
                                const SDL_FRect& srcRect,
                                const SDL_FRect& dstRect)
-    : _texture(texture), _srcRect(srcRect), _dstRect(dstRect) {}
+    : _sprite(sprite), _srcRect(srcRect), _dstRect(dstRect) {}
 
 void GraphicElement::draw(SDL_Renderer* renderer) {
-    _texture->draw(renderer, _srcRect, _dstRect);
+    _sprite->draw(renderer, _srcRect, _dstRect);
 }
 
 void GraphicElement::update() {}
