@@ -46,24 +46,20 @@ void Engine::run() {
 
 std::size_t Engine::registerGraphicElement(
                                     std::string_view assetPath, Vec4 srcRect) {
-    auto sdlSrcRect = SDL_FRect{srcRect[0], srcRect[1], srcRect[2], srcRect[3]};
-    auto sdlDstRect = SDL_FRect{srcRect[0], srcRect[1], srcRect[2], srcRect[3]};
      _factory->addNewSprite(assetPath, _renderer);
     const std::size_t elementId = sdl::generateGraphicElementID();
     _graphicElements[elementId] = std::make_unique<GraphicElement>(
-        _factory->getSprite(assetPath), sdlSrcRect, sdlDstRect);
+        _factory->getSprite(assetPath), srcRect, srcRect);
     return elementId;
 }
 
 std::size_t Engine::registerAnimatableGraphicElement(std::string_view assetPath,
                                                      Vec4 srcRect, size_t spriteRowCount,
                                       size_t spriteColCount) {
-    auto sdlSrcRect = SDL_FRect{srcRect[0], srcRect[1], srcRect[2], srcRect[3]};
-    auto sdlDstRect = SDL_FRect{srcRect[0], srcRect[1], srcRect[2], srcRect[3]};
     _factory->addNewAnimationSprite(assetPath, _renderer,spriteRowCount, spriteColCount);
     const std::size_t elementId = sdl::generateGraphicElementID();
     _graphicElements[elementId] = std::make_unique<AnimatableGraphicElement>(
-        _factory->getSprite(assetPath), sdlSrcRect, sdlDstRect
+        _factory->getSprite(assetPath), srcRect, srcRect
         , 1);
     return elementId;
 }

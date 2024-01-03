@@ -6,6 +6,7 @@
 #define BOMBERMAN_GRAPHIC_ELEMENT_HPP
 
 #include "sprite.hpp"
+#include <engine/vec.hpp>
 
 #include <memory>
 #include "SDL3/SDL.h"
@@ -16,7 +17,7 @@ class GraphicElement {
     GraphicElement() = default;
 
     GraphicElement(const std::shared_ptr<sdl::Sprite>& sharedPtr,
-                   const SDL_FRect& rect, const SDL_FRect& rect1);
+                   const Vec4& rect, const Vec4& rect1);
 
     virtual ~GraphicElement() = default;
 

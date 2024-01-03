@@ -20,7 +20,7 @@ void sdl::AnimatableGraphicElement::update() {
 }
 
 sdl::AnimatableGraphicElement::AnimatableGraphicElement(
-    const std::shared_ptr<Sprite>& texture, SDL_FRect& srcRect,
-    SDL_FRect& dstRect, size_t animationSpeed)
+    const std::shared_ptr<Sprite>& texture, Vec4& srcRect,
+    Vec4& dstRect, size_t animationSpeed)
     : GraphicElement(texture, srcRect, dstRect),
       _animationSpeed(animationSpeed) {}
