@@ -1,9 +1,7 @@
 //
 // Created by Vache Gasparyan on 03.12.23.
 //
-
-#ifndef BOMBERMAN_DELETERIOUSLY_HPP
-#define BOMBERMAN_DELETERIOUSLY_HPP
+#pragma once
 
 #include "SDL3/SDL.h"
 
@@ -20,5 +18,3 @@ inline void SdlTextureDeleter::operator()(SDL_Texture* texture) {
 }
 
 }
-
-#endif //BOMBERMAN_DELETERIOUSLY_HPP

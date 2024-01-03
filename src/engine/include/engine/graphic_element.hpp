@@ -1,9 +1,7 @@
 //
 // Created by Vache Gasparyan on 16.12.23.
 //
-
-#ifndef BOMBERMAN_GRAPHIC_ELEMENT_HPP
-#define BOMBERMAN_GRAPHIC_ELEMENT_HPP
+#pragma once
 
 #include "sprite.hpp"
 #include <engine/vec.hpp>
@@ -33,4 +31,3 @@ class GraphicElement {
 
 }  // namespace sdl
 
-#endif  //BOMBERMAN_GRAPHIC_ELEMENT_HPP

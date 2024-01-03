@@ -2,8 +2,7 @@
 // Created by Vache Gasparyan on 17.12.23.
 //
 
-#ifndef BOMBERMAN_SPRITE_FACTORY_HPP
-#define BOMBERMAN_SPRITE_FACTORY_HPP
+#pragma once
 
 #include <string>
 #include <unordered_map>
@@ -32,5 +31,3 @@ class SpriteFactory {
 };
 
 }  // namespace sdl
-
-#endif  //BOMBERMAN_SPRITE_FACTORY_HPP

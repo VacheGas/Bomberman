@@ -2,8 +2,7 @@
 // Created by Vache Gasparyan on 30.12.23.
 //
 
-#ifndef BOMBERMAN_ANIMATION_SPRITE_HPP
-#define BOMBERMAN_ANIMATION_SPRITE_HPP
+#pragma once
 
 #include "sprite.hpp"
 
@@ -24,4 +23,3 @@ class AnimationSprite : public Sprite {
 
 }  // namespace sdl
 
-#endif  //BOMBERMAN_ANIMATION_SPRITE_HPP

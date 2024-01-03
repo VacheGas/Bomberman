@@ -2,8 +2,7 @@
 // Created by Vache Gasparyan on 16.12.23.
 //
 
-#ifndef BOMBERMAN_ANIMATABLE_GRAPHIC_ELEMENT_HPP
-#define BOMBERMAN_ANIMATABLE_GRAPHIC_ELEMENT_HPP
+#pragma once
 
 #include "graphic_element.hpp"
 #include <engine/vec.hpp>
@@ -27,5 +26,3 @@ class AnimatableGraphicElement : public GraphicElement {
 };
 
 }  // namespace sdl
-
-#endif  //BOMBERMAN_ANIMATABLE_GRAPHIC_ELEMENT_HPP

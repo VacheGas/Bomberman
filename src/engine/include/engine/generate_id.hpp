@@ -1,9 +1,7 @@
 //
 // Created by Vache Gasparyan on 29.12.23.
 //
-
-#ifndef BOMBERMAN_GENERATE_ID_HPP
-#define BOMBERMAN_GENERATE_ID_HPP
+#pragma once
 namespace sdl{
 
     std::size_t generateGraphicElementID() {
@@ -12,5 +10,3 @@ namespace sdl{
     }
 
 }
-
-#endif  //BOMBERMAN_GENERATE_ID_HPP
