@@ -8,23 +8,23 @@
 
 #include <string>
 
+#include <engine/window.hpp>
+#include <engine/sdlRendererDeleter.hpp>
+
 namespace sdl {
 
 class Renderer {
    public:
     Renderer() = default;
-    Renderer(int flag, std::size_t width, std::size_t height, std::string title);
+    explicit Renderer(std::unique_ptr<Window> window);
 
    public:
+    std::unique_ptr<SDL_Renderer, sdl::sdlRendererDeleter>& renderer();
 
 
    private:
-    int _flags{};
-    std::size_t _width{};
-    std::size_t _height{};
-    SDL_Renderer* _renderer{};
-    SDL_Window* _window;
-    std::string _title;
+    std::unique_ptr<SDL_Renderer, sdlRendererDeleter> _renderer = nullptr;
+    std::unique_ptr<Window> _window;
 };
 
 }  // namespace sdl

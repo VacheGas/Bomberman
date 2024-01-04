@@ -17,10 +17,10 @@ using Texture = SDL_Texture;
 
 class Engine {
 public:
-    Engine(const std::string& title, size_t width, size_t height, int flags);
+    Engine(std::unique_ptr<Renderer> renderer);
     Engine(const Engine&) = delete;
     Engine& operator=(const Engine&) = delete;
-    ~Engine();
+    ~Engine() = default;
 
     void run();
     void registerSprite(const std::string& assetPath, Vec4 srcRect, Vec4 dstRect);
@@ -31,8 +31,6 @@ public:
                                   size_t animationSpeed = 1);
 
 
-    std::size_t width() const;
-    std::size_t height() const;
     void setDrawColor(SDL_Color color);
 
 private:
@@ -41,11 +39,6 @@ private:
     void update();
     void clear();
     void draw(SDL_Renderer* renderer);
-
-private:
-    void initSDL();
-    void cleanSDL();
-    void cleanTextures();
 
 private:
     std::unique_ptr<Renderer> _renderer;

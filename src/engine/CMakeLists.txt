@@ -3,10 +3,12 @@ add_library(
 		INTERFACE
 		include/engine/engine.hpp
 		include/engine/renderer.hpp
-		include/engine/rendererDeleter.hpp
+		include/engine/sdlRendererDeleter.hpp
 		include/engine/sdlTextureDeleter.hpp
 		include/engine/sprite.hpp
 		include/engine/vec.hpp
+		include/engine/window.hpp
+		include/engine/sdlWindowDeleter.hpp
 		)
   
 target_include_directories(
@@ -21,6 +23,7 @@ add_library(
   src/engine.cpp
   src/renderer.cpp
   src/sprite.cpp
+  src/window.cpp
 )
 
 target_link_libraries(
