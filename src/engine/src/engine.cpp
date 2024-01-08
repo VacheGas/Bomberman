@@ -16,16 +16,17 @@ Engine::Engine(const std::string& title, size_t width, size_t height, int flags)
         throw std::runtime_error(errorMessage);
     _initialized = true;
     initSDL();
-int a;
 }
 
 Engine::~Engine() {
     cleanSDL();
 }
 
-std::unique_ptr<Texture, SdlTextureDeleter> Engine::load(const std::string& assetPath) {
+std::unique_ptr<Texture, SdlTextureDeleter> Engine::load(
+    const std::string& assetPath) {
     SDL_Surface* tempSurface = IMG_Load(assetPath.c_str());
-    std::unique_ptr<Texture, SdlTextureDeleter> texture(SDL_CreateTextureFromSurface(_renderer, tempSurface));
+    std::unique_ptr<Texture, SdlTextureDeleter> texture(
+        SDL_CreateTextureFromSurface(_renderer, tempSurface));
     SDL_DestroySurface(tempSurface);
     return texture;
 }
@@ -43,23 +44,24 @@ void Engine::run() {
     }
 }
 
-void Engine::registerSprite(const std::string& assetPath,
-                            Vec4 srcRect, Vec4 dstRect) {
+void Engine::registerSprite(const std::string& assetPath, Vec4 srcRect,
+                            Vec4 dstRect) {
     auto sdlSrcRect = SDL_FRect{srcRect[0], srcRect[1], srcRect[2], srcRect[3]};
     auto sdlDstRect = SDL_FRect{dstRect[0], dstRect[1], dstRect[2], dstRect[3]};
-    _sprites[assetPath] = std::make_unique<Sprite>(load(assetPath), sdlSrcRect, sdlDstRect);
+    _sprites[assetPath] =
+        std::make_unique<Sprite>(load(assetPath), sdlSrcRect, sdlDstRect);
 }
 
 void Engine::registerAnimatableSprite(const std::string& assetPath,
-                                      Vec4 srcRect,
-                                      Vec4 dstRect, size_t spriteRowCount,
+                                      Vec4 srcRect, Vec4 dstRect,
+                                      size_t spriteRowCount,
                                       size_t spriteColCount,
                                       size_t animationSpeed) {
     auto sdlSrcRect = SDL_FRect{srcRect[0], srcRect[1], srcRect[2], srcRect[3]};
     auto sdlDstRect = SDL_FRect{dstRect[0], dstRect[1], dstRect[2], dstRect[3]};
-    _sprites[assetPath] = std::make_unique<AnimatableSprite>(load(assetPath), sdlSrcRect,
-                                            sdlDstRect, spriteRowCount,
-                                            spriteColCount, animationSpeed);
+    _sprites[assetPath] = std::make_unique<AnimatableSprite>(
+        load(assetPath), sdlSrcRect, sdlDstRect, spriteRowCount, spriteColCount,
+        animationSpeed);
 }
 
 void Engine::setDrawColor(SDL_Color color) {
