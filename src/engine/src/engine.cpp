@@ -16,7 +16,6 @@ Engine::Engine(const std::string& title, size_t width, size_t height, int flags)
         throw std::runtime_error(errorMessage);
     _initialized = true;
     initSDL();
-    int a;
 }
 
 Engine::~Engine() {
