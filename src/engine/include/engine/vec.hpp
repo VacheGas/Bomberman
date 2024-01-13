@@ -4,29 +4,128 @@
 #include <string>
 #include <cmath>
 
+/**
+ * @class Vec
+ * @brief Represents a mathematical vector of a fixed size with various operations.
+ * @tparam SIZE The size of the vector.
+ * @tparam TYPE The type of elements in the vector.
+ */
 template<size_t SIZE, typename TYPE = float>
 class Vec {
 public:
+    /**
+     * @brief Default constructor for the Vec class.
+     */
     Vec() = default;
+
+    /**
+     * @brief Constructor for the Vec class, initializing with an array.
+     * @param vec The array to initialize the vector.
+     */
     Vec(const std::array<TYPE, SIZE>& vec);
 
+    /**
+     * @brief Accessor to retrieve the element at the specified index.
+     * @param index The index of the element to retrieve.
+     * @return A constant reference to the element at the specified index.
+     */
     const TYPE& operator[](size_t index) const;
+
+    /**
+     * @brief Mutator to retrieve the element at the specified index.
+     * @param index The index of the element to retrieve.
+     * @return A reference to the element at the specified index.
+     */
     TYPE& operator[](size_t index);
+
+    /**
+     * @brief Returns the size of the vector.
+     * @return The size of the vector.
+     */
     size_t size() const;
+
+    /**
+     * @brief Calculates the length (magnitude) of the vector.
+     * @return The length of the vector.
+     */
     TYPE length() const;
+
+    /**
+     * @brief Returns a normalized version of the vector.
+     * @return A normalized vector.
+     */
     Vec normalized() const;
+
+    /**
+     * @brief Checks if the vector is equal to another vector.
+     * @param other The vector to compare with.
+     * @return True if the vectors are equal, false otherwise.
+     */
     bool equals(const Vec& other) const;
+
+    /**
+     * @brief Checks if the vector is approximately equal to another vector within a specified epsilon.
+     * @param other The vector to compare with.
+     * @param epsilon The tolerance for equality.
+     * @return True if the vectors are approximately equal, false otherwise.
+     */
     bool equalsWithEpsilon(const Vec& other, TYPE epsilon = std::numeric_limits<TYPE>::epsilon()) const;
 
 public:
+    /**
+     * @brief Adds another vector to the current vector.
+     * @param rhs The vector to add.
+     * @return A reference to the modified vector.
+     */
     Vec& operator+=(const Vec& rhs);
+
+    /**
+     * @brief Subtracts another vector from the current vector.
+     * @param rhs The vector to subtract.
+     * @return A reference to the modified vector.
+     */
     Vec& operator-=(const Vec& rhs);
+
+    /**
+     * @brief Multiplies the current vector element-wise by another vector.
+     * @param rhs The vector to multiply by.
+     * @return A reference to the modified vector.
+     */
     Vec& operator*=(const Vec& rhs);
+
+    /**
+     * @brief Divides the current vector element-wise by another vector.
+     * @param rhs The vector to divide by.
+     * @return A reference to the modified vector.
+     */
     Vec& operator/=(const Vec& rhs);
 
+    /**
+     * @brief Adds a scalar value to each element of the vector.
+     * @param number The scalar value to add.
+     * @return A reference to the modified vector.
+     */
     Vec& operator+=(TYPE number);
+
+    /**
+     * @brief Subtracts a scalar value from each element of the vector.
+     * @param number The scalar value to subtract.
+     * @return A reference to the modified vector.
+     */
     Vec& operator-=(TYPE number);
+
+    /**
+     * @brief Multiplies each element of the vector by a scalar value.
+     * @param number The scalar value to multiply by.
+     * @return A reference to the modified vector.
+     */
     Vec& operator*=(TYPE number);
+
+    /**
+     * @brief Divides each element of the vector by a scalar value.
+     * @param number The scalar value to divide by.
+     * @return A reference to the modified vector.
+     */
     Vec& operator/=(TYPE number);
 
 private:

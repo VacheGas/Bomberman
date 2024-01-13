@@ -22,6 +22,13 @@ add_subdirectory(dependencies/SDL_image)
 set(CMAKE_MODULE_PATH "${CMAKE_MODULE_PATH};${CMAKE_SOURCE_DIR}/cmake")
 
 include(add_test)
+include(doxygen)
+
+bomberman_enable_doxygen_comments(
+        INPUTS ${CMAKE_CURRENT_SOURCE_DIR}/src/components/include/components
+               ${CMAKE_CURRENT_SOURCE_DIR}/src/engine/include/engine
+        )
+
 add_subdirectory(src)
 
 add_executable(${PROJECT_NAME} ${SOURCES})
