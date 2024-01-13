@@ -2,11 +2,11 @@
 // Created by Vache Gasparyan on 04.01.24.
 //
 
-#ifndef BOMBERMAN_WINDOW_HPP
-#define BOMBERMAN_WINDOW_HPP
+#pragma once
 
 #include <SDL3/SDL.h>
 
+#include "renderer.hpp"
 #include "sdlWindowDeleter.hpp"
 
 #include <memory>
@@ -16,10 +16,18 @@ namespace sdl {
 
 class Window {
    public:
+    static std::unique_ptr<Window> createWindow(int flag, size_t width, size_t height, std::string_view title);
+
+   public:
+    const std::unique_ptr<SDL_Window, sdlWindowDeleter>&  window() const;
+    int flags() const;
+    size_t width() const;
+    size_t height() const;
+    const std::string_view& title() const;
+
+   private:
     Window() = default;
     Window(int flag, size_t width, size_t height, std::string_view title);
-    const std::unique_ptr<SDL_Window, sdlWindowDeleter>& window() const;
-
    private:
     int _flags{};
     std::size_t _width{};
@@ -29,5 +37,3 @@ class Window {
 };
 
 }  // namespace sdl
-
-#endif  //BOMBERMAN_WINDOW_HPP

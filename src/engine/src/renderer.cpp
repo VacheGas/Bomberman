@@ -23,4 +23,10 @@ Renderer::Renderer(std::unique_ptr<Window> window) : _window(std::move(window)) 
 std::unique_ptr<SDL_Renderer, sdlRendererDeleter>& Renderer::renderer() {
     return _renderer;
 }
+
+std::unique_ptr<Renderer> Renderer::createRenderer(
+    std::unique_ptr<Window> window) {
+    return std::make_unique<Renderer>(Renderer(std::move(window)));
+}
+
 }

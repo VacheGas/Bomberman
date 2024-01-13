@@ -2,8 +2,8 @@
 // Created by Vache Gasparyan on 24.12.23.
 //
 
-#ifndef BOMBERMAN_RENDERER_HPP
-#define BOMBERMAN_RENDERER_HPP
+#pragma once
+
 #include <SDL3/SDL.h>
 
 #include <string>
@@ -12,9 +12,14 @@
 #include <engine/sdlRendererDeleter.hpp>
 
 namespace sdl {
+class Window;
+
 
 class Renderer {
    public:
+    static std::unique_ptr<Renderer> createRenderer(std::unique_ptr<Window> window);
+
+   private:
     Renderer() = default;
     explicit Renderer(std::unique_ptr<Window> window);
 
@@ -28,5 +33,3 @@ class Renderer {
 };
 
 }  // namespace sdl
-
-#endif  //BOMBERMAN_RENDERER_HPP
