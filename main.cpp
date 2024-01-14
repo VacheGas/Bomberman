@@ -4,4 +4,4 @@
 
 #include "engine/engine.hpp"
 
-int main() {}
+int main() { }

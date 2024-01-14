@@ -14,13 +14,14 @@ void sdl::AnimatableGraphicElement::draw(SDL_Renderer* renderer) {
 }
 
 void sdl::AnimatableGraphicElement::update() {
-    auto frameNumber = _animationSpeed * static_cast<size_t>(SDL_GetTicks() / 50 - startTime);
+    auto frameNumber =
+        _animationSpeed * static_cast<size_t>(SDL_GetTicks() / 50 - startTime);
     _currentCol = frameNumber % _sprite->getColCount();
     _currentRow = frameNumber / _sprite->getColCount() % _sprite->getRowCount();
 }
 
 sdl::AnimatableGraphicElement::AnimatableGraphicElement(
-    const std::shared_ptr<Sprite>& texture, Vec4& srcRect,
-    Vec4& dstRect, size_t animationSpeed)
+    const std::shared_ptr<Sprite>& texture, Vec4& srcRect, Vec4& dstRect,
+    size_t animationSpeed)
     : GraphicElement(texture, srcRect, dstRect),
       _animationSpeed(animationSpeed) {}

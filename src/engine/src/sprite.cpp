@@ -17,4 +17,4 @@ std::size_t Sprite::getColCount() const {
     return 1;
 }
 
-} // namespace sdl
+}  // namespace sdl
