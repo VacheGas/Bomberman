@@ -11,8 +11,7 @@ namespace sdl {
 class AnimatableGraphicElement : public GraphicElement {
    public:
     AnimatableGraphicElement() = default;
-    AnimatableGraphicElement(const std::shared_ptr<Sprite>& sprite,
-                            Vec4& srcRect, Vec4& dstRect,
+    AnimatableGraphicElement(const std::shared_ptr<Sprite>& sprite, Vec4& dstRect,
                             size_t animationSpeed);
 
     void update() override;

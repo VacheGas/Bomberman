@@ -15,7 +15,7 @@ class GraphicElement {
     GraphicElement() = default;
 
     GraphicElement(const std::shared_ptr<sdl::Sprite>& sharedPtr,
-                   const Vec4& rect, const Vec4& rect1);
+                   const Vec4& rect1);
 
     virtual ~GraphicElement() = default;
 
@@ -25,7 +25,6 @@ class GraphicElement {
 
    protected:
     std::shared_ptr<Sprite> _sprite;
-    SDL_FRect _srcRect{};
     SDL_FRect _dstRect{};
 };
 

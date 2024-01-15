@@ -54,7 +54,7 @@ private:
     SDL_Renderer* _renderer;
     std::unordered_map<std::size_t, std::unique_ptr<GraphicElement>>
         _graphicElements{};
-    std::unique_ptr<SpriteFactory> _factory{};
+    std::unique_ptr<SpriteFactory> _factory{std::make_unique<SpriteFactory>()};
 
    private:
     static bool _initialized;
