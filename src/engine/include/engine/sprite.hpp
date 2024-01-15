@@ -1,8 +1,8 @@
 #pragma once
 
+#include <engine/vec.hpp>
 #include "engine/sdlTextureDeleter.hpp"
 #include "sprite_factory.hpp"
-#include <engine/vec.hpp>
 
 #include <memory>
 
@@ -11,15 +11,16 @@
 namespace sdl {
 
 class Sprite {
-   public:
-    Sprite(std::unique_ptr<SDL_Texture, SdlTextureDeleter> texture, Vec4 &srcRect);
+public:
+    Sprite(std::unique_ptr<SDL_Texture, SdlTextureDeleter> texture,
+           Vec4& srcRect);
     virtual ~Sprite() = default;
 
-   public:
+public:
     virtual void draw(SDL_Renderer* renderer, const SDL_FRect& srcRect,
-              const SDL_FRect& dstRect);
+                      const SDL_FRect& dstRect);
 
-   public:
+public:
     virtual std::size_t rowCount() const;
     virtual std::size_t colCount() const;
     float xRect() const;
@@ -28,10 +29,9 @@ class Sprite {
     float heightRect() const;
     SDL_FRect srcRect() const;
 
-
-   protected:
+protected:
     std::unique_ptr<SDL_Texture, SdlTextureDeleter> _texture{};
     SDL_FRect _srcRect{};
 };
 
-} // namespace sdl
+}  // namespace sdl

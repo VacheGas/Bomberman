@@ -3,15 +3,15 @@
 //
 #pragma once
 
-#include "sprite.hpp"
 #include <engine/vec.hpp>
+#include "sprite.hpp"
 
 #include <memory>
 #include "SDL3/SDL.h"
 
 namespace sdl {
 class GraphicElement {
-   public:
+public:
     GraphicElement() = default;
 
     GraphicElement(const std::shared_ptr<sdl::Sprite>& sharedPtr,
@@ -19,14 +19,13 @@ class GraphicElement {
 
     virtual ~GraphicElement() = default;
 
-   public:
+public:
     virtual void draw(SDL_Renderer* renderer);
     virtual void update();
 
-   protected:
+protected:
     std::shared_ptr<Sprite> _sprite;
     SDL_FRect _dstRect{};
 };
 
 }  // namespace sdl
-

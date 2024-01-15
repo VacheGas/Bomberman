@@ -7,7 +7,7 @@
 
 namespace sdl {
 
-    struct SdlTextureDeleter {
+struct SdlTextureDeleter {
     void operator()(SDL_Texture* texture);
 };
 
@@ -17,4 +17,4 @@ inline void SdlTextureDeleter::operator()(SDL_Texture* texture) {
     }
 }
 
-}
+}  // namespace sdl
