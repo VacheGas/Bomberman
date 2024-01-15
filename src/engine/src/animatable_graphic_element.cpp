@@ -4,7 +4,7 @@
 
 #include "engine/animatable_graphic_element.hpp"
 
-// TODO: calcualtion should be moved to Sprite
+// TODO: calculation should be moved to Sprite
 void sdl::AnimatableGraphicElement::draw(SDL_Renderer* renderer) {
     SDL_FRect currentSrcRect = _sprite->srcRect();
     currentSrcRect.x =
