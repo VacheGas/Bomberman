@@ -12,8 +12,6 @@
 #include "engine/sdlTextureDeleter.hpp"
 #include "engine/sprite.hpp"
 
-#include <nlohmann/json.hpp>
-
 namespace sdl {
 class Engine;
 class Sprite;
@@ -23,8 +21,7 @@ public:
     SpriteFactory() = default;
 
 private:
-    void addNewSprite(std::string_view path, SDL_Renderer* renderer,
-                      Vec4& srcRect);
+    void addNewSprite(std::string_view asset_path, SDL_Renderer* renderer);
     void addNewAnimationSprite(std::string_view path, SDL_Renderer* renderer,
                                Vec4& srcRect, std::size_t rowCount,
                                std::size_t colCount);

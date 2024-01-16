@@ -1,0 +1,9 @@
+{
+    "texturePath": "animation/explosion_1.png",
+    "srcRect": {
+        "x": 0,
+        "y": 0,
+        "width": 255,
+        "height": 255
+    }
+}
