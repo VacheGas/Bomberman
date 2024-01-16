@@ -12,6 +12,8 @@
 #include "engine/sdlTextureDeleter.hpp"
 #include "engine/sprite.hpp"
 
+#include <nlohmann/json.hpp>
+
 namespace sdl {
 class Engine;
 class Sprite;

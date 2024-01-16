@@ -18,6 +18,7 @@ endif()
 add_subdirectory(dependencies/googletest)
 add_subdirectory(dependencies/SDL)
 add_subdirectory(dependencies/SDL_image)
+add_subdirectory(dependencies/json)
 
 set(CMAKE_MODULE_PATH "${CMAKE_MODULE_PATH};${CMAKE_SOURCE_DIR}/cmake")
 
