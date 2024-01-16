@@ -1,10 +1,11 @@
 #pragma once
 
-#include <engine/sprite.hpp>
-#include <engine/vec.hpp>
+#include "graphic_element.hpp"
+#include "sprite.hpp"
+#include "vec.hpp"
 
-#include <SDL3/SDL.h>
 #include <string>
+#include "SDL3/SDL.h"
 
 #include <memory>
 #include <unordered_map>
@@ -16,26 +17,28 @@ using Texture = SDL_Texture;
 
 class Engine {
 public:
-    Engine(const std::string& title, size_t width, size_t height, int flags);
+    Engine(std::string_view, size_t width, size_t height, int flags);
     Engine(const Engine&) = delete;
     Engine& operator=(const Engine&) = delete;
     ~Engine();
 
     void run();
-    void registerSprite(const std::string& assetPath, Vec4 srcRect, Vec4 dstRect);
 
-    void registerAnimatableSprite(const std::string& assetPath,
-                                  Vec4 srcRect, Vec4 dstRect,
-                                  size_t spriteRowCount, size_t spriteColCount,
-                                  size_t animationSpeed = 1);
+    std::size_t registerGraphicElement(std::string_view assetPath,
+                                       Vec4 srcRect);
 
+    std::size_t registerAnimatableGraphicElement(std::string_view assetPath,
+                                                 Vec4 srcRect,
+                                                 size_t spriteRowCount,
+                                                 size_t spriteColCount);
 
     std::size_t width() const;
     std::size_t height() const;
     void setDrawColor(SDL_Color color);
 
 private:
-    std::unique_ptr<Texture, SdlTextureDeleter> load(const std::string& assetPath);
+    std::unique_ptr<Texture, SdlTextureDeleter> load(
+        const std::string& assetPath);
     void present();
     void update();
     void clear();
@@ -44,16 +47,17 @@ private:
 private:
     void initSDL();
     void cleanSDL();
-    void cleanTextures();
 
 private:
-    std::string _title;
+    std::string_view _title;
     size_t _width;
     size_t _height;
     int _flags;
     SDL_Window* _window;
     SDL_Renderer* _renderer;
-    std::unordered_map<std::string, std::unique_ptr<Sprite>> _sprites{};
+    std::unordered_map<std::size_t, std::unique_ptr<GraphicElement>>
+        _graphicElements{};
+    std::unique_ptr<SpriteFactory> _factory{std::make_unique<SpriteFactory>()};
 
 private:
     static bool _initialized;

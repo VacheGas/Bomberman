@@ -12,7 +12,6 @@ bomberman_add_test(
         DEPS bomberman_testing_utils engine
 )
 
-
 #[[
 bomberman_add_test(
     NAME bomberman_engine_test

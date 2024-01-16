@@ -1,46 +1,41 @@
-#include <engine/sprite.hpp>
+#include "engine/sprite.hpp"
 
 namespace sdl {
 
-Sprite::Sprite(std::unique_ptr<SDL_Texture, SdlTextureDeleter> texture,
-               SDL_FRect srcRect, 
-               SDL_FRect dstRect)
-    : _texture{std::move(texture)}
-    , _srcRect{srcRect}
-    , _dstRect{dstRect} {}
+Sprite::Sprite(std::unique_ptr<SDL_Texture, SdlTextureDeleter> texture, Vec4 &srcRect)
+    : _texture{std::move(texture)}, _srcRect{SDL_FRect{srcRect[0], srcRect[1], srcRect[2], srcRect[3]}}  {}
 
-void Sprite::update() {}
-
-void Sprite::render(SDL_Renderer* renderer) {
-    SDL_RenderTexture(renderer, _texture.get(), &_srcRect, &_dstRect);
+// TODO : renderer should be a member of Sprite
+void Sprite::draw(SDL_Renderer* renderer, const SDL_FRect& srcRect,
+                  const SDL_FRect& dstRect) {
+    SDL_RenderTexture(renderer, _texture.get(), &srcRect, &dstRect);
 }
 
-AnimatableSprite::AnimatableSprite(std::unique_ptr<SDL_Texture, SdlTextureDeleter> texture,
-                                   SDL_FRect srcRect,
-                                   SDL_FRect dstRect, 
-                                   size_t rowCount,
-                                   size_t colCount,
-                                   size_t animationSpeed)
-    : Sprite{std::move(texture), srcRect, dstRect}
-    , _rowCount{rowCount}
-    , _colCount{colCount}
-    , _animationSpeed{animationSpeed}
-    , _currentRow{}
-    , _currentCol{} {}
-
-void AnimatableSprite::update() {
-    // TODO: implement a mechanism to start animation from the very beginning
-    auto frameNumber = _animationSpeed * int(SDL_GetTicks() / 50);
-    _currentCol = frameNumber % _colCount;
-    _currentRow = frameNumber / _colCount % _rowCount;
+std::size_t Sprite::rowCount() const {
+    return 1;
+}
+std::size_t Sprite::colCount() const {
+    return 1;
 }
 
-// TODO : remove coordinates
-void AnimatableSprite::render(SDL_Renderer* renderer) {
-    auto currentSrcRect = _srcRect;
-    currentSrcRect.x = _srcRect.x + _srcRect.w * _currentCol;
-    currentSrcRect.y = _srcRect.y + _srcRect.h * _currentRow;
-    SDL_RenderTexture(renderer, _texture.get(), &currentSrcRect, &_dstRect);
+float Sprite::xRect() const {
+    return _srcRect.x;
 }
 
-} // namespace sdl
+float Sprite::yRect() const {
+    return _srcRect.y;
+}
+
+float Sprite::widthRect() const {
+    return _srcRect.w;
+}
+
+float Sprite::heightRect() const {
+    return _srcRect.h;
+}
+
+SDL_FRect Sprite::srcRect() const {
+    return _srcRect;
+}
+
+}  // namespace sdl
