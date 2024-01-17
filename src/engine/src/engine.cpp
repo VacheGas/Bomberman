@@ -1,5 +1,5 @@
 #include "engine/engine.hpp"
-#include "engine/animatable_graphic_element.hpp"
+#include "engine/graphic_element.hpp"
 #include "engine/generate_id.hpp"
 #include "engine/sprite_factory.hpp"
 
@@ -35,35 +35,21 @@ std::unique_ptr<Texture, SdlTextureDeleter> Engine::load(
 
 void Engine::run() {
     SDL_Event e;
-    bool quit = false;
-    while (!quit) {
-        while (SDL_PollEvent(&e)) {
-            if (e.type == SDL_EVENT_QUIT)
-                quit = true;
-        }
+    while (e.type != SDL_EVENT_QUIT) {
+        SDL_PollEvent(&e);
         update();
         draw(_renderer);
     }
 }
 
 std::size_t Engine::registerGraphicElement(std::string_view assetPath,
-                                           Vec4 dstRect) {
-    _factory->addNewSprite(assetPath, _renderer);
+                                            Vec4 dstRect,
+                                            size_t spriteRowCount,
+                                            size_t spriteColCount) {
+    _factory->addNewSprite(assetPath, _renderer, spriteRowCount, spriteColCount);
     const std::size_t elementId = sdl::generateGraphicElementID();
     _graphicElements[elementId] = std::make_unique<GraphicElement>(
         _factory->getSprite(assetPath), dstRect);
-    return elementId;
-}
-
-std::size_t Engine::registerAnimatableGraphicElement(std::string_view assetPath,
-                                                     Vec4 srcRect,
-                                                     size_t spriteRowCount,
-                                                     size_t spriteColCount) {
-    _factory->addNewAnimationSprite(assetPath, _renderer, srcRect, spriteRowCount,
-                                    spriteColCount);
-    const std::size_t elementId = sdl::generateGraphicElementID();
-    _graphicElements[elementId] = std::make_unique<AnimatableGraphicElement>(
-        _factory->getSprite(assetPath), srcRect, 1);
     return elementId;
 }
 

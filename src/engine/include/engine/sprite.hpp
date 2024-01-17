@@ -13,25 +13,19 @@ namespace sdl {
 class Sprite {
 public:
     Sprite(std::unique_ptr<SDL_Texture, SdlTextureDeleter> texture,
-           Vec4& srcRect);
-    virtual ~Sprite() = default;
-
+           Vec4& srcRect, size_t rowCount, size_t colCount);
 public:
-    virtual void draw(SDL_Renderer* renderer, const SDL_FRect& srcRect,
-                      const SDL_FRect& dstRect);
-
+    void draw(SDL_Renderer* renderer, const Vec4& srcRect, const Vec4& dstRect);
 public:
-    virtual std::size_t rowCount() const;
-    virtual std::size_t colCount() const;
-    float xRect() const;
-    float yRect() const;
-    float widthRect() const;
-    float heightRect() const;
-    SDL_FRect srcRect() const;
+    Vec4 srcRect() const;
+    std::size_t rowCount() const;
+    std::size_t colCount() const;
 
 protected:
     std::unique_ptr<SDL_Texture, SdlTextureDeleter> _texture{};
-    SDL_FRect _srcRect{};
+    Vec4 _srcRect{};
+    std::size_t _rowCount{};
+    std::size_t _colCount{};
 };
 
 }  // namespace sdl

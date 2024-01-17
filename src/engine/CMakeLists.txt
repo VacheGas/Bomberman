@@ -1,8 +1,6 @@
 add_library(
   engine_headers
   INTERFACE
-  include/engine/animation_sprite.hpp
-  include/engine/animatable_graphic_element.hpp
   include/engine/engine.hpp
   include/engine/graphic_element.hpp
   include/engine/generate_id.hpp
@@ -21,8 +19,6 @@ target_include_directories(
 add_library(
   engine
   STATIC
-  src/animation_sprite.cpp
-  src/animatable_graphic_element.cpp
   src/engine.cpp
   src/sprite.cpp
   src/graphic_element.cpp
