@@ -1,5 +1,5 @@
 {
-    "texturePath": "/Users/tigran.sukiasyan/Bomberman/assets/textures/animation/explosion_1.png",
+    "texturePath": "animation/explosion_1.png",
     "srcRect": {
         "x": 0,
         "y": 0,

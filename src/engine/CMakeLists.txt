@@ -56,3 +56,5 @@ target_link_libraries(
   SDL3_image::SDL3_image
   nlohmann_json::nlohmann_json
 )
+
+target_compile_definitions(engine PRIVATE RESOURCES_PATH="${RESOURCES_PATH}")

@@ -9,7 +9,7 @@ set(CMAKE_EXE_LINKER_FLAGS  "${CMAKE_EXE_LINKER_FLAGS} -g -fsanitize=undefined,a
 
 set(SOURCES main.cpp)
 
-SET(RESOURCES_PATH "${CMAKE_CURRENT_SOURCE_DIR}/assets")
+SET(RESOURCES_PATH "${CMAKE_CURRENT_SOURCE_DIR}/assets/")
 
 if(APPLE)
     enable_language(OBJC)
@@ -28,3 +28,4 @@ add_subdirectory(src)
 add_executable(${PROJECT_NAME} ${SOURCES})
 
 target_link_libraries(${PROJECT_NAME} PRIVATE engine)
+target_compile_definitions(${PROJECT_NAME} PRIVATE RESOURCES_PATH="${RESOURCES_PATH}")

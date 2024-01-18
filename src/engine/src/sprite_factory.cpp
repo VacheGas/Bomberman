@@ -9,6 +9,7 @@
 #include <nlohmann/json.hpp>
 
 #include <fstream>
+#include <iostream>
 namespace {
 
 nlohmann::json jsonFromFile(std::string_view assetPath) {
@@ -47,7 +48,10 @@ void sdl::SpriteFactory::addNewSprite(std::string_view assetPath,
         return;
 
     auto jsonData = jsonFromFile(assetPath);
-    std::string texturePath = jsonData["texturePath"];
+    std::string texturePath =
+        std::string(RESOURCES_PATH) + "textures/" + std::string(jsonData["texturePath"]);
+
+    std::cerr << texturePath << std::endl;
     auto x = jsonData["srcRect"]["x"];
     auto y = jsonData["srcRect"]["y"];
     auto width = jsonData["srcRect"]["width"];
