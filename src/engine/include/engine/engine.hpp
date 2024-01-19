@@ -24,7 +24,7 @@ public:
 
     void run();
 
-    std::size_t registerGraphicElement(std::string_view assetPath, Vec4 srcRect);
+    std::size_t registerGraphicElement(std::string_view assetPath, Vec4 dstRect);
 
     std::size_t width() const;
     std::size_t height() const;

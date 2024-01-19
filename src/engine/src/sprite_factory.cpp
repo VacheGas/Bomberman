@@ -49,12 +49,10 @@ void sdl::SpriteFactory::addNewSprite(std::string_view assetPath, SDL_Renderer* 
         std::string(RESOURCES_PATH) + "textures/" + std::string(jsonData["texturePath"]);
 
     std::cerr << texturePath << std::endl;
-    auto x = jsonData["srcRect"]["x"];
-    auto y = jsonData["srcRect"]["y"];
-    auto width = jsonData["srcRect"]["width"];
-    auto height = jsonData["srcRect"]["height"];
-    Vec4 srcRect({x, y, width, height});
+    auto width = jsonData["frameSize"]["width"];
+    auto height = jsonData["frameSize"]["height"];
+    Vec2 frameSize({width, height});
 
     auto texture = loadSprite(texturePath, renderer);
-    _sprites[assetPath] = std::make_shared<sdl::Sprite>(std::move(texture), srcRect);
+    _sprites[assetPath] = std::make_shared<sdl::Sprite>(std::move(texture), frameSize);
 }

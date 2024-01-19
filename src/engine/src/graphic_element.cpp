@@ -13,12 +13,12 @@ GraphicElement::GraphicElement(const std::shared_ptr<Sprite>& sprite, Vec4& dstR
       _animationSpeed(1) {}
 
 void sdl::GraphicElement::draw(SDL_Renderer* renderer) {
-    Vec4 currentSrcRect = _sprite->srcRect();
-    currentSrcRect[0] =
-        currentSrcRect[0] + currentSrcRect[2] * static_cast<float>(_currentCol);
-    currentSrcRect[1] =
-        currentSrcRect[1] + currentSrcRect[3] * static_cast<float>(_currentRow);
-    _sprite->draw(renderer, currentSrcRect, _dstRect);
+    auto frameSize = _sprite->frameSize();
+    Vec4 srcRect({frameSize[0] * static_cast<float>(_currentCol),
+                 frameSize[1] * static_cast<float>(_currentRow), 
+                 frameSize[0],
+                 frameSize[1]});
+    _sprite->draw(renderer, srcRect, _dstRect);
 }
 
 void sdl::GraphicElement::update() {
