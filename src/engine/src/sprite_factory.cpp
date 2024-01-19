@@ -40,10 +40,7 @@ std::shared_ptr<sdl::Sprite> sdl::SpriteFactory::getSprite(
     std::string_view id) {
     return _sprites[id];
 }
-void sdl::SpriteFactory::addNewSprite(std::string_view assetPath,
-                                    SDL_Renderer* renderer,
-                                    std::size_t rowCount,
-                                    std::size_t colCount) {
+void sdl::SpriteFactory::addNewSprite(std::string_view assetPath, SDL_Renderer* renderer) {
     if (_sprites.contains(assetPath))
         return;
 
@@ -59,6 +56,5 @@ void sdl::SpriteFactory::addNewSprite(std::string_view assetPath,
     Vec4 srcRect({x, y, width, height});
 
     auto texture = loadSprite(texturePath, renderer);
-    _sprites[assetPath] = std::make_shared<sdl::Sprite>(std::move(texture), srcRect,
-                                                            rowCount, colCount);
+    _sprites[assetPath] = std::make_shared<sdl::Sprite>(std::move(texture), srcRect);
 }

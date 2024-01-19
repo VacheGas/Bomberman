@@ -42,11 +42,8 @@ void Engine::run() {
     }
 }
 
-std::size_t Engine::registerGraphicElement(std::string_view assetPath,
-                                            Vec4 dstRect,
-                                            size_t spriteRowCount,
-                                            size_t spriteColCount) {
-    _factory->addNewSprite(assetPath, _renderer, spriteRowCount, spriteColCount);
+std::size_t Engine::registerGraphicElement(std::string_view assetPath, Vec4 dstRect) {
+    _factory->addNewSprite(assetPath, _renderer);
     const std::size_t elementId = sdl::generateGraphicElementID();
     _graphicElements[elementId] = std::make_unique<GraphicElement>(
         _factory->getSprite(assetPath), dstRect);

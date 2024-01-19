@@ -2,12 +2,18 @@
 
 namespace sdl {
 
-Sprite::Sprite(std::unique_ptr<SDL_Texture, SdlTextureDeleter> texture,
-               Vec4& srcRect, std::size_t rowCount, std::size_t colCount)
+Sprite::Sprite(std::unique_ptr<SDL_Texture, SdlTextureDeleter> texture, Vec4& srcRect)
     : _texture{std::move(texture)}
     , _srcRect{srcRect}
-    , _rowCount(rowCount)
-    , _colCount(colCount) {}
+    , _rowCount{}
+    , _colCount{} {
+
+    int width{};
+    int height{};
+    SDL_QueryTexture(_texture.get(), nullptr, nullptr, &width, &height);
+    _rowCount = height / _srcRect[3];
+    _colCount = width / _srcRect[2];
+}
 
 // TODO : renderer should be a member of Sprite
 void Sprite::draw(SDL_Renderer* renderer, const Vec4& srcRect, const Vec4& dstRect) {

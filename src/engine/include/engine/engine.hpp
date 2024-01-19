@@ -24,10 +24,7 @@ public:
 
     void run();
 
-    std::size_t registerGraphicElement(std::string_view assetPath,
-                                                 Vec4 srcRect,
-                                                 size_t spriteRowCount,
-                                                 size_t spriteColCount);
+    std::size_t registerGraphicElement(std::string_view assetPath, Vec4 srcRect);
 
     std::size_t width() const;
     std::size_t height() const;

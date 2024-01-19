@@ -21,8 +21,7 @@ public:
     SpriteFactory() = default;
 
 private:
-    void addNewSprite(std::string_view path, SDL_Renderer* renderer,
-                    std::size_t rowCount, std::size_t colCount);
+    void addNewSprite(std::string_view path, SDL_Renderer* renderer);
     std::shared_ptr<sdl::Sprite> getSprite(std::string_view id);
 
 private:

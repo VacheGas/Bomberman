@@ -12,11 +12,10 @@ namespace sdl {
 
 class Sprite {
 public:
-    Sprite(std::unique_ptr<SDL_Texture, SdlTextureDeleter> texture,
-           Vec4& srcRect, size_t rowCount, size_t colCount);
+    Sprite(std::unique_ptr<SDL_Texture, SdlTextureDeleter> texture, Vec4& srcRect);
+    
 public:
     void draw(SDL_Renderer* renderer, const Vec4& srcRect, const Vec4& dstRect);
-public:
     Vec4 srcRect() const;
     std::size_t rowCount() const;
     std::size_t colCount() const;
