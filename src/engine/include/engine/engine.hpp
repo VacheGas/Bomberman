@@ -1,11 +1,9 @@
 #pragma once
 
 #include "graphic_element.hpp"
+#include "input_handler.hpp"
 #include "sprite.hpp"
 #include "vec.hpp"
-#include <engine/sprite.hpp>
-#include <engine/vec.hpp>
-#include <engine/input_handler.hpp>
 
 #include <string>
 #include "SDL3/SDL.h"
@@ -65,7 +63,7 @@ private:
     std::unordered_map<std::string, SDL_Texture*> _textures;
     std::vector<Sprite*> _sprites{};
     InputHandler _inputHandler;
-    bool _running{};
+    // bool _running{};
 
 private:
     static bool _initialized;
