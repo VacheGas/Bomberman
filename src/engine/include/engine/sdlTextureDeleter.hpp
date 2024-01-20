@@ -5,6 +5,8 @@
 
 #include "SDL3/SDL.h"
 
+#include <memory>
+
 namespace sdl {
 
 struct SdlTextureDeleter {
@@ -16,5 +18,7 @@ inline void SdlTextureDeleter::operator()(SDL_Texture* texture) {
         SDL_DestroyTexture(texture);
     }
 }
+
+using Texture = std::unique_ptr<SDL_Texture, sdl::SdlTextureDeleter>;
 
 }  // namespace sdl

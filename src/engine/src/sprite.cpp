@@ -2,11 +2,11 @@
 
 namespace sdl {
 
-Sprite::Sprite(std::unique_ptr<SDL_Texture, SdlTextureDeleter> texture, Vec2 frameSize)
-    : _texture{std::move(texture)}
-    , _frameSize{frameSize}
-    , _rowCount{}
-    , _colCount{} {
+Sprite::Sprite(Texture texture, Vec2 frameSize)
+    : _texture{std::move(texture)},
+      _frameSize{frameSize},
+      _rowCount{},
+      _colCount{} {
 
     int width{};
     int height{};
@@ -16,7 +16,8 @@ Sprite::Sprite(std::unique_ptr<SDL_Texture, SdlTextureDeleter> texture, Vec2 fra
 }
 
 // TODO : renderer should be a member of Sprite
-void Sprite::draw(SDL_Renderer* renderer, const Vec4& srcRect, const Vec4& dstRect) {
+void Sprite::draw(SDL_Renderer* renderer, const Vec4& srcRect,
+                  const Vec4& dstRect) {
     SDL_FRect src;
     src.x = srcRect[0];
     src.y = srcRect[1];

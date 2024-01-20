@@ -13,8 +13,6 @@
 
 namespace sdl {
 
-using Texture = SDL_Texture;
-
 class Engine {
 public:
     Engine(std::string_view, size_t width, size_t height, int flags);
@@ -24,15 +22,15 @@ public:
 
     void run();
 
-    std::size_t registerGraphicElement(std::string_view assetPath, Vec4 dstRect);
+    std::size_t registerGraphicElement(std::string_view assetPath,
+                                       Vec4 dstRect);
 
     std::size_t width() const;
     std::size_t height() const;
     void setDrawColor(SDL_Color color);
 
 private:
-    std::unique_ptr<Texture, SdlTextureDeleter> load(
-        const std::string& assetPath);
+    Texture load(const std::string& assetPath);
     void present();
     void update();
     void clear();

@@ -4,15 +4,13 @@
 #include "engine/sdlTextureDeleter.hpp"
 #include "sprite_factory.hpp"
 
-#include <memory>
-
 #include "SDL3/SDL.h"
 
 namespace sdl {
 
 class Sprite {
 public:
-    Sprite(std::unique_ptr<SDL_Texture, SdlTextureDeleter> texture, Vec2 frameSize);
+    Sprite(Texture texture, Vec2 frameSize);
 
 public:
     void draw(SDL_Renderer* renderer, const Vec4& srcRect, const Vec4& dstRect);
@@ -21,7 +19,7 @@ public:
     std::size_t colCount() const;
 
 protected:
-    std::unique_ptr<SDL_Texture, SdlTextureDeleter> _texture{};
+    Texture _texture{};
     Vec2 _frameSize{};
     std::size_t _rowCount{};
     std::size_t _colCount{};

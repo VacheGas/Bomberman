@@ -9,14 +9,15 @@
 #include <nlohmann/json.hpp>
 
 #include <fstream>
-#include <iostream>
+
 namespace {
 
 nlohmann::json jsonFromFile(std::string_view assetPath) {
     std::ifstream file(assetPath);
 
     if (!file.is_open()) {
-        throw std::runtime_error("Failed to open file: " + std::string(assetPath));
+        throw std::runtime_error("Failed to open file: " +
+                                 std::string(assetPath));
     }
 
     nlohmann::json data;
@@ -25,11 +26,9 @@ nlohmann::json jsonFromFile(std::string_view assetPath) {
     return data;
 }
 
-std::unique_ptr<SDL_Texture, sdl::SdlTextureDeleter> loadSprite(
-    std::string_view assetPath, SDL_Renderer* renderer) {
+sdl::Texture loadSprite(std::string_view assetPath, SDL_Renderer* renderer) {
     SDL_Surface* tempSurface = IMG_Load(assetPath.data());
-    std::unique_ptr<SDL_Texture, sdl::SdlTextureDeleter> texture(
-        SDL_CreateTextureFromSurface(renderer, tempSurface));
+    sdl::Texture texture(SDL_CreateTextureFromSurface(renderer, tempSurface));
     SDL_DestroySurface(tempSurface);
     return texture;
 }
@@ -40,18 +39,19 @@ std::shared_ptr<sdl::Sprite> sdl::SpriteFactory::getSprite(
     std::string_view id) {
     return _sprites[id];
 }
-void sdl::SpriteFactory::addNewSprite(std::string_view assetPath, SDL_Renderer* renderer) {
+void sdl::SpriteFactory::addNewSprite(std::string_view assetPath,
+                                      SDL_Renderer* renderer) {
     if (_sprites.contains(assetPath))
         return;
 
     nlohmann::json jsonData = jsonFromFile(assetPath);
-    std::string texturePath =
-        std::string(RESOURCES_PATH) + "textures/" + std::string(jsonData["texturePath"]);
+    std::string texturePath = std::string(RESOURCES_PATH) + "textures/" +
+                              std::string(jsonData["texturePath"]);
 
     float width = jsonData["frameSize"]["width"];
     float height = jsonData["frameSize"]["height"];
 
     auto texture = loadSprite(texturePath, renderer);
-    _sprites[assetPath] =
-        std::make_shared<sdl::Sprite>(std::move(texture), Vec2({width, height}));
+    _sprites[assetPath] = std::make_shared<sdl::Sprite>(std::move(texture),
+                                                        Vec2({width, height}));
 }

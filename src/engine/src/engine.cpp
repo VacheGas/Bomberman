@@ -1,6 +1,6 @@
 #include "engine/engine.hpp"
-#include "engine/graphic_element.hpp"
 #include "engine/generate_id.hpp"
+#include "engine/graphic_element.hpp"
 #include "engine/sprite_factory.hpp"
 
 #include <SDL3_image/SDL_image.h>
@@ -24,11 +24,9 @@ Engine::~Engine() {
     cleanSDL();
 }
 
-std::unique_ptr<Texture, SdlTextureDeleter> Engine::load(
-    const std::string& assetPath) {
+Texture Engine::load(const std::string& assetPath) {
     SDL_Surface* tempSurface = IMG_Load(assetPath.c_str());
-    std::unique_ptr<Texture, SdlTextureDeleter> texture(
-        SDL_CreateTextureFromSurface(_renderer, tempSurface));
+    Texture texture(SDL_CreateTextureFromSurface(_renderer, tempSurface));
     SDL_DestroySurface(tempSurface);
     return texture;
 }
@@ -42,7 +40,8 @@ void Engine::run() {
     }
 }
 
-std::size_t Engine::registerGraphicElement(std::string_view assetPath, Vec4 dstRect) {
+std::size_t Engine::registerGraphicElement(std::string_view assetPath,
+                                           Vec4 dstRect) {
     _factory->addNewSprite(assetPath, _renderer);
     const std::size_t elementId = sdl::generateGraphicElementID();
     _graphicElements[elementId] = std::make_unique<GraphicElement>(
