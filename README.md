@@ -4,7 +4,8 @@
 
 1. install necessary tools if needed
 ```bash
-brew install cmake ninja clang-format doxygen
+brew install cmake ninja clang-format
+pip install cmake-format
 ```
 2. Clone the repository
 ```bash
