@@ -1,0 +1,7 @@
+{
+    "texturePath": "animation/explosion_1.png",
+    "frameSize": {
+        "width": 256,
+        "height": 256
+    }
+}

@@ -63,7 +63,6 @@ bool Vec<SIZE, TYPE>::equalsWithEpsilon(const Vec<SIZE, TYPE>& other, TYPE epsil
 
     // TODO: find a better way than 10 * epsilon
     for (size_t i{}; i < _vec.size(); ++i) {
-        // std::cout << std::abs(_vec[i] - other._vec[i]) << std::endl;
         if (std::abs(_vec[i] - other._vec[i]) > 10 * epsilon) {
             return false;
         }
