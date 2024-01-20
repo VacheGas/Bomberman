@@ -50,7 +50,6 @@ void sdl::SpriteFactory::addNewSprite(std::string_view assetPath, SDL_Renderer* 
 
     float width = jsonData["frameSize"]["width"];
     float height = jsonData["frameSize"]["height"];
-    Vec2 frameSize({width, height});
 
     auto texture = loadSprite(texturePath, renderer);
     _sprites[assetPath] =

@@ -18,9 +18,3 @@ cd "BUILD_DIR"
 cmake .. -G Ninja
 ninja
 ```
-
-4. If you want to generate documentation, you need to execute these commands in the build folder.
-```
-ninja documentation
-open html/index.html  
-```
