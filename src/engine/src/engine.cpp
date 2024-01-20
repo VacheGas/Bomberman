@@ -1,8 +1,10 @@
-#include <engine/engine.hpp>
-
-#include <memory>
+#include "engine/engine.hpp"
+#include "engine/animatable_graphic_element.hpp"
+#include "engine/generate_id.hpp"
+#include "engine/sprite_factory.hpp"
 
 #include <SDL3_image/SDL_image.h>
+#include <memory>
 
 namespace sdl {
 
@@ -16,7 +18,8 @@ Engine::Engine(std::unique_ptr<Renderer> renderer) : _renderer(std::move(rendere
     _initialized = true;
 }
 
-std::unique_ptr<Texture, SdlTextureDeleter> Engine::load(const std::string& assetPath) {
+std::unique_ptr<Texture, SdlTextureDeleter> Engine::load(
+    const std::string& assetPath) {
     SDL_Surface* tempSurface = IMG_Load(assetPath.c_str());
     std::unique_ptr<Texture, SdlTextureDeleter> texture(SDL_CreateTextureFromSurface(_renderer->renderer().get(), tempSurface));
     SDL_DestroySurface(tempSurface);
@@ -36,23 +39,25 @@ void Engine::run() {
     }
 }
 
-void Engine::registerSprite(const std::string& assetPath,
-                            Vec4 srcRect, Vec4 dstRect) {
-    auto sdlSrcRect = SDL_FRect{srcRect[0], srcRect[1], srcRect[2], srcRect[3]};
-    auto sdlDstRect = SDL_FRect{dstRect[0], dstRect[1], dstRect[2], dstRect[3]};
-    _sprites[assetPath] = std::make_unique<Sprite>(load(assetPath), sdlSrcRect, sdlDstRect);
+std::size_t Engine::registerGraphicElement(std::string_view assetPath,
+                                           Vec4 srcRect) {
+    _factory->addNewSprite(assetPath, _renderer->renderer().get(), srcRect);
+    const std::size_t elementId = sdl::generateGraphicElementID();
+    _graphicElements[elementId] = std::make_unique<GraphicElement>(
+        _factory->getSprite(assetPath), srcRect);
+    return elementId;
 }
 
-void Engine::registerAnimatableSprite(const std::string& assetPath,
-                                      Vec4 srcRect,
-                                      Vec4 dstRect, size_t spriteRowCount,
-                                      size_t spriteColCount,
-                                      size_t animationSpeed) {
-    auto sdlSrcRect = SDL_FRect{srcRect[0], srcRect[1], srcRect[2], srcRect[3]};
-    auto sdlDstRect = SDL_FRect{dstRect[0], dstRect[1], dstRect[2], dstRect[3]};
-    _sprites[assetPath] = std::make_unique<AnimatableSprite>(load(assetPath), sdlSrcRect,
-                                            sdlDstRect, spriteRowCount,
-                                            spriteColCount, animationSpeed);
+std::size_t Engine::registerAnimatableGraphicElement(std::string_view assetPath,
+                                                     Vec4 srcRect,
+                                                     size_t spriteRowCount,
+                                                     size_t spriteColCount) {
+    _factory->addNewAnimationSprite(assetPath, _renderer->renderer().get(), srcRect, spriteRowCount,
+                                    spriteColCount);
+    const std::size_t elementId = sdl::generateGraphicElementID();
+    _graphicElements[elementId] = std::make_unique<AnimatableGraphicElement>(
+        _factory->getSprite(assetPath), srcRect, 1);
+    return elementId;
 }
 
 void Engine::setDrawColor(SDL_Color color) {
@@ -70,7 +75,8 @@ void Engine::clear() {
 
 
 void Engine::update() {
-    for (auto it = _sprites.begin(); it != _sprites.end(); ++it) {
+    for (auto it = _graphicElements.begin(); it != _graphicElements.end();
+         ++it) {
         it->second->update();
     }
 }
@@ -78,8 +84,9 @@ void Engine::update() {
 void Engine::draw(SDL_Renderer* renderer) {
     SDL_RenderClear(_renderer->renderer().get());
     SDL_SetRenderDrawColor(_renderer->renderer().get(), 0, 100, 0, 255);
-    for (auto & _sprite : _sprites) {
-        _sprite.second->render(renderer);
+    for (auto it = _graphicElements.begin(); it != _graphicElements.end();
+         ++it) {
+        it->second->draw(renderer);
     }
     present();
 }

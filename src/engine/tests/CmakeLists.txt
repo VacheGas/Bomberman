@@ -19,11 +19,11 @@ bomberman_add_test(
 )
 
 
-#[[
+
 bomberman_add_test(
     NAME bomberman_engine_test
     SRCS engine_test.cpp
     DEPS bomberman_testing_utils engine
     DEFINES RESOURCES_PATH="${RESOURCES_PATH}"
 )
-]]
+

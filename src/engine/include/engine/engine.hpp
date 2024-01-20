@@ -3,9 +3,10 @@
 #include <engine/sprite.hpp>
 #include <engine/vec.hpp>
 #include <engine/renderer.hpp>
+#include <engine/graphic_element.hpp>
 
-#include <SDL3/SDL.h>
 #include <string>
+#include "SDL3/SDL.h"
 
 #include <memory>
 #include <unordered_map>
@@ -23,18 +24,20 @@ public:
     ~Engine() = default;
 
     void run();
-    void registerSprite(const std::string& assetPath, Vec4 srcRect, Vec4 dstRect);
 
-    void registerAnimatableSprite(const std::string& assetPath,
-                                  Vec4 srcRect, Vec4 dstRect,
-                                  size_t spriteRowCount, size_t spriteColCount,
-                                  size_t animationSpeed = 1);
+    std::size_t registerGraphicElement(std::string_view assetPath,
+                                       Vec4 srcRect);
 
+    std::size_t registerAnimatableGraphicElement(std::string_view assetPath,
+                                                 Vec4 srcRect,
+                                                 size_t spriteRowCount,
+                                                 size_t spriteColCount);
 
     void setDrawColor(SDL_Color color);
 
 private:
-    std::unique_ptr<Texture, SdlTextureDeleter> load(const std::string& assetPath);
+    std::unique_ptr<Texture, SdlTextureDeleter> load(
+        const std::string& assetPath);
     void present();
     void update();
     void clear();
@@ -42,7 +45,9 @@ private:
 
 private:
     std::unique_ptr<Renderer> _renderer;
-    std::unordered_map<std::string, std::unique_ptr<Sprite>> _sprites{};
+    std::unique_ptr<SpriteFactory> _factory{std::make_unique<SpriteFactory>()};
+    std::unordered_map<std::size_t, std::unique_ptr<GraphicElement>>
+        _graphicElements{};
 
 private:
     static bool _initialized;

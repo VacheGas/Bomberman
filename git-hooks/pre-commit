@@ -1,0 +1,29 @@
+#!/bin/bash
+
+GIT_DIR=`git rev-parse --git-dir`
+
+# Do nothing if this is a merge commit
+[[ -f $GIT_DIR/MERGE_HEAD ]] && exit 0
+
+files=$(git --no-pager diff --cached --name-only --diff-filter=AM)
+
+for f in $files
+do
+    if [[ $f =~ CMakeLists.txt || $f =~ .+\.cmake ]]; then
+        git --no-pager diff --name-only --exit-code -- $f >/dev/null || \
+            { echo "$f is modified after being staged for commit. Running cmake-format will break things."; exit 1; }
+        echo "cmake-format -c .cmake-format -i $f"
+        cmake-format -c .cmake-format -i $f
+        git add $f
+        continue
+    fi
+
+    if [[ $f =~ src && $f =~ \.cpp$|\.hpp$|\.glsl$ ]]; then
+        hash clang-format 2>/dev/null || { echo "clang-format is not found. Install it by: brew install clang-format"; exit 1; }
+        git --no-pager diff --name-only --exit-code -- $f >/dev/null || \
+            { echo "$f is modified after being staged for commit. Running clang-format will break things."; exit 1; }
+        echo "clang-format -i $f"
+        clang-format -i $f
+        git add $f
+    fi
+done
