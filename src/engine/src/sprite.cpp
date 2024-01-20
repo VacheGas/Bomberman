@@ -2,7 +2,7 @@
 
 namespace sdl {
 
-Sprite::Sprite(std::unique_ptr<SDL_Texture, SdlTextureDeleter> texture, Vec2& frameSize)
+Sprite::Sprite(std::unique_ptr<SDL_Texture, SdlTextureDeleter> texture, Vec2 frameSize)
     : _texture{std::move(texture)}
     , _frameSize{frameSize}
     , _rowCount{}

@@ -12,7 +12,7 @@ namespace sdl {
 
 class Sprite {
 public:
-    Sprite(std::unique_ptr<SDL_Texture, SdlTextureDeleter> texture, Vec2& frameSize);
+    Sprite(std::unique_ptr<SDL_Texture, SdlTextureDeleter> texture, Vec2 frameSize);
 
 public:
     void draw(SDL_Renderer* renderer, const Vec4& srcRect, const Vec4& dstRect);

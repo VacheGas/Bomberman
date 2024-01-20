@@ -44,15 +44,15 @@ void sdl::SpriteFactory::addNewSprite(std::string_view assetPath, SDL_Renderer* 
     if (_sprites.contains(assetPath))
         return;
 
-    auto jsonData = jsonFromFile(assetPath);
+    nlohmann::json jsonData = jsonFromFile(assetPath);
     std::string texturePath =
         std::string(RESOURCES_PATH) + "textures/" + std::string(jsonData["texturePath"]);
 
-    std::cerr << texturePath << std::endl;
-    auto width = jsonData["frameSize"]["width"];
-    auto height = jsonData["frameSize"]["height"];
+    float width = jsonData["frameSize"]["width"];
+    float height = jsonData["frameSize"]["height"];
     Vec2 frameSize({width, height});
 
     auto texture = loadSprite(texturePath, renderer);
-    _sprites[assetPath] = std::make_shared<sdl::Sprite>(std::move(texture), frameSize);
+    _sprites[assetPath] =
+        std::make_shared<sdl::Sprite>(std::move(texture), Vec2({width, height}));
 }
