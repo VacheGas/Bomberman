@@ -1,39 +1,47 @@
 #pragma once
 
+#include "graphic_element.hpp"
+#include "sprite.hpp"
+#include "vec.hpp"
 #include <engine/sprite.hpp>
 #include <engine/vec.hpp>
 #include <engine/input_handler.hpp>
 
-#include <SDL3/SDL.h>
 #include <string>
+#include "SDL3/SDL.h"
 
+#include <memory>
 #include <unordered_map>
 #include <vector>
 
 namespace sdl {
 
+using Texture = SDL_Texture;
+
 class Engine {
 public:
-    Engine(const std::string& title, size_t width, size_t height, int flags);
+    Engine(std::string_view, size_t width, size_t height, int flags);
     Engine(const Engine&) = delete;
     Engine& operator=(const Engine&) = delete;
     ~Engine();
 
     void run();
-    void registerSprite(const std::string& assetPath, Vec4 srcRect, Vec4 dstRect);
 
-    void registerAnimatableSprite(const std::string& assetPath,
-                                  Vec4 srcRect, Vec4 dstRect,
-                                  size_t spriteRowCount, size_t spriteColCount,
-                                  size_t animationSpeed = 1);
+    std::size_t registerGraphicElement(std::string_view assetPath,
+                                       Vec4 srcRect);
 
-    bool load(const std::string& assetPath);
+    std::size_t registerAnimatableGraphicElement(std::string_view assetPath,
+                                                 Vec4 srcRect,
+                                                 size_t spriteRowCount,
+                                                 size_t spriteColCount);
 
-    size_t width() const;
-    size_t height() const;
+    std::size_t width() const;
+    std::size_t height() const;
     void setDrawColor(SDL_Color color);
 
 private:
+    std::unique_ptr<Texture, SdlTextureDeleter> load(
+        const std::string& assetPath);
     void present();
     void update();
     void clear();
@@ -43,16 +51,17 @@ private:
 private:
     void initSDL();
     void cleanSDL();
-    void cleanSprites();
-    void cleanTextures();
 
 private:
-    std::string _title;
+    std::string_view _title;
     size_t _width;
     size_t _height;
     int _flags;
     SDL_Window* _window;
     SDL_Renderer* _renderer;
+    std::unordered_map<std::size_t, std::unique_ptr<GraphicElement>>
+        _graphicElements{};
+    std::unique_ptr<SpriteFactory> _factory{std::make_unique<SpriteFactory>()};
     std::unordered_map<std::string, SDL_Texture*> _textures;
     std::vector<Sprite*> _sprites{};
     InputHandler _inputHandler;

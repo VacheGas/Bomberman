@@ -1,12 +1,16 @@
-#include <engine/engine.hpp>
+#include "engine/engine.hpp"
+#include "engine/animatable_graphic_element.hpp"
+#include "engine/generate_id.hpp"
+#include "engine/sprite_factory.hpp"
 
 #include <SDL3_image/SDL_image.h>
+#include <memory>
 
 namespace sdl {
 
 bool Engine::_initialized = false;
 
-Engine::Engine(const std::string& title, size_t width, size_t height, int flags)
+Engine::Engine(std::string_view title, size_t width, size_t height, int flags)
     : _title{title}, _width{width}, _height{height}, _flags{flags} {
 
     auto errorMessage = "There can be only one instance of the engine";
@@ -17,28 +21,22 @@ Engine::Engine(const std::string& title, size_t width, size_t height, int flags)
 }
 
 Engine::~Engine() {
-    cleanSprites();
     cleanSDL();
 }
 
-bool Engine::load(const std::string& assetPath) {
+std::unique_ptr<Texture, SdlTextureDeleter> Engine::load(
+    const std::string& assetPath) {
     SDL_Surface* tempSurface = IMG_Load(assetPath.c_str());
-    if (tempSurface == 0) {
-        return false;
-    }
-    SDL_Texture* texture = SDL_CreateTextureFromSurface(_renderer, tempSurface);
+    std::unique_ptr<Texture, SdlTextureDeleter> texture(
+        SDL_CreateTextureFromSurface(_renderer, tempSurface));
     SDL_DestroySurface(tempSurface);
-    if (texture != 0) {
-        _textures[assetPath] = texture;
-        return true;
-    }
-    return false;
+    return texture;
 }
 
 void Engine::run() {
     SDL_Event e;
     bool quit = false;
-    while (quit == false) {
+    while (!quit) {
         while (SDL_PollEvent(&e)) {
             if (e.type == SDL_EVENT_QUIT)
                 quit = true;
@@ -48,26 +46,25 @@ void Engine::run() {
     }
 }
 
-void Engine::registerSprite(const std::string& assetPath,
-                            Vec4 srcRect, Vec4 dstRect) {
-    load(assetPath);
-    auto sdlSrcRect = SDL_FRect{srcRect[0], srcRect[1], srcRect[2], srcRect[3]};
-    auto sdlDstRect = SDL_FRect{dstRect[0], dstRect[1], dstRect[2], dstRect[3]};
-    _sprites.push_back(
-        new Sprite(_textures[assetPath], sdlSrcRect, sdlDstRect));
+std::size_t Engine::registerGraphicElement(std::string_view assetPath,
+                                           Vec4 srcRect) {
+    _factory->addNewSprite(assetPath, _renderer, srcRect);
+    const std::size_t elementId = sdl::generateGraphicElementID();
+    _graphicElements[elementId] = std::make_unique<GraphicElement>(
+        _factory->getSprite(assetPath), srcRect);
+    return elementId;
 }
 
-void Engine::registerAnimatableSprite(const std::string& assetPath,
-                                      Vec4 srcRect,
-                                      Vec4 dstRect, size_t spriteRowCount,
-                                      size_t spriteColCount,
-                                      size_t animationSpeed) {
-    load(assetPath);
-    auto sdlSrcRect = SDL_FRect{srcRect[0], srcRect[1], srcRect[2], srcRect[3]};
-    auto sdlDstRect = SDL_FRect{dstRect[0], dstRect[1], dstRect[2], dstRect[3]};
-    _sprites.push_back(new AnimatableSprite(_textures[assetPath], sdlSrcRect,
-                                            sdlDstRect, spriteRowCount,
-                                            spriteColCount, animationSpeed));
+std::size_t Engine::registerAnimatableGraphicElement(std::string_view assetPath,
+                                                     Vec4 srcRect,
+                                                     size_t spriteRowCount,
+                                                     size_t spriteColCount) {
+    _factory->addNewAnimationSprite(assetPath, _renderer, srcRect, spriteRowCount,
+                                    spriteColCount);
+    const std::size_t elementId = sdl::generateGraphicElementID();
+    _graphicElements[elementId] = std::make_unique<AnimatableGraphicElement>(
+        _factory->getSprite(assetPath), srcRect, 1);
+    return elementId;
 }
 
 void Engine::setDrawColor(SDL_Color color) {
@@ -92,8 +89,9 @@ size_t Engine::height() const {
 }
 
 void Engine::update() {
-    for (auto sprite : _sprites) {
-        sprite->update();
+    for (auto it = _graphicElements.begin(); it != _graphicElements.end();
+         ++it) {
+        it->second->update();
     }
 }
 
@@ -128,8 +126,9 @@ void Engine::handleInput() {
 void Engine::draw(SDL_Renderer* renderer) {
     SDL_RenderClear(_renderer);
     SDL_SetRenderDrawColor(_renderer, 0, 100, 0, 255);
-    for (auto sprite : _sprites) {
-        sprite->render(renderer);
+    for (auto it = _graphicElements.begin(); it != _graphicElements.end();
+         ++it) {
+        it->second->draw(renderer);
     }
     present();
 }
@@ -140,7 +139,7 @@ void Engine::initSDL() {
                                  std::string(SDL_GetError()));
     }
 
-    _window = SDL_CreateWindow(_title.c_str(), _width, _height, _flags);
+    _window = SDL_CreateWindow(_title.data(), _width, _height, _flags);
 
     if (!_window) {
         SDL_Quit();
@@ -162,19 +161,6 @@ void Engine::cleanSDL() {
     if (_window)
         SDL_DestroyWindow(_window);
     SDL_Quit();
-}
-
-void Engine::cleanSprites() {
-    for (auto sprite : _sprites) {
-        delete sprite;
-    }
-}
-
-void Engine::cleanTextures() {
-    for (auto texture : _textures) {
-        SDL_DestroyTexture(_textures[texture.first]);
-        _textures.erase(texture.first);
-    }
 }
 
 }  // namespace sdl
