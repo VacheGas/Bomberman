@@ -10,13 +10,7 @@ add_library(
 		include/engine/sprite.hpp
 		include/engine/sprite_factory.hpp
 		include/engine/vec.hpp
-		)
-  engine_headers 
-  INTERFACE
-  include/engine/engine.hpp
-  include/engine/sprite.hpp
-  include/engine/vec.hpp
-  include/engine/input_handler.hpp
+    include/engine/input_handler.hpp
 )
   
 target_include_directories(

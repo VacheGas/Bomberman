@@ -42,6 +42,7 @@ void Engine::run() {
                 quit = true;
         }
         update();
+        handleInput();
         draw(_renderer);
     }
 }
@@ -59,8 +60,8 @@ std::size_t Engine::registerAnimatableGraphicElement(std::string_view assetPath,
                                                      Vec4 srcRect,
                                                      size_t spriteRowCount,
                                                      size_t spriteColCount) {
-    _factory->addNewAnimationSprite(assetPath, _renderer, srcRect, spriteRowCount,
-                                    spriteColCount);
+    _factory->addNewAnimationSprite(assetPath, _renderer, srcRect,
+                                    spriteRowCount, spriteColCount);
     const std::size_t elementId = sdl::generateGraphicElementID();
     _graphicElements[elementId] = std::make_unique<AnimatableGraphicElement>(
         _factory->getSprite(assetPath), srcRect, 1);
@@ -102,7 +103,7 @@ void Engine::handleInput() {
     if (_inputHandler.isKeyPressed(SDL_SCANCODE_A)) {
         // Render a rectangle at position (100, 100) with width 50 and height 50
         SDL_FRect rect = {100, 100, 50, 50};
-        SDL_SetRenderDrawColor(_renderer, 255, 0, 0, 255); // Set color to red
+        SDL_SetRenderDrawColor(_renderer, 255, 0, 0, 255);  // Set color to red
         SDL_RenderFillRect(_renderer, &rect);
     }
 
@@ -112,7 +113,7 @@ void Engine::handleInput() {
         int radius = 25;
         int centerX = 200;
         int centerY = 200;
-        SDL_SetRenderDrawColor(_renderer, 0, 0, 255, 255); // Set color to blue
+        SDL_SetRenderDrawColor(_renderer, 0, 0, 255, 255);  // Set color to blue
         for (int x = -radius; x <= radius; x++) {
             for (int y = -radius; y <= radius; y++) {
                 if (x * x + y * y <= radius * radius) {
