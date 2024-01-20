@@ -1,6 +1,6 @@
 #include "engine/engine.hpp"
-#include "engine/animatable_graphic_element.hpp"
 #include "engine/generate_id.hpp"
+#include "engine/graphic_element.hpp"
 #include "engine/sprite_factory.hpp"
 
 #include <SDL3_image/SDL_image.h>
@@ -18,45 +18,28 @@ Engine::Engine(std::unique_ptr<Renderer> renderer) : _renderer(std::move(rendere
     _initialized = true;
 }
 
-std::unique_ptr<Texture, SdlTextureDeleter> Engine::load(
-    const std::string& assetPath) {
+Texture Engine::load(const std::string& assetPath) {
     SDL_Surface* tempSurface = IMG_Load(assetPath.c_str());
-    std::unique_ptr<Texture, SdlTextureDeleter> texture(SDL_CreateTextureFromSurface(_renderer->renderer().get(), tempSurface));
+    Texture texture(SDL_CreateTextureFromSurface(_renderer->renderer().get(), tempSurface));
     SDL_DestroySurface(tempSurface);
     return texture;
 }
 
 void Engine::run() {
     SDL_Event e;
-    bool quit = false;
-    while (!quit) {
-        while (SDL_PollEvent(&e)) {
-            if (e.type == SDL_EVENT_QUIT)
-                quit = true;
-        }
+    while (e.type != SDL_EVENT_QUIT) {
+        SDL_PollEvent(&e);
         update();
         draw(_renderer->renderer().get());
     }
 }
 
 std::size_t Engine::registerGraphicElement(std::string_view assetPath,
-                                           Vec4 srcRect) {
-    _factory->addNewSprite(assetPath, _renderer->renderer().get(), srcRect);
+                                           Vec4 dstRect) {
+    _factory->addNewSprite(assetPath, _renderer->renderer().get());
     const std::size_t elementId = sdl::generateGraphicElementID();
     _graphicElements[elementId] = std::make_unique<GraphicElement>(
-        _factory->getSprite(assetPath), srcRect);
-    return elementId;
-}
-
-std::size_t Engine::registerAnimatableGraphicElement(std::string_view assetPath,
-                                                     Vec4 srcRect,
-                                                     size_t spriteRowCount,
-                                                     size_t spriteColCount) {
-    _factory->addNewAnimationSprite(assetPath, _renderer->renderer().get(), srcRect, spriteRowCount,
-                                    spriteColCount);
-    const std::size_t elementId = sdl::generateGraphicElementID();
-    _graphicElements[elementId] = std::make_unique<AnimatableGraphicElement>(
-        _factory->getSprite(assetPath), srcRect, 1);
+        _factory->getSprite(assetPath), dstRect);
     return elementId;
 }
 

@@ -1,8 +1,6 @@
 add_library(
 		engine_headers
 		INTERFACE
-		include/engine/animation_sprite.hpp
-		include/engine/animatable_graphic_element.hpp
 		include/engine/engine.hpp
 		include/engine/graphic_element.hpp
 		include/engine/generate_id.hpp
@@ -25,8 +23,6 @@ target_include_directories(
 add_library(
   engine
   STATIC
-  src/animation_sprite.cpp
-  src/animatable_graphic_element.cpp
   src/engine.cpp
   src/renderer.cpp
   src/sprite.cpp
@@ -55,6 +51,8 @@ target_include_directories(
   ${SDL3_SOURCE_DIR}/include/SDL3 
   ${SDL3_image_SOURCE_DIR}/include 
   ${SDL3_image_SOURCE_DIR}/include/SDL3_image
+  ${CMAKE_SOURCE_DIR}/dependencies/json
+  ${CMAKE_SOURCE_DIR}/dependencies/json/include
 )
 
 target_link_libraries(
@@ -62,4 +60,7 @@ target_link_libraries(
   PRIVATE 
   SDL3::SDL3
   SDL3_image::SDL3_image
+  nlohmann_json::nlohmann_json
 )
+
+target_compile_definitions(engine PRIVATE RESOURCES_PATH="${RESOURCES_PATH}")
