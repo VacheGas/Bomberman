@@ -15,20 +15,22 @@
 namespace sdl {
 
 class Window {
-   public:
-    static std::unique_ptr<Window> createWindow(int flag, size_t width, size_t height, std::string_view title);
+public:
+    static std::unique_ptr<Window> createWindow(std::string_view title,
+                                                size_t width, size_t height,
+                                                int flag);
 
-   public:
-    const std::unique_ptr<SDL_Window, sdlWindowDeleter>&  window() const;
+public:
+    const std::unique_ptr<SDL_Window, sdlWindowDeleter>& window() const;
     int flags() const;
-    size_t width() const;
-    size_t height() const;
+    std::size_t width() const;
+    std::size_t height() const;
     const std::string_view& title() const;
 
-   private:
-    Window() = default;
-    Window(int flag, size_t width, size_t height, std::string_view title);
-   private:
+private:
+    Window(std::string_view title, size_t width, size_t height, int flag);
+
+private:
     int _flags{};
     std::size_t _width{};
     std::size_t _height{};
