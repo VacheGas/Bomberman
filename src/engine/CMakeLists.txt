@@ -4,14 +4,11 @@ add_library(
 		include/engine/engine.hpp
 		include/engine/graphic_element.hpp
 		include/engine/generate_id.hpp
-		include/engine/sdlTextureDeleter.hpp
 		include/engine/sprite.hpp
 		include/engine/sprite_factory.hpp
 		include/engine/vec.hpp
     include/engine/window.hpp
-		include/engine/sdlWindowDeleter.hpp
     include/engine/renderer.hpp
-		include/engine/sdlRendererDeleter.hpp
 		)
 
 target_include_directories(

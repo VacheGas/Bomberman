@@ -4,6 +4,7 @@
 
 #include "engine/window.hpp"
 
+#include <cassert>
 #include <string>
 
 namespace sdl {
@@ -21,20 +22,22 @@ Window::Window(std::string_view title, size_t width, size_t height, int flag)
         throw std::runtime_error("window creation error: " +
                                  std::string(SDL_GetError()));
     }
+    _renderer = std::make_shared<Renderer>(*this);
 }
+
 const std::unique_ptr<SDL_Window, sdlWindowDeleter>& Window::window() const {
     return _window;
 }
 
-int Window::flags() const {
+int Window::flags() const noexcept {
     return _flags;
 }
 
-std::size_t Window::width() const {
+std::size_t Window::width() const noexcept {
     return _width;
 }
 
-std::size_t Window::height() const {
+std::size_t Window::height() const noexcept {
     return _height;
 }
 
@@ -42,9 +45,13 @@ const std::string_view& Window::title() const {
     return _title;
 }
 
-std::unique_ptr<Window> Window::createWindow(std::string_view title,
-                                             size_t width, size_t height,
-                                             int flag) {
-    return std::make_unique<Window>(Window(title, width, height, flag));
+const std::shared_ptr<Renderer>& Window::renderer() const {
+    return _renderer;
 }
+
+Window::~Window() {
+    _renderer.reset();
+    assert(_renderer.use_count() == 0);
+}
+
 }  // namespace sdl

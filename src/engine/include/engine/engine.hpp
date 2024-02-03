@@ -1,9 +1,9 @@
 #pragma once
 
+#include <engine/graphic_element.hpp>
+#include <engine/renderer.hpp>
 #include <engine/sprite.hpp>
 #include <engine/vec.hpp>
-#include <engine/renderer.hpp>
-#include <engine/graphic_element.hpp>
 
 #include <string>
 #include "SDL3/SDL.h"
@@ -16,7 +16,7 @@ namespace sdl {
 
 class Engine {
 public:
-    Engine(std::unique_ptr<Renderer> renderer);
+    Engine(std::shared_ptr<Window> window);
     Engine(const Engine&) = delete;
     Engine& operator=(const Engine&) = delete;
     ~Engine() = default;
@@ -36,7 +36,7 @@ private:
     void draw(SDL_Renderer* renderer);
 
 private:
-    std::unique_ptr<Renderer> _renderer;
+    std::shared_ptr<Window> _window = nullptr;
     std::unique_ptr<SpriteFactory> _factory{std::make_unique<SpriteFactory>()};
     std::unordered_map<std::size_t, std::unique_ptr<GraphicElement>>
         _graphicElements{};

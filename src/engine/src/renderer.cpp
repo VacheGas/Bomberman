@@ -2,13 +2,13 @@
 // Created by Vache Gasparyan on 24.12.23.
 //
 
-#include <utility>
-
 #include "engine/renderer.hpp"
+
 namespace sdl {
 
-Renderer::Renderer(std::unique_ptr<Window> window) : _window(std::move(window)) {
-    _renderer.reset(SDL_CreateRenderer(_window->window().get(), nullptr, SDL_RENDERER_ACCELERATED));
+Renderer::Renderer(const Window& window) {
+    _renderer.reset(SDL_CreateRenderer(window.window().get(), nullptr,
+                                       SDL_RENDERER_ACCELERATED));
     if (!_renderer) {
         SDL_Quit();
         throw std::runtime_error("Renderer creation error : " +
@@ -20,9 +20,4 @@ std::unique_ptr<SDL_Renderer, sdlRendererDeleter>& Renderer::renderer() {
     return _renderer;
 }
 
-std::unique_ptr<Renderer> Renderer::createRenderer(
-    std::unique_ptr<Window> window) {
-    return std::make_unique<Renderer>(Renderer(std::move(window)));
-}
-
-}
+}  // namespace sdl
