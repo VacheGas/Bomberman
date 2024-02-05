@@ -1,15 +1,16 @@
 add_library(
-  engine_headers
-  INTERFACE
-  include/engine/engine.hpp
-  include/engine/graphic_element.hpp
-  include/engine/generate_id.hpp
-  include/engine/sdlTextureDeleter.hpp
-  include/engine/sprite.hpp
-  include/engine/sprite_factory.hpp
-  include/engine/vec.hpp
-)
-  
+		engine_headers
+		INTERFACE
+		include/engine/engine.hpp
+		include/engine/graphic_element.hpp
+		include/engine/generate_id.hpp
+		include/engine/sprite.hpp
+		include/engine/sprite_factory.hpp
+		include/engine/vec.hpp
+    include/engine/window.hpp
+    include/engine/renderer.hpp
+		)
+
 target_include_directories(
   engine_headers 
   INTERFACE
@@ -20,7 +21,9 @@ add_library(
   engine
   STATIC
   src/engine.cpp
+  src/renderer.cpp
   src/sprite.cpp
+  src/window.cpp
   src/graphic_element.cpp
   src/sprite_factory.cpp
 )

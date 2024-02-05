@@ -11,8 +11,8 @@ Sprite::Sprite(Texture texture, Vec2 frameSize)
     int width{};
     int height{};
     SDL_QueryTexture(_texture.get(), nullptr, nullptr, &width, &height);
-    _rowCount = height / _frameSize[1];
-    _colCount = width / _frameSize[0];
+    _rowCount = height / static_cast<int>(_frameSize[1]);
+    _colCount = width / static_cast<int>(_frameSize[0]);
 }
 
 // TODO : renderer should be a member of Sprite

@@ -1,8 +1,9 @@
 #pragma once
 
-#include "graphic_element.hpp"
-#include "sprite.hpp"
-#include "vec.hpp"
+#include <engine/graphic_element.hpp>
+#include <engine/renderer.hpp>
+#include <engine/sprite.hpp>
+#include <engine/vec.hpp>
 
 #include <string>
 #include "SDL3/SDL.h"
@@ -15,18 +16,16 @@ namespace sdl {
 
 class Engine {
 public:
-    Engine(std::string_view, size_t width, size_t height, int flags);
+    Engine(std::shared_ptr<Window> window);
     Engine(const Engine&) = delete;
     Engine& operator=(const Engine&) = delete;
-    ~Engine();
+    ~Engine() = default;
 
     void run();
 
     std::size_t registerGraphicElement(std::string_view assetPath,
                                        Vec4 dstRect);
 
-    std::size_t width() const;
-    std::size_t height() const;
     void setDrawColor(SDL_Color color);
 
 private:
@@ -37,19 +36,10 @@ private:
     void draw(SDL_Renderer* renderer);
 
 private:
-    void initSDL();
-    void cleanSDL();
-
-private:
-    std::string_view _title;
-    size_t _width;
-    size_t _height;
-    int _flags;
-    SDL_Window* _window;
-    SDL_Renderer* _renderer;
+    std::shared_ptr<Window> _window = nullptr;
+    std::unique_ptr<SpriteFactory> _factory{std::make_unique<SpriteFactory>()};
     std::unordered_map<std::size_t, std::unique_ptr<GraphicElement>>
         _graphicElements{};
-    std::unique_ptr<SpriteFactory> _factory{std::make_unique<SpriteFactory>()};
 
 private:
     static bool _initialized;

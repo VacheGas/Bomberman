@@ -51,7 +51,7 @@ void sdl::SpriteFactory::addNewSprite(std::string_view assetPath,
     float width = jsonData["frameSize"]["width"];
     float height = jsonData["frameSize"]["height"];
 
-    auto texture = loadSprite(texturePath, renderer);
+    Texture texture = loadSprite(texturePath, renderer);
     _sprites[assetPath] = std::make_shared<sdl::Sprite>(std::move(texture),
                                                         Vec2({width, height}));
 }
