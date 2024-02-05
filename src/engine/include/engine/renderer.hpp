@@ -8,7 +8,6 @@
 
 #include <string>
 
-#include <engine/sdlRendererDeleter.hpp>
 #include <engine/window.hpp>
 
 namespace sdl {
@@ -19,10 +18,10 @@ public:
     explicit Renderer(const Window& window);
 
 public:
-    std::unique_ptr<SDL_Renderer, sdl::sdlRendererDeleter>& renderer();
+    std::shared_ptr<SDL_Renderer>& renderer();
 
 private:
-    std::unique_ptr<SDL_Renderer, sdlRendererDeleter> _renderer = nullptr;
+    std::shared_ptr<SDL_Renderer> _renderer = nullptr;
 };
 
 }  // namespace sdl

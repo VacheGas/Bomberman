@@ -7,8 +7,13 @@
 namespace sdl {
 
 Renderer::Renderer(const Window& window) {
-    _renderer.reset(SDL_CreateRenderer(window.window().get(), nullptr,
-                                       SDL_RENDERER_ACCELERATED));
+    auto sdlRendererDeletern = [](SDL_Renderer* renderer) {
+        SDL_DestroyRenderer(renderer);
+    };
+    _renderer = std::shared_ptr<SDL_Renderer>(
+        (SDL_CreateRenderer(window.window().get(), nullptr,
+                            SDL_RENDERER_ACCELERATED)),
+        sdlRendererDeletern);
     if (!_renderer) {
         SDL_Quit();
         throw std::runtime_error("Renderer creation error : " +
@@ -16,7 +21,7 @@ Renderer::Renderer(const Window& window) {
     }
 }
 
-std::unique_ptr<SDL_Renderer, sdlRendererDeleter>& Renderer::renderer() {
+std::shared_ptr<SDL_Renderer>& Renderer::renderer() {
     return _renderer;
 }
 
