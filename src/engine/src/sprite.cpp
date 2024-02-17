@@ -2,40 +2,46 @@
 
 namespace sdl {
 
-Sprite::Sprite(std::unique_ptr<SDL_Texture, SdlTextureDeleter> texture, Vec4 &srcRect)
-    : _texture{std::move(texture)}, _srcRect{SDL_FRect{srcRect[0], srcRect[1], srcRect[2], srcRect[3]}}  {}
+Sprite::Sprite(Texture texture, Vec2 frameSize)
+    : _texture{std::move(texture)},
+      _frameSize{frameSize},
+      _rowCount{},
+      _colCount{} {
+
+    int width{};
+    int height{};
+    SDL_QueryTexture(_texture.get(), nullptr, nullptr, &width, &height);
+    _rowCount = height / static_cast<int>(_frameSize[1]);
+    _colCount = width / static_cast<int>(_frameSize[0]);
+}
 
 // TODO : renderer should be a member of Sprite
-void Sprite::draw(SDL_Renderer* renderer, const SDL_FRect& srcRect,
-                  const SDL_FRect& dstRect) {
-    SDL_RenderTexture(renderer, _texture.get(), &srcRect, &dstRect);
+void Sprite::draw(SDL_Renderer* renderer, const Vec4& srcRect,
+                  const Vec4& dstRect) {
+    SDL_FRect src;
+    src.x = srcRect[0];
+    src.y = srcRect[1];
+    src.w = srcRect[2];
+    src.h = srcRect[3];
+
+    SDL_FRect dst;
+    dst.x = dstRect[0];
+    dst.y = dstRect[1];
+    dst.w = dstRect[2];
+    dst.h = dstRect[3];
+
+    SDL_RenderTexture(renderer, _texture.get(), &src, &dst);
 }
 
 std::size_t Sprite::rowCount() const {
-    return 1;
+    return _rowCount;
 }
 std::size_t Sprite::colCount() const {
-    return 1;
+    return _colCount;
 }
 
-float Sprite::xRect() const {
-    return _srcRect.x;
-}
-
-float Sprite::yRect() const {
-    return _srcRect.y;
-}
-
-float Sprite::widthRect() const {
-    return _srcRect.w;
-}
-
-float Sprite::heightRect() const {
-    return _srcRect.h;
-}
-
-SDL_FRect Sprite::srcRect() const {
-    return _srcRect;
+Vec2 Sprite::frameSize() const {
+    return _frameSize;
 }
 
 }  // namespace sdl

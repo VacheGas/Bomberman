@@ -1,92 +1,63 @@
 #include "engine/engine.hpp"
-#include "engine/animatable_graphic_element.hpp"
 #include "engine/generate_id.hpp"
+#include "engine/graphic_element.hpp"
 #include "engine/sprite_factory.hpp"
 
 #include <SDL3_image/SDL_image.h>
 #include <memory>
+#include <utility>
 
 namespace sdl {
 
 bool Engine::_initialized = false;
 
-Engine::Engine(std::string_view title, size_t width, size_t height, int flags)
-    : _title{title}, _width{width}, _height{height}, _flags{flags} {
+Engine::Engine(std::shared_ptr<Window> window) : _window(std::move(window)) {
 
     auto errorMessage = "There can be only one instance of the engine";
     if (_initialized)
         throw std::runtime_error(errorMessage);
     _initialized = true;
-    initSDL();
 }
 
-Engine::~Engine() {
-    cleanSDL();
-}
-
-std::unique_ptr<Texture, SdlTextureDeleter> Engine::load(
-    const std::string& assetPath) {
+Texture Engine::load(const std::string& assetPath) {
     SDL_Surface* tempSurface = IMG_Load(assetPath.c_str());
-    std::unique_ptr<Texture, SdlTextureDeleter> texture(
-        SDL_CreateTextureFromSurface(_renderer, tempSurface));
+    Texture texture(SDL_CreateTextureFromSurface(
+        _window->renderer()->renderer().get(), tempSurface));
     SDL_DestroySurface(tempSurface);
     return texture;
 }
 
 void Engine::run() {
     SDL_Event e;
-    bool quit = false;
-    while (!quit) {
-        while (SDL_PollEvent(&e)) {
-            if (e.type == SDL_EVENT_QUIT)
-                quit = true;
-        }
+    while (e.type != SDL_EVENT_QUIT) {
+        SDL_PollEvent(&e);
         update();
         handleInput();
-        draw(_renderer);
+        draw(_window->renderer()->renderer().get());
     }
 }
 
 std::size_t Engine::registerGraphicElement(std::string_view assetPath,
-                                           Vec4 srcRect) {
-    _factory->addNewSprite(assetPath, _renderer, srcRect);
+                                           Vec4 dstRect) {
+    _factory->addNewSprite(assetPath, _window->renderer()->renderer().get());
     const std::size_t elementId = sdl::generateGraphicElementID();
     _graphicElements[elementId] = std::make_unique<GraphicElement>(
-        _factory->getSprite(assetPath), srcRect);
-    return elementId;
-}
-
-std::size_t Engine::registerAnimatableGraphicElement(std::string_view assetPath,
-                                                     Vec4 srcRect,
-                                                     size_t spriteRowCount,
-                                                     size_t spriteColCount) {
-    _factory->addNewAnimationSprite(assetPath, _renderer, srcRect,
-                                    spriteRowCount, spriteColCount);
-    const std::size_t elementId = sdl::generateGraphicElementID();
-    _graphicElements[elementId] = std::make_unique<AnimatableGraphicElement>(
-        _factory->getSprite(assetPath), srcRect, 1);
+        _factory->getSprite(assetPath), dstRect);
     return elementId;
 }
 
 void Engine::setDrawColor(SDL_Color color) {
-    SDL_SetRenderDrawColor(_renderer, color.r, color.g, color.b, color.a);
+    SDL_SetRenderDrawColor(_window->renderer()->renderer().get(), color.r,
+                           color.g, color.b, color.a);
 }
 
 void Engine::present() {
-    SDL_RenderPresent(_renderer);
+    SDL_RenderPresent(_window->renderer()->renderer().get());
 }
 
 void Engine::clear() {
-    SDL_SetRenderDrawColor(_renderer, 0, 0, 0, 255);
-    SDL_RenderClear(_renderer);
-}
-
-size_t Engine::width() const {
-    return _width;
-}
-
-size_t Engine::height() const {
-    return _height;
+    SDL_SetRenderDrawColor(_window->renderer()->renderer().get(), 0, 0, 0, 255);
+    SDL_RenderClear(_window->renderer()->renderer().get());
 }
 
 void Engine::update() {
@@ -125,43 +96,14 @@ void Engine::handleInput() {
 }
 
 void Engine::draw(SDL_Renderer* renderer) {
-    SDL_RenderClear(_renderer);
-    SDL_SetRenderDrawColor(_renderer, 0, 100, 0, 255);
+    SDL_RenderClear(_window->renderer()->renderer().get());
+    SDL_SetRenderDrawColor(_window->renderer()->renderer().get(), 0, 100, 0,
+                           255);
     for (auto it = _graphicElements.begin(); it != _graphicElements.end();
          ++it) {
         it->second->draw(renderer);
     }
     present();
-}
-
-void Engine::initSDL() {
-    if (SDL_InitSubSystem(SDL_INIT_EVERYTHING) < 0) {
-        throw std::runtime_error("SDL initialization error: " +
-                                 std::string(SDL_GetError()));
-    }
-
-    _window = SDL_CreateWindow(_title.data(), _width, _height, _flags);
-
-    if (!_window) {
-        SDL_Quit();
-        throw std::runtime_error("window creation error: " +
-                                 std::string(SDL_GetError()));
-    }
-    _renderer = SDL_CreateRenderer(_window, nullptr, SDL_RENDERER_ACCELERATED);
-    if (!_renderer) {
-        SDL_DestroyWindow(_window);
-        SDL_Quit();
-        throw std::runtime_error("Renderer creation error : " +
-                                 std::string(SDL_GetError()));
-    }
-}
-
-void Engine::cleanSDL() {
-    if (_renderer)
-        SDL_DestroyRenderer(_renderer);
-    if (_window)
-        SDL_DestroyWindow(_window);
-    SDL_Quit();
 }
 
 }  // namespace sdl

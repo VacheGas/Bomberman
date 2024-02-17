@@ -12,20 +12,19 @@
 namespace sdl {
 class GraphicElement {
 public:
-    GraphicElement() = default;
-
-    GraphicElement(const std::shared_ptr<sdl::Sprite>& sharedPtr,
-                   const Vec4& rect1);
-
-    virtual ~GraphicElement() = default;
-
+    GraphicElement(const std::shared_ptr<Sprite>& sprite, Vec4& dstRect);
 public:
-    virtual void draw(SDL_Renderer* renderer);
-    virtual void update();
+    void draw(SDL_Renderer* renderer);
+    void update();
 
 protected:
     std::shared_ptr<Sprite> _sprite;
-    SDL_FRect _dstRect{};
+    Vec4 _dstRect{};
+
+    std::size_t startTime = static_cast<size_t>(SDL_GetTicks() / 50);
+    std::size_t _animationSpeed{};
+    std::size_t _currentRow{};
+    std::size_t _currentCol{};
 };
 
 }  // namespace sdl
