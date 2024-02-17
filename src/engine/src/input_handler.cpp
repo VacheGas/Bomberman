@@ -2,9 +2,7 @@
 
 InputHandler::InputHandler() {
     // Initialize the keyboard state array
-    for (int i = 0; i < SDL_NUM_SCANCODES; i++) {
-        m_keyStates[i] = false;
-    }
+    std::fill(std::begin(m_keyStates), std::end(m_keyStates), false);
 }
 
 void InputHandler::update() {
