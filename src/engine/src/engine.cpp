@@ -32,6 +32,7 @@ void Engine::run() {
     while (e.type != SDL_EVENT_QUIT) {
         SDL_PollEvent(&e);
         update();
+        handleInput();
         draw(_window->renderer()->renderer().get());
     }
 }
@@ -63,6 +64,20 @@ void Engine::update() {
     for (auto it = _graphicElements.begin(); it != _graphicElements.end();
          ++it) {
         it->second->update();
+    }
+}
+
+void Engine::handleInput() {
+    _inputHandler.update();
+
+    // Check if a specific key is pressed
+    if (_inputHandler.isKeyPressed(SDL_SCANCODE_A)) {
+        // TODO: move character
+    }
+
+    // Check if another key is pressed
+    if (_inputHandler.isKeyPressed(SDL_SCANCODE_B)) {
+        // TODO: move character
     }
 }
 

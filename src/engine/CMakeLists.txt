@@ -9,6 +9,7 @@ add_library(
 		include/engine/vec.hpp
     include/engine/window.hpp
     include/engine/renderer.hpp
+    include/engine/input_handler.hpp
 		)
 
 target_include_directories(
@@ -16,7 +17,7 @@ target_include_directories(
   INTERFACE
   include/
 )
-    
+
 add_library(
   engine
   STATIC
@@ -26,6 +27,7 @@ add_library(
   src/window.cpp
   src/graphic_element.cpp
   src/sprite_factory.cpp
+  src/input_handler.cpp
 )
 
 target_link_libraries(
