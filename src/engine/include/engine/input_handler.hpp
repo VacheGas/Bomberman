@@ -1,6 +1,7 @@
 #pragma once
 
 #include <SDL3/SDL.h>
+#include <array>
 
 class InputHandler {
 public:
@@ -11,5 +12,5 @@ public:
     bool isKeyPressed(SDL_Scancode key) const;
 
 private:
-    bool m_keyStates[SDL_NUM_SCANCODES];
+    std::array<bool, SDL_NUM_SCANCODES> m_keyStates;
 };
