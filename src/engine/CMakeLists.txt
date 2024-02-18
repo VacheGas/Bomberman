@@ -1,16 +1,17 @@
 add_library(
 		engine_headers
 		INTERFACE
+		include/engine/actions.hpp
 		include/engine/engine.hpp
 		include/engine/graphic_element.hpp
 		include/engine/generate_id.hpp
 		include/engine/sprite.hpp
 		include/engine/sprite_factory.hpp
 		include/engine/vec.hpp
-    include/engine/window.hpp
-    include/engine/renderer.hpp
-    include/engine/input_handler.hpp
-		)
+        include/engine/window.hpp
+        include/engine/renderer.hpp
+        include/engine/input_handler.hpp
+)
 
 target_include_directories(
   engine_headers 
