@@ -1,7 +1,7 @@
 add_library(
 		engine_headers
 		INTERFACE
-		include/engine/actions.hpp
+		include/engine/engine_key_scancodes.hpp
 		include/engine/engine.hpp
 		include/engine/graphic_element.hpp
 		include/engine/generate_id.hpp

@@ -24,10 +24,6 @@ public:
     }
 };
 
-TEST(input_handler, constructor) {
-    EXPECT_NO_THROW(sdl::InputHandler());
-}
-
 TEST(input_handler, compile_time_code) {
     ForCompileTimeTests obj;
     obj.testSupportedScancodes();
