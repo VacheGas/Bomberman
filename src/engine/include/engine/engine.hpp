@@ -30,10 +30,9 @@ public:
     void draw(std::size_t elementID, const Vec4& srcRect, const Vec4& dstRect);
     void present();
     void clear();
-    const std::shared_ptr<Window>& window() const;
+    [[nodiscard]] const std::shared_ptr<Window>& window() const;
 
 private:
-    Texture load(const std::string& assetPath);
     void handleInput();
 
 private:

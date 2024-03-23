@@ -1,7 +1,6 @@
 add_library(
   components_headers 
   INTERFACE
-  include/components/menu.hpp
   include/components/player.hpp
 )
   
@@ -14,7 +13,6 @@ target_include_directories(
 add_library(
   components
   STATIC
-  src/menu.cpp
   src/player.cpp
 )
       
