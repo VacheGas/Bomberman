@@ -58,9 +58,16 @@ void Engine::draw(std::size_t elementID, const Vec4& srcRect,
     if (_graphicElements.find(elementID) == _graphicElements.end()) {
         throw std::runtime_error("element not exist");
     }
-    SDL_FRect src(srcRect[0], srcRect[1], srcRect[2], srcRect[3]);
-
-    SDL_FRect dst(dstRect[0], dstRect[1], dstRect[2], dstRect[3]);
+    SDL_FRect src;
+    SDL_FRect dst;
+    src.x = srcRect[0];
+    src.y = srcRect[1];
+    src.w = srcRect[2];
+    src.h = srcRect[3];
+    dst.x = dstRect[0];
+    dst.y = dstRect[1];
+    dst.w = dstRect[2];
+    dst.h = dstRect[3];
     SDL_RenderTexture(_window->renderer()->renderer().get(),
                       _graphicElements[elementID].get(), &src, &dst);
 }
