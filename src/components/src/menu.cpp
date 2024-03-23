@@ -3,40 +3,20 @@
 //
 
 #include "components/menu.hpp"
-#include "engine/generate_id.hpp"
-
-components::Menu::Menu(const std::shared_ptr<sdl::Window>& window)
-    : _window(window) {}
-
-void components::Menu::createMainMenu() {
-    _menuWasOpen = true;
-    std::array<std::string_view, 2> paths{
-        {RESOURCES_PATH "json/button_load-map.json",
-         RESOURCES_PATH "json/button_load-map.json"}};
-    std::for_each(std::cbegin(paths), std::cend(paths), [this](const auto& it) {
-        sdl::SpriteFactory::addNewSprite(it,
-                                         _window->renderer()->renderer().get());
-    });
-    std::transform(
-        std::cbegin(paths), std::cend(paths), std::begin(_graphicElements),
-        [](const std::string_view& it) {
-            return std::pair(sdl::generateGraphicElementID(),
-                             std::make_shared<sdl::GraphicElement>(
-                                 sdl::SpriteFactory::getSprite(it), {{0.0}}));
-        });
-    sdl::GraphicElement(sdl::SpriteFactory::getSprite("asd"), {{0.0}});
-}
-
-std::size_t components::Menu::addWidget(std::string_view path,
-                                        const Vec2& dstRect) {
-    sdl::SpriteFactory::addNewSprite(path,
-                                     _window->renderer()->renderer().get());
-    const std::size_t elementId = sdl::generateGraphicElementID();
-    _graphicElements[elementId] = std::make_shared<sdl::GraphicElement>(
-        sdl::SpriteFactory::getSprite(path), dstRect);
-    return 1;
-}
-
-bool components::Menu::isMenuWasOpen() const {
-    return _menuWasOpen;
+#include <engine/input_handler.hpp>
+#include <iostream>
+components::Menu::Menu() {
+    _window = std::make_shared<sdl::Window>("menu", 800, 640, 0);
+    sdl::Engine engine = sdl::Engine(_window);
+    std::size_t id = sdl::SpriteFactory::addNewSprite(RESOURCES_PATH
+                                                      "json/button_play.json");
+    auto img = std::make_shared<sdl::GraphicElement>(
+        sdl::SpriteFactory::getSprite(id), Vec4({0, 0, 256, 256}));
+    engine.registerGraphicElement(img, id);
+    while (true) {
+        engine.clear();
+        engine.draw(id, img->srcRect(), img->dstRect());
+        engine.present();
+        img->update();
+    }
 }

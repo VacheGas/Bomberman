@@ -1,6 +1,7 @@
 add_library(
   components_headers 
   INTERFACE
+  include/components/menu.hpp
   include/components/player.hpp
 )
   
@@ -13,6 +14,7 @@ target_include_directories(
 add_library(
   components
   STATIC
+  src/menu.cpp
   src/player.cpp
 )
       
@@ -32,3 +34,4 @@ target_link_libraries(
 
 target_link_libraries(components_headers INTERFACE engine_headers)
 target_link_libraries(components PRIVATE engine gtest gtest_main)
+target_compile_definitions(components PRIVATE RESOURCES_PATH="${RESOURCES_PATH}")

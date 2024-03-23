@@ -2,35 +2,15 @@
 
 namespace sdl {
 
-Sprite::Sprite(Texture texture, Vec2 frameSize)
-    : _texture{std::move(texture)},
+Sprite::Sprite(std::unique_ptr<SDL_Surface, sdl::SdlSurfaceDeleter> imageData,
+               Vec2 frameSize)
+    : _imageData{std::move(imageData)},
       _frameSize{frameSize},
       _rowCount{},
       _colCount{} {
 
-    int width{};
-    int height{};
-    SDL_QueryTexture(_texture.get(), nullptr, nullptr, &width, &height);
-    _rowCount = height / static_cast<int>(_frameSize[1]);
-    _colCount = width / static_cast<int>(_frameSize[0]);
-}
-
-// TODO : renderer should be a member of Sprite
-void Sprite::draw(SDL_Renderer* renderer, const Vec4& srcRect,
-                  const Vec4& dstRect) {
-    SDL_FRect src;
-    src.x = srcRect[0];
-    src.y = srcRect[1];
-    src.w = srcRect[2];
-    src.h = srcRect[3];
-
-    SDL_FRect dst;
-    dst.x = dstRect[0];
-    dst.y = dstRect[1];
-    dst.w = dstRect[2];
-    dst.h = dstRect[3];
-
-    SDL_RenderTexture(renderer, _texture.get(), &src, &dst);
+    _rowCount = _imageData->h / static_cast<int>(_frameSize[1]);
+    _colCount = _imageData->w / static_cast<int>(_frameSize[0]);
 }
 
 std::size_t Sprite::rowCount() const {
@@ -42,6 +22,18 @@ std::size_t Sprite::colCount() const {
 
 Vec2 Sprite::frameSize() const {
     return _frameSize;
+}
+
+SDL_Surface* sdl::Sprite::data() {
+    return _imageData.get();
+}
+
+std::size_t sdl::Sprite::height() {
+    return _imageData->h;
+}
+
+std::size_t sdl::Sprite::width() {
+    return _imageData->w;
 }
 
 }  // namespace sdl

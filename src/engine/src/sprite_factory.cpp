@@ -3,6 +3,7 @@
 //
 
 #include "engine/sprite_factory.hpp"
+#include <engine/generate_id.hpp>
 #include "engine/sprite.hpp"
 
 #include <SDL3_image/SDL_image.h>
@@ -11,7 +12,6 @@
 #include <fstream>
 
 namespace {
-
 nlohmann::json jsonFromFile(std::string_view assetPath) {
     std::ifstream file(assetPath);
 
@@ -26,23 +26,28 @@ nlohmann::json jsonFromFile(std::string_view assetPath) {
     return data;
 }
 
-sdl::Texture loadSprite(std::string_view assetPath, SDL_Renderer* renderer) {
-    SDL_Surface* tempSurface = IMG_Load(assetPath.data());
-    sdl::Texture texture(SDL_CreateTextureFromSurface(renderer, tempSurface));
-    SDL_DestroySurface(tempSurface);
-    return texture;
-}
-
 }  // namespace
+std::unordered_map<std::size_t, std::shared_ptr<sdl::Sprite>>
+    sdl::SpriteFactory::_sprites;
+std::unordered_map<std::string_view, std::size_t> sdl::SpriteFactory::_paths;
 
 std::shared_ptr<sdl::Sprite> sdl::SpriteFactory::getSprite(
-    std::string_view id) {
-    return _sprites[id];
+    const std::string_view& id) {
+    if (_paths.contains(id))
+        return _sprites[_paths[id]];
+    return nullptr;
 }
-void sdl::SpriteFactory::addNewSprite(std::string_view assetPath,
-                                      SDL_Renderer* renderer) {
-    if (_sprites.contains(assetPath))
-        return;
+
+std::shared_ptr<sdl::Sprite> sdl::SpriteFactory::getSprite(std::size_t id) {
+    if (_sprites.contains(id))
+        return _sprites[id];
+    return nullptr;
+}
+
+std::size_t sdl::SpriteFactory::addNewSprite(
+    const std::string_view& assetPath) {
+    if (_paths.contains(assetPath))
+        return _paths[assetPath];
 
     nlohmann::json jsonData = jsonFromFile(assetPath);
     std::string texturePath = std::string(RESOURCES_PATH) + "textures/" +
@@ -50,8 +55,11 @@ void sdl::SpriteFactory::addNewSprite(std::string_view assetPath,
 
     float width = jsonData["frameSize"]["width"];
     float height = jsonData["frameSize"]["height"];
-
-    Texture texture = loadSprite(texturePath, renderer);
-    _sprites[assetPath] = std::make_shared<sdl::Sprite>(std::move(texture),
-                                                        Vec2({width, height}));
+    std::size_t id = generateGraphicElementID();
+    _sprites[id] = std::make_shared<sdl::Sprite>(
+        std::unique_ptr<SDL_Surface, sdl::SdlSurfaceDeleter>(
+            IMG_Load(texturePath.data())),
+        Vec2({width, height}));
+    _paths.insert({assetPath, id});
+    return id;
 }

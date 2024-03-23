@@ -12,10 +12,14 @@
 namespace sdl {
 class GraphicElement {
 public:
-    GraphicElement(const std::shared_ptr<Sprite>& sprite, Vec4& dstRect);
+    GraphicElement(const std::shared_ptr<Sprite>& sprite, const Vec4& dstRect);
+
 public:
-    void draw(SDL_Renderer* renderer);
     void update();
+    SDL_Surface* data();
+    const Vec4& dstRect();
+    Vec4 srcRect();
+    Vec2 frameSize();
 
 protected:
     std::shared_ptr<Sprite> _sprite;

@@ -53,5 +53,4 @@ Window::~Window() {
     _renderer.reset();
     assert(_renderer.use_count() == 0);
 }
-
 }  // namespace sdl

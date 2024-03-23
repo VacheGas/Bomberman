@@ -1,10 +1,10 @@
 #pragma once
 
 #include <engine/graphic_element.hpp>
+#include <engine/input_handler.hpp>
 #include <engine/renderer.hpp>
 #include <engine/sprite.hpp>
 #include <engine/vec.hpp>
-#include <engine/input_handler.hpp>
 
 #include <string>
 #include "SDL3/SDL.h"
@@ -22,26 +22,23 @@ public:
     Engine& operator=(const Engine&) = delete;
     ~Engine() = default;
 
-    void run();
-
-    std::size_t registerGraphicElement(std::string_view assetPath,
-                                       Vec4 dstRect);
+    void registerGraphicElement(const std::shared_ptr<GraphicElement>& element,
+                                std::size_t elementID);
 
     void setDrawColor(SDL_Color color);
 
+    void draw(std::size_t elementID, const Vec4& srcRect, const Vec4& dstRect);
+    void present();
+    void clear();
+    const std::shared_ptr<Window>& window() const;
+
 private:
     Texture load(const std::string& assetPath);
-    void present();
-    void update();
-    void clear();
-    void draw(SDL_Renderer* renderer);
     void handleInput();
 
 private:
     std::shared_ptr<Window> _window = nullptr;
-    std::unique_ptr<SpriteFactory> _factory{std::make_unique<SpriteFactory>()};
-    std::unordered_map<std::size_t, std::unique_ptr<GraphicElement>>
-        _graphicElements{};
+    std::unordered_map<std::size_t, sdl::Texture> _graphicElements{};
     InputHandler _inputHandler;
 
 private:
