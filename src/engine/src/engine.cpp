@@ -43,12 +43,12 @@ void Engine::handleInput() {
     _inputHandler.update();
 
     // Check if a specific key is pressed
-    if (_inputHandler.isKeyPressed(SDL_SCANCODE_A)) {
+    if (_inputHandler.isKeyPressed(ENGINE_SCANCODES::A)) {
         // TODO: move character
     }
 
     // Check if another key is pressed
-    if (_inputHandler.isKeyPressed(SDL_SCANCODE_B)) {
+    if (_inputHandler.isKeyPressed(ENGINE_SCANCODES::W)) {
         // TODO: move character
     }
 }

@@ -1,21 +1,21 @@
 #include <algorithm>
 #include <engine/input_handler.hpp>
+#include <iostream>
 
-InputHandler::InputHandler() {
+sdl::InputHandler::InputHandler() {
     // Initialize the keyboard state array
-    std::fill(std::begin(m_keyStates), std::end(m_keyStates), false);
+    std::fill(std::begin(_keyStates), std::end(_keyStates), false);
 }
 
-void InputHandler::update() {
+void sdl::InputHandler::update() {
     // Update the keyboard state
     SDL_PumpEvents();
-    const Uint8* keyboardState = SDL_GetKeyboardState(NULL);
-    SDL_memcpy(m_keyStates.data(), keyboardState, SDL_NUM_SCANCODES);
+    const Uint8* keyboardState = SDL_GetKeyboardState(nullptr);
+
+    SDL_memcpy(_keyStates.data(), keyboardState, SDL_NUM_SCANCODES);
 }
 
-bool InputHandler::isKeyPressed(SDL_Scancode key) const {
-    if (key >= 0 && key < SDL_NUM_SCANCODES) {
-        return m_keyStates[key];
-    }
-    return false;
+bool sdl::InputHandler::isKeyPressed(sdl::ENGINE_SCANCODES key) const {
+    return _keyStates[castEngineScancodesToSdlScancode(supportedScancodes(),
+                                                       key)];
 }
