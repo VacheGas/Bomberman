@@ -18,8 +18,8 @@ Engine::Engine(std::shared_ptr<Window> window) : _window(std::move(window)) {
     _initialized = true;
 }
 
-void Engine::registerGraphicElement(
-    const std::shared_ptr<GraphicElement>& element, std::size_t elementId) {
+void Engine::registerSprite(const std::shared_ptr<sdl::Sprite>& element,
+                            std::size_t elementId) {
     _graphicElements[elementId] = sdl::Texture(SDL_CreateTextureFromSurface(
         _window->renderer()->renderer().get(), element->data()));
 }

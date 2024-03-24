@@ -17,7 +17,6 @@
 #include <fstream>
 
 namespace sdl {
-class Engine;
 class Sprite;
 
 class SpriteFactory {

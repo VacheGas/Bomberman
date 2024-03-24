@@ -22,8 +22,8 @@ public:
     Engine& operator=(const Engine&) = delete;
     ~Engine() = default;
 
-    void registerGraphicElement(const std::shared_ptr<GraphicElement>& element,
-                                std::size_t elementID);
+    void registerSprite(const std::shared_ptr<sdl::Sprite>& element,
+                        std::size_t elementID);
 
     void setDrawColor(SDL_Color color);
 
@@ -37,7 +37,9 @@ private:
 
 private:
     std::shared_ptr<Window> _window = nullptr;
-    std::unordered_map<std::size_t, sdl::Texture> _graphicElements{};
+    std::unordered_map<std::size_t,
+                       std::unique_ptr<SDL_Texture, sdl::SdlTextureDeleter>>
+        _graphicElements{};
     InputHandler _inputHandler;
 
 private:

@@ -36,4 +36,8 @@ SDL_Surface* GraphicElement::data() {
     return _sprite->data();
 }
 
+std::shared_ptr<Sprite>& sdl::GraphicElement::sprite() {
+    return _sprite;
+}
+
 }  // namespace sdl

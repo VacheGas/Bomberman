@@ -17,6 +17,7 @@ public:
 public:
     void update();
     SDL_Surface* data();
+    std::shared_ptr<Sprite>& sprite();
     const Vec4& dstRect();
     Vec4 srcRect();
     Vec2 frameSize();
