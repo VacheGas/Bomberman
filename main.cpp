@@ -4,4 +4,5 @@
 #include <components/menu.hpp>
 int main() {
  auto window = components::Menu();
+ window.run();
 }

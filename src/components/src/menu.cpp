@@ -21,7 +21,9 @@ components::Menu::Menu() {
 }
 
 void components::Menu::run() {
-    while (true) {
+    SDL_Event e;
+    while (e.type != SDL_EVENT_QUIT) {
+        SDL_PollEvent(&e);
         _engine->draw(_elements[0].first, _elements[0].second->srcRect(),
                       _elements[0].second->dstRect());
         _engine->draw(_elements[1].first, _elements[1].second->srcRect(),
