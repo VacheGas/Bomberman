@@ -52,6 +52,7 @@ void Engine::handleInput() {
         // TODO: move character
     }
 }
+// TODO change Vec names
 // TODO instead of drawing its all time you can draw one time get surface and draw it instead
 void Engine::draw(std::size_t elementID, const Vec4& srcRect,
                   const Vec4& dstRect) {
