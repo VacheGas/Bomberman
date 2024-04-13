@@ -4,9 +4,9 @@
 #pragma once
 namespace sdl {
 
-std::size_t generateGraphicElementID() {
+inline std::size_t generateGraphicElementID() {
     static std::size_t id = 0;
-    return ++id;
+    return id++;
 }
 
 }  // namespace sdl
