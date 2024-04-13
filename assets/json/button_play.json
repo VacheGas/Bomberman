@@ -1,7 +1,7 @@
 {
-  "texturePath": "buttons/button_play.jpg",
+  "texturePath": "buttons/button_play.png",
   "frameSize": {
-    "width": 134,
-    "height": 61
+    "width": 562,
+    "height": 309
   }
 }

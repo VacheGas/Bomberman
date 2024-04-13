@@ -1,7 +1,7 @@
 {
-  "texturePath": "buttons/button_load-map.jpg",
+  "texturePath": "buttons/button_load-map.png",
   "frameSize": {
-    "width": 187,
-    "height": 61
+    "width": 920,
+    "height": 309
   }
 }
