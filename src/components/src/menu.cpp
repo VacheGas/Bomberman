@@ -3,7 +3,7 @@
 //
 
 #include <components/menu.hpp>
-#include <engine/engine.hpp>
+#include "engine/drawing_context.hpp"
 
 components::Menu::Menu() {
     declareSprites();

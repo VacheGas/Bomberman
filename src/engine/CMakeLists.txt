@@ -2,7 +2,7 @@ add_library(
 		engine_headers
 		INTERFACE
 		include/engine/engine_key_scancodes.hpp
-		include/engine/engine.hpp
+		include/engine/drawing_context.hpp
 		include/engine/graphic_element.hpp
 		include/engine/generate_id.hpp
 		include/engine/sprite.hpp
@@ -22,7 +22,7 @@ target_include_directories(
 add_library(
   engine
   STATIC
-  src/engine.cpp
+  src/drawing_context.cpp
   src/renderer.cpp
   src/sprite.cpp
   src/window.cpp

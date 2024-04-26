@@ -15,12 +15,12 @@
 
 namespace sdl {
 
-class Engine {
+class DrawingContext {
 public:
-    Engine(std::shared_ptr<Window> window);
-    Engine(const Engine&) = delete;
-    Engine& operator=(const Engine&) = delete;
-    ~Engine() = default;
+    DrawingContext(std::shared_ptr<Window> window);
+    DrawingContext(const DrawingContext&) = delete;
+    DrawingContext& operator=(const DrawingContext&) = delete;
+    ~DrawingContext() = default;
 
     void registerSprite(const std::shared_ptr<sdl::Sprite>& element,
                         std::size_t elementID);
