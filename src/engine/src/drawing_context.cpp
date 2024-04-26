@@ -10,7 +10,8 @@ namespace sdl {
 
 bool DrawingContext::_initialized = false;
 // TODO poxel anun@ drawing_context
-DrawingContext::DrawingContext(std::shared_ptr<Window> window) : _window(std::move(window)) {
+DrawingContext::DrawingContext(std::shared_ptr<Window> window)
+    : _window(std::move(window)) {
     auto errorMessage = "There can be only one instance of the engine";
     if (_initialized)
         throw std::runtime_error(errorMessage);
@@ -18,12 +19,12 @@ DrawingContext::DrawingContext(std::shared_ptr<Window> window) : _window(std::mo
 }
 
 void DrawingContext::registerSprite(const std::shared_ptr<sdl::Sprite>& element,
-                            std::size_t elementId) {
+                                    std::size_t elementId) {
     _graphicElements[elementId] = sdl::Texture(SDL_CreateTextureFromSurface(
         _window->renderer()->renderer().get(), element->data()));
 }
-// TODO poxel functioni anun@ draw
-void DrawingContext::setDrawColor(SDL_Color color) {
+
+void DrawingContext::drawColor(SDL_Color color) {
     SDL_SetRenderDrawColor(_window->renderer()->renderer().get(), color.r,
                            color.g, color.b, color.a);
 }
@@ -53,9 +54,8 @@ void DrawingContext::handleInput() {
 }
 // TODO change Vec names
 // TODO instead of drawing its all time you can draw one time get surface and draw it instead
-// TODO poxel functioni anun@ drawImage
-void DrawingContext::draw(std::size_t elementID, const Vec4& srcRect,
-                  const Vec4& dstRect) {
+void DrawingContext::drawImage(std::size_t elementID, const Vec4& srcRect,
+                               const Vec4& dstRect) {
     if (_graphicElements.find(elementID) == _graphicElements.end()) {
         throw std::runtime_error("element not exist");
     }

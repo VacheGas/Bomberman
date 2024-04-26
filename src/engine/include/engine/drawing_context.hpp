@@ -25,9 +25,10 @@ public:
     void registerSprite(const std::shared_ptr<sdl::Sprite>& element,
                         std::size_t elementID);
 
-    void setDrawColor(SDL_Color color);
+    void drawColor(SDL_Color color);
 
-    void draw(std::size_t elementID, const Vec4& srcRect, const Vec4& dstRect);
+    void drawImage(std::size_t elementID, const Vec4& srcRect,
+                   const Vec4& dstRect);
     void present();
     void clear();
     [[nodiscard]] const std::shared_ptr<Window>& window() const;
