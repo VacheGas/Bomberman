@@ -1,6 +1,6 @@
 #include "test_utils/gtest_main.hpp"
 
-#include "engine/engine.hpp"
+#include "engine/drawing_context.hpp"
 
 TEST(Engine, Animation) {
     std::size_t id = sdl::SpriteFactory::addNewSprite(RESOURCES_PATH

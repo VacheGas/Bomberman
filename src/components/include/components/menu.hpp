@@ -4,10 +4,10 @@
 
 #ifndef BOMBERMAN_MENU_HPP
 #define BOMBERMAN_MENU_HPP
-#include <engine/engine.hpp>
 #include <engine/graphic_element.hpp>
 #include <engine/window.hpp>
 #include <memory>
+#include "engine/drawing_context.hpp"
 
 namespace components {
 
@@ -24,8 +24,8 @@ private:
 private:
     std::shared_ptr<sdl::Window> _window =
         std::make_shared<sdl::Window>("Menu", 10000, 10000, 0);
-    std::unique_ptr<sdl::Engine> _engine =
-        std::make_unique<sdl::Engine>(_window);
+    std::unique_ptr<sdl::DrawingContext> _engine =
+        std::make_unique<sdl::DrawingContext>(_window);
     std::array<std::pair<std::size_t, std::shared_ptr<sdl::GraphicElement>>, 3>
         _elements;
 };

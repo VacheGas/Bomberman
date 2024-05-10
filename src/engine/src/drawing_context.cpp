@@ -1,4 +1,4 @@
-#include "engine/engine.hpp"
+#include "engine/drawing_context.hpp"
 #include "engine/graphic_element.hpp"
 #include "engine/sprite_factory.hpp"
 
@@ -8,37 +8,38 @@
 
 namespace sdl {
 
-bool Engine::_initialized = false;
+bool DrawingContext::_initialized = false;
 // TODO poxel anun@ drawing_context
-Engine::Engine(std::shared_ptr<Window> window) : _window(std::move(window)) {
+DrawingContext::DrawingContext(std::shared_ptr<Window> window)
+    : _window(std::move(window)) {
     auto errorMessage = "There can be only one instance of the engine";
     if (_initialized)
         throw std::runtime_error(errorMessage);
     _initialized = true;
 }
 
-void Engine::registerSprite(const std::shared_ptr<sdl::Sprite>& element,
-                            std::size_t elementId) {
+void DrawingContext::registerSprite(const std::shared_ptr<sdl::Sprite>& element,
+                                    std::size_t elementId) {
     _graphicElements[elementId] = sdl::Texture(SDL_CreateTextureFromSurface(
         _window->renderer()->renderer().get(), element->data()));
 }
-// TODO poxel functioni anun@ draw
-void Engine::setDrawColor(SDL_Color color) {
+
+void DrawingContext::drawColor(SDL_Color color) {
     SDL_SetRenderDrawColor(_window->renderer()->renderer().get(), color.r,
                            color.g, color.b, color.a);
 }
 // TODO SDL_PumpEvents will be removed
-void Engine::present() {
+void DrawingContext::present() {
     SDL_PumpEvents();
     SDL_RenderPresent(_window->renderer()->renderer().get());
 }
 
-void Engine::clear() {
+void DrawingContext::clear() {
     SDL_RenderClear(_window->renderer()->renderer().get());
     SDL_SetRenderDrawColor(_window->renderer()->renderer().get(), 0, 0, 0, 255);
 }
 
-void Engine::handleInput() {
+void DrawingContext::handleInput() {
     _inputHandler.update();
 
     // Check if a specific key is pressed
@@ -53,9 +54,8 @@ void Engine::handleInput() {
 }
 // TODO change Vec names
 // TODO instead of drawing its all time you can draw one time get surface and draw it instead
-// TODO poxel functioni anun@ drawImage
-void Engine::draw(std::size_t elementID, const Vec4& srcRect,
-                  const Vec4& dstRect) {
+void DrawingContext::drawImage(std::size_t elementID, const Vec4& srcRect,
+                               const Vec4& dstRect) {
     if (_graphicElements.find(elementID) == _graphicElements.end()) {
         throw std::runtime_error("element not exist");
     }
@@ -73,7 +73,7 @@ void Engine::draw(std::size_t elementID, const Vec4& srcRect,
                       _graphicElements[elementID].get(), &src, &dst);
 }
 
-const std::shared_ptr<Window>& Engine::window() const {
+const std::shared_ptr<Window>& DrawingContext::window() const {
     return _window;
 }
 
