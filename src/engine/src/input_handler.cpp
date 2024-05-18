@@ -7,6 +7,7 @@ sdl::InputHandler::InputHandler() {
     std::fill(std::begin(_keyStates), std::end(_keyStates), false);
 }
 
+// Todo should update only using scancodes
 void sdl::InputHandler::update() {
     // Update the keyboard state
     SDL_PumpEvents();

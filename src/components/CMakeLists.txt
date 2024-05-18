@@ -1,6 +1,7 @@
 add_library(
   components_headers 
   INTERFACE
+  include/components/input_handler_publisher.hpp
   include/components/menu.hpp
   include/components/player.hpp
 )
@@ -14,6 +15,7 @@ target_include_directories(
 add_library(
   components
   STATIC
+  src/input_handler_publisher.cpp
   src/menu.cpp
   src/player.cpp
 )
