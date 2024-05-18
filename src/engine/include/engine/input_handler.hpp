@@ -9,6 +9,9 @@ namespace sdl {
 using Scancodes =
     std::array<std::pair<sdl::ENGINE_SCANCODES, SDL_Scancode>,
                static_cast<std::size_t>(sdl::ENGINE_SCANCODES::COUNT)>;
+using ScancodesEngine =
+    std::array<sdl::ENGINE_SCANCODES,
+               static_cast<std::size_t>(sdl::ENGINE_SCANCODES::COUNT)>;
 
 class InputHandler {
 public:
@@ -17,6 +20,9 @@ public:
     void update();
 
     [[nodiscard]] bool isKeyPressed(sdl::ENGINE_SCANCODES key) const;
+
+public:
+    static constexpr sdl::ScancodesEngine supportedEngineScancodes();
 
 protected:
     static constexpr std::size_t castEngineScancodesToSdlScancode(
@@ -59,4 +65,17 @@ constexpr sdl::Scancodes sdl::InputHandler::supportedScancodes() {
                                    return it.second == SDL_SCANCODE_UNKNOWN;
                                }) == std::cend(allowedScancodes));
     return allowedScancodes;
+}
+
+constexpr sdl::ScancodesEngine sdl::InputHandler::supportedEngineScancodes() {
+    constexpr sdl::Scancodes scancodes = supportedScancodes();
+    ScancodesEngine scancodesEngine;
+    std::transform(
+        std::cbegin(scancodes), std::cend(scancodes),
+        std::begin(scancodesEngine),
+        [](const std::pair<sdl::ENGINE_SCANCODES, SDL_Scancode>& item) {
+            return item.first;
+        });
+    static_assert(scancodesEngine.size() == supportedScancodes().size());
+    return scancodesEngine;
 }
